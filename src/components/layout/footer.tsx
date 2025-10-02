@@ -10,6 +10,7 @@ const tabs = [
 
 export default function Footer() {
 	return (
+
 		<nav className="fixed bottom-0 border-t border-gray-200 bg-white w-full h-[58px] max-w-[430px] left-1/2 transform -translate-x-1/2">
 			<ul className="flex justify-around py-2">
 				{tabs.map((tab) => (
