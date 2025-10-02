@@ -4,7 +4,7 @@ import LoginFormClient from '@/components/auth/LoginFormClient';
 // 서버 컴포넌트 - 정적 부분은 SSR
 export default function LoginContainer() {
 	return (
-		<div className="min-h-screen bg-white flex flex-col pb-30">
+		<div className="h-full bg-white pb-[34px] ">
 			<header className="flex justify-end mb-8">
 				<button className="text-gray-600 text-xl">
 					<X size={20} />
