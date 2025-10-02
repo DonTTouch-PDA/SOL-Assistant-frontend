@@ -25,7 +25,7 @@ export default function BottomSheet({
 				<>
 					{/* 오버레이 */}
 					<motion.div
-						className="fixed inset-0 bg-black/40 z-40"
+						className="absolute inset-0 bg-black/40 z-40"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
@@ -34,15 +34,14 @@ export default function BottomSheet({
 
 					{/* 바텀시트 */}
 					<motion.div
-						className={`
-                            fixed left-0 right-0 bottom-0
+						className="
+                            fixed bottom-0 left-1/2 -translate-x-1/2
+                            w-full max-w-[430px] min-w-[375px]
                             flex flex-col
                             rounded-t-2xl shadow-lg
-                            bg-white
-                            z-50
-                            px-1.5
-                            pt-1
-                            `}
+                            bg-white z-50
+                            px-1.5 pt-1
+                        "
 						initial={{ y: '100%' }}
 						animate={{ y: 0 }}
 						exit={{ y: '100%' }}

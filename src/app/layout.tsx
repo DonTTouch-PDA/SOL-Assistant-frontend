@@ -30,7 +30,7 @@ export default function RootLayout({
 			</head>
 			<body className={`flex justify-center ${pretendard.variable}`}>
 				<div className="w-full bg-gray-100 flex justify-center min-h-screen">
-					<div className="w-full bg-white max-w-[430px] min-w-[375px] min-h-screen px-[22px] pt-[22px]">
+					<div className="w-full bg-white max-w-[430px] min-w-[375px] min-h-screen px-[22px] pt-[22px] overflow-hidden">
 						<Providers>{children}</Providers>
 					</div>
 				</div>
