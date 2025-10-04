@@ -1,0 +1,48 @@
+name: Deploy Docker Client
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy-client:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH and deploy client with Docker
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.MYPEMKEY }}
+          script: |
+            set -e
+            cd ~/fomo-app/client
+            
+            # 환경변수 파일 생성 (필요시)
+            # echo "${{ secrets.ENV_FILE_CLIENT }}" > .env.local
+            
+            # 최신 코드 가져오기
+            git fetch
+            git reset --hard origin/main
+            
+            # Docker 이미지 빌드 (ARM64 플랫폼 지정)
+            docker build --platform linux/arm64 -t fomo-client .
+            
+            # 기존 컨테이너 정리
+            docker stop fomo-client || true
+            docker rm fomo-client || true
+            
+            # 새 컨테이너 실행 (ARM64)
+            docker run -d \
+              --name fomo-client \
+              --platform linux/arm64 \
+              -p 3000:3000 \
+              --restart unless-stopped \
+              fomo-client
+            
+            # 컨테이너 상태 확인
+            docker ps | grep fomo-client
+            
+            # 컨테이너 로그 확인 (선택사항)
+            echo "Container logs:"
+            docker logs fomo-client --tail 20

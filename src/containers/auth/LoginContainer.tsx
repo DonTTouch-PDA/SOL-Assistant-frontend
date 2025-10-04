@@ -1,3 +1,4 @@
+// @ts-ignore
 import { X } from 'lucide-react';
 import LoginFormClient from '@/components/auth/LoginFormClient';
 
