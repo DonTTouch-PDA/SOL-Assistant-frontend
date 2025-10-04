@@ -20,12 +20,15 @@ jobs:
         ssh-private-key: ${{ secrets.MYPEMKEY }}
         
     - name: Deploy to EC2 with Docker Compose
+      env:
+        EC2_HOST: ${{ secrets.EC2_HOST }}
+        EC2_USER: ${{ secrets.EC2_USER }}
       run: |
         # Copy all files to EC2
-        scp -o StrictHostKeyChecking=no -r . ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/sol-assistant/
+        scp -o StrictHostKeyChecking=no -r . $EC2_USER@$EC2_HOST:~/sol-assistant/
         
         # Deploy with Docker Compose on EC2
-        ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+        ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "
           cd ~/sol-assistant &&
           
           # Stop and remove existing containers (both old and new)
