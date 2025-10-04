@@ -2,7 +2,7 @@ name: Deploy Docker Client
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev]
 
 jobs:
   deploy-client:
@@ -25,15 +25,21 @@ jobs:
             pwd
             ls -la
             
-            # 디렉토리로 이동 (이미 존재함)
+            # 기존 디렉토리 삭제 후 새로 클론 (안전한 방법)
+            sudo rm -rf ~/SOL-Assistant-frontend
+            git clone https://github.com/${{ github.repository }}.git ~/SOL-Assistant-frontend
             cd ~/SOL-Assistant-frontend
+            
+            # Git ownership 문제 해결
+            git config --global --add safe.directory /home/ec2-user/SOL-Assistant-frontend
             
             # 환경변수 파일 생성 (필요시)
             # echo "${{ secrets.ENV_FILE_CLIENT }}" > .env.local
             
-            # 최신 코드 가져오기
-            git fetch
-            git reset --hard origin/main
+            # 최신 코드 확인 및 브랜치 동기화
+            git status
+            git checkout dev
+            git pull origin dev
             
             # Docker 이미지 빌드 (ARM64 플랫폼 지정)
             docker build --platform linux/arm64 -t sol-assistant .
