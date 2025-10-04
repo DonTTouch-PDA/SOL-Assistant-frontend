@@ -20,41 +20,35 @@ jobs:
           use_insecure_cipher: true
           script: |
             set -e
+
             echo "Testing SSH connection..."
             whoami
             pwd
             ls -la
-            
-            # 기존 디렉토리로 이동
+
+            # 프로젝트 디렉토리 이동
             cd ~/SOL-Assistant-frontend
-            
-            # Git ownership 문제 해결 (한 번만 실행)
+
+            # Git ownership 문제 해결
             git config --global --add safe.directory /home/ec2-user/SOL-Assistant-frontend
-            
-            # 환경변수 파일 생성 (필요시)
-            # echo "${{ secrets.ENV_FILE_CLIENT }}" > .env.local
-            
+
             # 최신 코드 가져오기
             git pull origin main
-            
+
             # Docker 이미지 빌드 (ARM64 플랫폼 지정)
             docker build --platform linux/arm64 -t sol-assistant .
-            
+
             # 기존 컨테이너 정리
             docker stop sol-assistant || true
             docker rm sol-assistant || true
-            
-            # 새 컨테이너 실행 (ARM64)
-            docker run -d \
-              --name sol-assistant \
-              --platform linux/arm64 \
-              -p 3000:3000 \
-              --restart unless-stopped \
-              sol-assistant
-            
+
+            # 새 컨테이너 실행
+            docker run -d -p 3000:3000 --name sol-assistant sol-assistant
+
             # 컨테이너 상태 확인
+            echo "Container status:"
             docker ps | grep sol-assistant
-            
-            # 컨테이너 로그 확인 (선택사항)
+
+            # 컨테이너 로그 확인 (최근 20줄)
             echo "Container logs:"
             docker logs sol-assistant --tail 20
