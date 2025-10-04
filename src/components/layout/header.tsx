@@ -6,7 +6,7 @@ export default function Header() {
 	const [isDashboard, setIsDashboard] = useState(true);
 	const focusColor = ['text-black', 'text-gray-400'];
 	return (
-		<header className="flex justify-between items-center w-full ">
+		<header className="fixed top-0 left-1/2 transform -translate-x-1/2 flex justify-between items-center pt-5 px-6 w-full max-w-[430px] min-w-[375px] bg-white z-10">
 			<div className="flex gap-6">
 				<button
 					className={`font-bold text-xl ${isDashboard ? focusColor[0] : focusColor[1]}`}
