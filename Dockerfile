@@ -2,21 +2,6 @@
 FROM node:18-alpine AS build
 WORKDIR /app
 
-# Install build dependencies for canvas
-RUN apk add --no-cache \
-    python3 \
-    make \
-    g++ \
-    cairo-dev \
-    jpeg-dev \
-    pango-dev \
-    musl-dev \
-    giflib-dev \
-    pixman-dev \
-    pangomm-dev \
-    libjpeg-turbo-dev \
-    freetype-dev
-
 COPY package*.json ./
 RUN npm install
 COPY . .

@@ -16,7 +16,7 @@ jobs:
           key: ${{ secrets.MYPEMKEY }}
           port: 22
           debug: true
-          timeout: 30s
+          timeout: 15m
           use_insecure_cipher: true
           script: |
             set -e
