@@ -14,6 +14,8 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.MYPEMKEY }}
+          port: 22
+          debug: true
           script: |
             set -e
             cd ~/fomo-app/client
