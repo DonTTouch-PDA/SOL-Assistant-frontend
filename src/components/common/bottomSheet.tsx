@@ -11,7 +11,7 @@ interface BottomSheetProps {
 	additionalContent?: React.ReactNode;
 	isOpen: boolean;
 	onClose: () => void;
-	withButton?: Boolean;
+	withButton?: boolean;
 }
 
 export default function BottomSheet({
@@ -65,7 +65,7 @@ export default function BottomSheet({
 								{additionalContent}
 							</div>
 						)}
-						<div className="pt-7">
+						<div className="pt-8 px-2">
 							{withButton && <CustomButton text="확인" onClick={onClose} />}
 						</div>
 					</motion.div>
