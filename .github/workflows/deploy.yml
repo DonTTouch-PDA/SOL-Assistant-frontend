@@ -25,12 +25,7 @@ jobs:
             pwd
             ls -la
             
-            # 디렉토리 확인 및 생성
-            if [ ! -d "~/SOL-Assistant-frontend" ]; then
-              echo "Cloning repository..."
-              git clone https://github.com/${{ github.repository }}.git ~/SOL-Assistant-frontend
-            fi
-            
+            # 디렉토리로 이동 (이미 존재함)
             cd ~/SOL-Assistant-frontend
             
             # 환경변수 파일 생성 (필요시)
