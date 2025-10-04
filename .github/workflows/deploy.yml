@@ -16,8 +16,13 @@ jobs:
           key: ${{ secrets.MYPEMKEY }}
           port: 22
           debug: true
+          timeout: 30s
           script: |
             set -e
+            echo "Testing SSH connection..."
+            whoami
+            pwd
+            ls -la
             cd ~/fomo-app/client
             
             # 환경변수 파일 생성 (필요시)
