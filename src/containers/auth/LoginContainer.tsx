@@ -15,7 +15,7 @@ export default function LoginContainer() {
 				<h1 className="text-xl font-bold text-black leading-tight mb-8">
 					ID와 접속 비밀번호를
 					<br />
-					입력하세요
+					입력하세요!
 				</h1>
 
 				<LoginFormClient />

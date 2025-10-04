@@ -28,7 +28,9 @@ jobs:
         ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} "
           cd ~/sol-assistant &&
           
-          # Stop and remove existing containers
+          # Stop and remove existing containers (both old and new)
+          docker stop sol-frontend || true &&
+          docker rm sol-frontend || true &&
           docker-compose down || true &&
           
           # Build and start new containers
