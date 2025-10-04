@@ -3,13 +3,15 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import CustomButton from './custombutton';
 
 interface BottomSheetProps {
 	title: string;
-	content: string;
-	additionalContent?: string;
+	content: React.ReactNode;
+	additionalContent?: React.ReactNode;
 	isOpen: boolean;
 	onClose: () => void;
+	withButton?: Boolean;
 }
 
 export default function BottomSheet({
@@ -18,6 +20,7 @@ export default function BottomSheet({
 	additionalContent,
 	isOpen,
 	onClose,
+	withButton = true,
 }: BottomSheetProps) {
 	return (
 		<AnimatePresence>
@@ -40,13 +43,13 @@ export default function BottomSheet({
                             flex flex-col
                             rounded-t-2xl shadow-lg
                             bg-white z-50
-                            px-1.5 pt-1
+                            px-1.5 pt-1 pb-8
                         "
 						initial={{ y: '100%' }}
 						animate={{ y: 0 }}
 						exit={{ y: '100%' }}
 						transition={{ type: 'tween', duration: 0.3 }}
-						style={{ height: '300px' }}
+						// style={{ height: '300px' }}
 					>
 						<div className="flex justify-end p-3">
 							<button onClick={onClose}>
@@ -56,14 +59,15 @@ export default function BottomSheet({
 						<div className="px-4 font-semibold text-black text-2xl">
 							{title}
 						</div>
-						<div className="overflow-auto overscroll-contain p-4 text-[#787E8A]">
-							{content}
-						</div>
+						<div className="p-4 text-[#787E8A]">{content}</div>
 						{additionalContent && (
-							<div className="overflow-auto overscroll-contain px-4 py-2 text-sm text-[#979EA4]">
+							<div className="px-4 py-2 text-sm text-[#979EA4]">
 								{additionalContent}
 							</div>
 						)}
+						<div className="pt-7">
+							{withButton && <CustomButton text="확인" onClick={onClose} />}
+						</div>
 					</motion.div>
 				</>
 			)}
