@@ -25,12 +25,14 @@ export default function RootLayout({
 			<head>
 				<meta
 					name="viewport"
-					content="width=375, initial-scale=1, maximum-scale=1, user-scalable=no"
+					content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
 				/>
 			</head>
 			<body className={`flex justify-center ${pretendard.variable}`}>
-				<div className=" justify-center max-w-[540px] min-w-[375px] shadow-md">
-					<Providers>{children}</Providers>
+				<div className="w-full bg-gray-100 flex justify-center min-h-screen">
+					<div className="w-full bg-white max-w-[430px] min-w-[375px] min-h-screen px-[22px] pt-[22px] overflow-hidden">
+						<Providers>{children}</Providers>
+					</div>
 				</div>
 			</body>
 		</html>

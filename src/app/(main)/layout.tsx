@@ -7,9 +7,9 @@ export default function MainLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className="min-h-screen bg-white px-6">
+		<div className="h-full w-full bg-white mb-[58px]">
 			<Header />
-			<main className="pb-16">{children}</main>
+			<main>{children}</main>
 			<Footer />
 		</div>
 	);

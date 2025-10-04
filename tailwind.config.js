@@ -8,6 +8,18 @@ module.exports = {
 	],
 	theme: {
 		extend: {
+			screens: {
+				mobile: '375px',
+				'mobile-lg': '430px',
+				desktop: '768px',
+			},
+			maxWidth: {
+				mobile: '430px',
+				desktop: '393px',
+			},
+			minWidth: {
+				mobile: '375px',
+			},
 			colors: {
 				// Yellow/Orange 팔레트
 				yellow: {
