@@ -1,0 +1,36 @@
+name: Deploy to EC2 with Docker
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.MYPEMKEY }}
+        
+    - name: Deploy to EC2 with Docker Compose
+      run: |
+        # Copy all files to EC2
+        scp -o StrictHostKeyChecking=no -r . ec2-user@${{ secrets.EC2_HOST }}:~/sol-assistant/
+        
+        # Deploy with Docker Compose on EC2
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_HOST }} "
+          cd ~/sol-assistant &&
+          
+          # Stop and remove existing containers
+          docker-compose down || true &&
+          
+          # Build and start new containers
+          docker-compose up -d --build
+        "
