@@ -1,0 +1,23 @@
+name: Test SSH Connection
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-ssh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test SSH connection
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.MYPEMKEY }}
+          port: 22
+          debug: true
+          timeout: 30s
+          script: |
+            echo "SSH connection successful!"
+            whoami
+            pwd
+            uname -a
