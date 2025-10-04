@@ -1,7 +1,7 @@
 // 기본형
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface BottomSheetProps {
@@ -45,7 +45,7 @@ export default function BottomSheet({
 						initial={{ y: '100%' }}
 						animate={{ y: 0 }}
 						exit={{ y: '100%' }}
-						transition={{ type: 'tween', duration: 0.5 }}
+						transition={{ type: 'tween', duration: 0.3 }}
 						style={{ height: '300px' }}
 					>
 						<div className="flex justify-end p-3">
