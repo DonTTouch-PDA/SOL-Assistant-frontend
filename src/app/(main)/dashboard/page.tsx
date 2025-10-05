@@ -1,1 +1,1 @@
-export { default } from '@/containers/main/DashboardContainer';
+export { default } from '@/containers/myStocks/MyStocksContainer';

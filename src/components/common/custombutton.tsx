@@ -1,5 +1,4 @@
 // 파란색 긴 공통 버튼
-
 'use client';
 
 import React from 'react';
