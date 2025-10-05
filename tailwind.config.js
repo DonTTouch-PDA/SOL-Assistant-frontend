@@ -22,7 +22,7 @@ module.exports = {
 			},
 			colors: {
 				// Yellow/Orange 팔레트
-				yellow: {
+				shinhanYellow: {
 					100: '#FFF9E8',
 					200: '#FFF6D1',
 					300: '#FFEDBD',
@@ -34,7 +34,7 @@ module.exports = {
 					900: '#EA9635',
 				},
 				// Red 팔레트
-				red: {
+				shinhanRed: {
 					100: '#FFF2F2',
 					200: '#FFDDDD',
 					300: '#FFA9A9',
@@ -46,7 +46,7 @@ module.exports = {
 					900: '#861E17',
 				},
 				// Green 팔레트
-				green: {
+				shinhanGreen: {
 					100: '#ECFDFC',
 					200: '#CDF9F6',
 					300: '#A7F4EF',
@@ -58,7 +58,7 @@ module.exports = {
 					900: '#0C7076',
 				},
 				// Blue 팔레트
-				blue: {
+				shinhanBlue: {
 					100: '#E6EDFF',
 					200: '#B3C8FF',
 					300: '#94ABFA',
@@ -68,6 +68,13 @@ module.exports = {
 					700: '#0040E8',
 					800: '#293FEB',
 					900: '#102FA8',
+				},
+				shinhanGray: {
+					100: '#F8F8F8',
+					200: '#F7F7F7',
+					300: '#F5F5F5',
+					400: '#999EA4',
+					500: '#888E98',
 				},
 			},
 		},

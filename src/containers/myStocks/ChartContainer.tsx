@@ -1,4 +1,5 @@
 // src/containers/main/ChartContainer.tsx
+'use client';
 export default function ChartContainer() {
 	return (
 		<div className="p-4 w-full max-w-[430px] min-w-[375px] md:w-[393px]">
