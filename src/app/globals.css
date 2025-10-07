@@ -33,7 +33,8 @@ body {
 		Roboto,
 		'Helvetica Neue',
 		Arial,
-		sans-serif;
+		sans-serif,
+		'DunbarLow';
 }
 
 /* 모바일이면 스크롤 숨기기 */
@@ -57,4 +58,10 @@ body {
 
 .scrollbar-hide::-webkit-scrollbar {
 	display: none;
+}
+
+@font-face {
+	font-family: 'DunbarLow';
+	font-weight: normal;
+	src: '/fonts/DunbarLow-Light.woff2' format('woff2');
 }
