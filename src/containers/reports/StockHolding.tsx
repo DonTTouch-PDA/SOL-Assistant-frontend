@@ -1,3 +1,4 @@
+// 시간남으면 여기도 애니메이션
 import CustomCard from '@/components/common/customCard';
 import Image from 'next/image';
 const data = { holding: 23, percentile: 80 };

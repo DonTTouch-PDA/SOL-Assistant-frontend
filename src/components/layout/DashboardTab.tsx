@@ -16,8 +16,9 @@ export default function DashboardTab() {
 	const pathname = usePathname();
 
 	useEffect(() => {
-		const currentPath = pathname.replace('/dashboard', '').replace('/', '');
-		setActiveTab(currentPath);
+		const currentPath = pathname.replace('/dashboard/', '');
+		const topLevelPath = currentPath.split('/')[0];
+		setActiveTab(topLevelPath);
 	}, [pathname]);
 
 	return (
