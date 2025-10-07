@@ -2,6 +2,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import CustomButton from './custombutton';
 
@@ -53,7 +54,7 @@ export default function BottomSheet({
 					>
 						<div className="flex justify-end p-3">
 							<button onClick={onClose}>
-								<img src="x.svg" />
+								<Image src="/x.svg" alt="x" width={20} height={20} />
 							</button>
 						</div>
 						<div className="px-4 font-semibold text-black text-2xl">
