@@ -137,7 +137,7 @@ export default function ProfitHistory() {
 	return (
 		<div>
 			{/*상단바*/}
-			<div className="flex items-center">
+			<div className="flex items-center pb-3">
 				<Image
 					src="/arrow-left.svg"
 					alt="back"
@@ -149,58 +149,81 @@ export default function ProfitHistory() {
 				/>
 				<p>이번달 매매수익</p>
 			</div>
-			{/* 월 총계 */}
-			<div>
-				<p>{data.currentMonth.month.slice(5)}월 실현수익</p>
-				<div className="flex">
-					{data.currentMonth.total.sum >= 0 && '+'}
-					{data.currentMonth.total.sum.toLocaleString()}원
-					<div className="text-sm font-semibold">
-						{data.currentMonth.total.diff >= 0 ? (
-							<p className=" bg-[#FCF4F4] text-[#FA2D42] rounded-sm px-1.5">
-								+{data.currentMonth.total.diff}%
-							</p>
-						) : (
-							<p className=" bg-[#F4F9FF] text-[#2E77FA] rounded-sm px-1.5">
-								{data.currentMonth.total.diff}%
-							</p>
-						)}
-					</div>
-				</div>
-				{/* 매수&매도 */}
-				<div className="bg-[#F7F7F7] h-[104px] grid grid-cols-2">
-					<div>
-						<p>매수 {data.currentMonth.total.buy.count}건</p>
-						<h1>{data.currentMonth.total.buy.price.toLocaleString()}원</h1>
-					</div>
-					<div>
-						<p>매도 {data.currentMonth.total.sell.count}건</p>
-						<h1>{data.currentMonth.total.sell.price.toLocaleString()}원</h1>
-					</div>
-				</div>
+			<div className="px-2">
+				{/* 월 총계 */}
+				<div>
+					<p className="font-medium text-lg pb-1">
+						{data.currentMonth.month.slice(5)}월 실현수익
+					</p>
+					<div className="flex items-end gap-2 pb-4">
+						<h1 className="text-3xl font-semibold">
+							<b className="font-semibold">
+								{data.currentMonth.total.sum >= 0 && '+'}
+							</b>
+							{data.currentMonth.total.sum.toLocaleString()}원
+						</h1>
 
-				{/* 상세내역 */}
-				{/* 이번달 */}
-				<MonthSection data={data.currentMonth} />
-				{/* 지난달(전체) */}
-				{data.previousMonths?.map((monthData, i) => (
-					<MonthSection key={i} data={monthData} />
-				))}
-				{/* 더보기 */}
-				{showLoadMore && (
-					<div className="flex justify-center gap-1">
-						<p>이전 거래내역 더보기 </p>
-						<Image
-							src="/arrow-down.svg"
-							alt="더보기"
-							width={17}
-							height={17}
-							onClick={() => {
-								loadMore();
-							}}
-						/>
+						<div className="text-sm font-semibold">
+							{data.currentMonth.total.diff >= 0 ? (
+								<p className=" bg-[#FCF4F4] text-[#FA2D42] rounded-sm px-1.5">
+									+{data.currentMonth.total.diff}%
+								</p>
+							) : (
+								<p className=" bg-[#F4F9FF] text-[#2E77FA] rounded-sm px-1.5">
+									{data.currentMonth.total.diff}%
+								</p>
+							)}
+						</div>
 					</div>
-				)}
+					{/* 매수&매도 */}
+					<div className="bg-[#F7F7F7] h-[104px] grid grid-cols-2 -mx-8">
+						<div className="flex flex-col justify-center p-7">
+							<p className="text-sm font-medium">
+								매수
+								<b className="pl-2 font-medium text-[#FB2D42]">
+									{data.currentMonth.total.buy.count}건
+								</b>
+							</p>
+							<h1 className="text-2xl font-semibold text-[#FB2D42]">
+								{data.currentMonth.total.buy.price.toLocaleString()}원
+							</h1>
+						</div>
+						<div className="flex flex-col justify-center p-7">
+							<p className="text-sm font-medium">
+								매도
+								<b className="pl-2 font-medium text-[#2D77FA]">
+									{data.currentMonth.total.sell.count}건
+								</b>
+							</p>
+							<h1 className="text-2xl font-semibold text-[#2D77FA]">
+								{data.currentMonth.total.sell.price.toLocaleString()}원
+							</h1>
+						</div>
+					</div>
+
+					{/* 상세내역 */}
+					{/* 이번달 */}
+					<MonthSection data={data.currentMonth} />
+					{/* 지난달(전체) */}
+					{data.previousMonths?.map((monthData, i) => (
+						<MonthSection key={i} data={monthData} />
+					))}
+					{/* 더보기 */}
+					{showLoadMore && (
+						<div className="flex justify-center gap-1">
+							<p>이전 거래내역 더보기 </p>
+							<Image
+								src="/arrow-down.svg"
+								alt="더보기"
+								width={17}
+								height={17}
+								onClick={() => {
+									loadMore();
+								}}
+							/>
+						</div>
+					)}
+				</div>
 			</div>
 		</div>
 	);
@@ -209,13 +232,18 @@ export default function ProfitHistory() {
 // 월별내역 렌더링함수
 function MonthSection({ data }: { data: MonthlyHistory }) {
 	return (
-		<div>
-			<p>{data.month}</p>
+		<div className="pt-4">
+			<p className="font-[DunbarLow] font-light text-sm text-[#333951]">
+				{data.month}
+			</p>
 			{data.breakdown.map((daily: DailyTrading, idx: number) => (
 				<div key={idx}>
-					<p className="font-medium mt-2">{daily.date}</p>
+					<p className="font-medium mt-2">{daily.date.slice(5)}</p>
 					{daily.tradings.map((trading: Trading, idx: number) => (
-						<div key={idx} className="grid grid-cols-[1fr_10fr] items-center">
+						<div
+							key={idx}
+							className="grid grid-cols-[1fr_10fr] items-center pb-3"
+						>
 							<Image
 								src={trading.imgUrl}
 								alt={trading.stock}
@@ -232,7 +260,17 @@ function MonthSection({ data }: { data: MonthlyHistory }) {
 								</div>
 								<div className="flex justify-between text-sm text-gray-500">
 									<div>
-										{trading.type} {trading.amount}주
+										<b
+											className={`font-semibold ${
+												trading.type == '매도'
+													? 'text-[#2D77FA]'
+													: 'text-[#FB2D42]'
+											}
+											`}
+										>
+											{trading.type}
+										</b>{' '}
+										{trading.amount}주
 									</div>
 									<p>{trading.price.toLocaleString()}원</p>
 								</div>
