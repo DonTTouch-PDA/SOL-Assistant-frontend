@@ -126,18 +126,19 @@ export default function ProfitHistory() {
 
 	const loadMore = async () => {
 		setIsLoading(true);
-		setShowLoadMore(false);
+		await UseSleep(1000);
 		const prevData = dummyRes;
 		setData((prev) => ({
 			...prev,
 			previousMonths: [...prev.previousMonths, prevData],
 		}));
+		setShowLoadMore(false);
 	};
 
 	return (
 		<div>
 			{/*상단바*/}
-			<div className="flex items-center pb-3">
+			<div className="flex items-center pb-3 pt-2">
 				<Image
 					src="/arrow-left.svg"
 					alt="back"
@@ -151,7 +152,7 @@ export default function ProfitHistory() {
 			</div>
 			<div className="px-2">
 				{/* 월 총계 */}
-				<div>
+				<div className="py-2">
 					<p className="font-medium text-lg pb-1">
 						{data.currentMonth.month.slice(5)}월 실현수익
 					</p>
@@ -175,55 +176,55 @@ export default function ProfitHistory() {
 							)}
 						</div>
 					</div>
-					{/* 매수&매도 */}
-					<div className="bg-[#F7F7F7] h-[104px] grid grid-cols-2 -mx-8">
-						<div className="flex flex-col justify-center p-7">
-							<p className="text-sm font-medium">
-								매수
-								<b className="pl-2 font-medium text-[#FB2D42]">
-									{data.currentMonth.total.buy.count}건
-								</b>
-							</p>
-							<h1 className="text-2xl font-semibold text-[#FB2D42]">
-								{data.currentMonth.total.buy.price.toLocaleString()}원
-							</h1>
-						</div>
-						<div className="flex flex-col justify-center p-7">
-							<p className="text-sm font-medium">
-								매도
-								<b className="pl-2 font-medium text-[#2D77FA]">
-									{data.currentMonth.total.sell.count}건
-								</b>
-							</p>
-							<h1 className="text-2xl font-semibold text-[#2D77FA]">
-								{data.currentMonth.total.sell.price.toLocaleString()}원
-							</h1>
-						</div>
-					</div>
-
-					{/* 상세내역 */}
-					{/* 이번달 */}
-					<MonthSection data={data.currentMonth} />
-					{/* 지난달(전체) */}
-					{data.previousMonths?.map((monthData, i) => (
-						<MonthSection key={i} data={monthData} />
-					))}
-					{/* 더보기 */}
-					{showLoadMore && (
-						<div className="flex justify-center gap-1">
-							<p>이전 거래내역 더보기 </p>
-							<Image
-								src="/arrow-down.svg"
-								alt="더보기"
-								width={17}
-								height={17}
-								onClick={() => {
-									loadMore();
-								}}
-							/>
-						</div>
-					)}
 				</div>
+				{/* 매수&매도 */}
+				<div className="bg-[#F7F7F7] h-[104px] grid grid-cols-2 -mx-8">
+					<div className="flex flex-col justify-center p-7">
+						<p className="text-sm font-medium">
+							매수
+							<b className="pl-2 font-medium text-[#FB2D42]">
+								{data.currentMonth.total.buy.count}건
+							</b>
+						</p>
+						<h1 className="text-2xl font-semibold text-[#FB2D42]">
+							{data.currentMonth.total.buy.price.toLocaleString()}원
+						</h1>
+					</div>
+					<div className="flex flex-col justify-center p-7">
+						<p className="text-sm font-medium">
+							매도
+							<b className="pl-2 font-medium text-[#2D77FA]">
+								{data.currentMonth.total.sell.count}건
+							</b>
+						</p>
+						<h1 className="text-2xl font-semibold text-[#2D77FA]">
+							{data.currentMonth.total.sell.price.toLocaleString()}원
+						</h1>
+					</div>
+				</div>
+
+				{/* 상세내역 */}
+				{/* 이번달 */}
+				<MonthSection data={data.currentMonth} />
+				{/* 지난달(전체) */}
+				{data.previousMonths?.map((monthData, i) => (
+					<MonthSection key={i} data={monthData} />
+				))}
+				{/* 더보기 */}
+				{showLoadMore && (
+					<div className="flex justify-center gap-1 pt-2">
+						<p>{isLoading ? '불러오는 중...' : '이전 거래내역 더보기'}</p>
+						<Image
+							src="/arrow-down.svg"
+							alt="더보기"
+							width={17}
+							height={17}
+							onClick={() => {
+								loadMore();
+							}}
+						/>
+					</div>
+				)}
 			</div>
 		</div>
 	);
@@ -233,16 +234,18 @@ export default function ProfitHistory() {
 function MonthSection({ data }: { data: MonthlyHistory }) {
 	return (
 		<div className="pt-4">
-			<p className="font-[DunbarLow] font-light text-sm text-[#333951]">
+			<p className="font-[DunbarLow] font-semibold text-sm text-[#333951]">
 				{data.month}
 			</p>
 			{data.breakdown.map((daily: DailyTrading, idx: number) => (
 				<div key={idx}>
-					<p className="font-medium mt-2">{daily.date.slice(5)}</p>
+					<p className="text-sm mt-2 font-semibold font-[DunbarLow] text-[#999EA3] pb-2 tracking-wide">
+						{daily.date.slice(5)}
+					</p>
 					{daily.tradings.map((trading: Trading, idx: number) => (
 						<div
 							key={idx}
-							className="grid grid-cols-[1fr_10fr] items-center pb-3"
+							className="grid grid-cols-[1fr_10fr] items-center pb-4"
 						>
 							<Image
 								src={trading.imgUrl}
@@ -254,14 +257,14 @@ function MonthSection({ data }: { data: MonthlyHistory }) {
 							<div>
 								<div className="flex justify-between">
 									<div>{trading.stock}</div>
-									<div>
+									<div className="text-[#333952] font-semibold">
 										{(trading.amount * trading.price).toLocaleString()}원
 									</div>
 								</div>
-								<div className="flex justify-between text-sm text-gray-500">
+								<div className="flex justify-between text-sm text-[#777F8C]">
 									<div>
 										<b
-											className={`font-semibold ${
+											className={`font-medium ${
 												trading.type == '매도'
 													? 'text-[#2D77FA]'
 													: 'text-[#FB2D42]'
@@ -282,3 +285,6 @@ function MonthSection({ data }: { data: MonthlyHistory }) {
 		</div>
 	);
 }
+
+const UseSleep = (delay: number) =>
+	new Promise((resolve) => setTimeout(resolve, delay));
