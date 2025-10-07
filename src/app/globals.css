@@ -62,6 +62,12 @@ body {
 
 @font-face {
 	font-family: 'DunbarLow';
-	font-weight: normal;
-	src: '/fonts/DunbarLow-Light.woff2' format('woff2');
+	font-weight: 600;
+	src: url('/fonts/DunbarLow_Book.otf') format('opentype');
+}
+
+@font-face {
+	font-family: 'DunbarLow';
+	font-weight: 800;
+	src: url('/fonts/DunbarLow_Medium.otf') format('opentype');
 }
