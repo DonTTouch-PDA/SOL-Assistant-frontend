@@ -1,11 +1,12 @@
 export const fetchGetStocksSortedBy = async (sortedBy: string) => {
-	console.log(sortedBy);
+	console.log('내 종목 정렬 조회 :', sortedBy);
 	return new Promise((resolve) => {
 		setTimeout(() => {
 			resolve([
 				{
 					id: 1,
 					name: 'NAVER',
+					img: 'https://static.toss.im/png-icons/securities/icn-sec-fill-035420.png',
 					code: '035420',
 					currentPrice: 252500,
 					changeRate: -0.59,
@@ -18,6 +19,7 @@ export const fetchGetStocksSortedBy = async (sortedBy: string) => {
 				{
 					id: 2,
 					name: '카카오',
+					img: 'https://static.toss.im/png-icons/securities/icn-sec-fill-035720.png',
 					code: '035720',
 					currentPrice: 45000,
 					changeRate: 1.2,
@@ -28,6 +30,6 @@ export const fetchGetStocksSortedBy = async (sortedBy: string) => {
 					profit: 80.0,
 				},
 			]);
-		}, 1000); // 1초 지연으로 로딩 상태 테스트
+		}, 1000);
 	});
 };
