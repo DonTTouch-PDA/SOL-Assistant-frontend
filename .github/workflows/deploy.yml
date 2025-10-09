@@ -1,46 +1,35 @@
-name: Deploy Docker Client
+name: Build and Upload Docker Image
 
 on:
   push:
     branches: [main]
 
+env:
+  S3_BUCKET_NAME: my-docker-bucket
+  PROJECT_NAME: sol-assistant
+
 jobs:
-  deploy-client:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: SSH and deploy client with Docker
-        uses: appleboy/ssh-action@v1.0.3
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: docker build -t sol-assistant .
+
+      - name: Save Docker image to tar
+        run: docker save sol-assistant > sol-assistant.tar
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          key: ${{ secrets.MYPEMKEY }}
-          port: 22
-          debug: true
-          timeout: 15m
-          use_insecure_cipher: true
-          script: |
-            set -e
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
-            # 프로젝트 디렉토리 이동
-            cd ~/SOL-Assistant-frontend
-
-            # 최신 코드 가져오기
-            git pull origin main
-
-            # Docker 이미지 빌드 (ARM64 플랫폼 지정)
-            docker build -t sol-assistant .
-
-            # 기존 컨테이너 정리
-            docker stop sol-assistant || true
-            docker rm sol-assistant || true
-
-            # 새 컨테이너 실행
-            docker run -d -p 3000:3000 --name sol-assistant sol-assistant
-
-            # 컨테이너 상태 확인
-            echo "Container status:"
-            docker ps | grep sol-assistant
-
-            # 컨테이너 로그 확인 (최근 20줄)
-            echo "Container logs:"
-            docker logs sol-assistant --tail 20
+      - name: Upload Docker image tar to S3
+        run: aws s3 cp sol-assistant.tar s3://$S3_BUCKET_NAME/$PROJECT_NAME/sol-assistant-${{ github.sha }}.tar
