@@ -32,4 +32,4 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Upload Docker image tar to S3
-        run: aws s3 cp sol-assistant.tar s3://$S3_BUCKET_NAME/$PROJECT_NAME/sol-assistant-${{ github.sha }}.tar
+        run: aws s3 cp sol-assistant.tar s3://sol-assistant-s3/sol-assistant-frontend/sol-assistant-${{ github.sha }}.tar
