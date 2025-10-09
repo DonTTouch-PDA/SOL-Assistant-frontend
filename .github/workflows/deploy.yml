@@ -33,3 +33,6 @@ jobs:
 
       - name: Upload Docker image tar to S3
         run: aws s3 cp sol-assistant.tar s3://sol-assistant-s3/sol-assistant-frontend/sol-assistant-${{ github.sha }}.tar
+
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name sol-assistant-deploy --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name frontend-zerotime-deploy --s3-location bucket=sol-assistant-s3,bundleType=zip,key=sol-assistant/$GITHUB_SHA.zip
