@@ -35,7 +35,7 @@ jobs:
       # 6. appspec.yml, deploy.sh, tar 파일을 zip으로 묶기
       - name: Create deployment zip
         run: |
-          zip -r sol-assistant-${{ github.sha }}.zip appspec.yml deploy/deploy.sh sol-assistant.tar
+          zip -r sol-assistant-${{ github.sha }}.zip appspec.yml deploy/*.sh sol-assistant.tar
 
       # 7. S3에 업로드
       - name: Upload zip to S3
