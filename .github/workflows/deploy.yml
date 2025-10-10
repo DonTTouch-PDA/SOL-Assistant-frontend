@@ -12,13 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2. Docker 설정
-      - name: Set up Docker
+      # 2. Docker Buildx 설정 (멀티 아키텍처 가능)
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # 3. Docker 이미지 빌드
-      - name: Build Docker image
-        run: docker build -t sol-assistant .
+      # 3. ARM용 Docker 이미지 빌드
+      - name: Build Docker image for ARM
+        run: |
+          docker build --platform linux/arm64 -t sol-assistant .
 
       # 4. Docker 이미지 tar로 저장
       - name: Save Docker image to tar

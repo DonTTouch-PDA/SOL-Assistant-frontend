@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-TARGET_PORT=$(cat /home/ec2-user/target_port.inc)
+TARGET_PORT=$(cat /home/ec2-user/includes/target_port.inc)
 
 echo "> Starting health check for port ${TARGET_PORT}..."
 
