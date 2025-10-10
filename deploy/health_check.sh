@@ -1,20 +1,18 @@
 #!/bin/bash
 set -e
 
-TARGET_PORT=$(cat /home/ec2-user/includes/target_port.inc)
+TARGET_DIR="/home/ec2-user/includes"
+TARGET_PORT=$(cat $TARGET_DIR/target_port.inc)
 
-echo "> Starting health check for port ${TARGET_PORT}..."
-
-for RETRY in {1..10}
-do
-  RESPONSE=$(curl -s http://localhost:${TARGET_PORT}/health || true)
+for i in {1..10}; do
+  RESPONSE=$(curl -s http://127.0.0.1:${TARGET_PORT}/health || true)
   if [ "$RESPONSE" = "ok" ]; then
-    echo "> Health check success!"
+    echo "> Health check passed!"
     exit 0
   fi
-  echo "> Health check failed. Retry ${RETRY}/10 ..."
+  echo "> Health check failed. Retry $i/10 ..."
   sleep 5
 done
 
-echo "> Health check failed after 10 attempts."
+echo "> Health check failed"
 exit 1
