@@ -30,10 +30,10 @@ fi
 echo "> Current WAS port: ${CURRENT_PORT}"
 echo "> Target WAS port: ${TARGET_PORT}"
 
-# 기존 컨테이너 정리
-EXISTING_CONTAINER=$(docker ps --filter "publish=${TARGET_PORT}" --format "{{.ID}}")
+# 기존 컨테이너 정리 (이름 기준)
+EXISTING_CONTAINER=$(docker ps -a --filter "name=${APP_NAME}-${TARGET_PORT}" --format "{{.ID}}")
 if [ -n "${EXISTING_CONTAINER}" ]; then
-  echo "> Stopping container on port ${TARGET_PORT}"
+  echo "> Stopping existing container ${APP_NAME}-${TARGET_PORT}"
   docker stop ${EXISTING_CONTAINER} || true
   docker rm ${EXISTING_CONTAINER} || true
 fi
@@ -52,3 +52,8 @@ docker run -d \
 # 타겟 포트 기록
 echo "${TARGET_PORT}" > /home/ec2-user/target_port.inc
 echo "> New container started on ${TARGET_PORT}"
+
+# nginx에 service_url 업데이트
+echo "set \$service_url http://127.0.0.1:${TARGET_PORT};" | sudo tee /home/ec2-user/service_url.inc
+sudo nginx -s reload
+echo "> Nginx reloaded and traffic switched to ${TARGET_PORT}"
