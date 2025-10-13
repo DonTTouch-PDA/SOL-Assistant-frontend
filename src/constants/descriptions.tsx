@@ -29,3 +29,10 @@ export const SIMILAR_DETAIL_BOLLINGER_BANDS = (
 		매수를 고려해 볼 수 있습니다. 
 	</>
 );
+
+export const AINEWS = (
+	<>
+		• 보유주식 상위 3개 섹터 관련 뉴스의 ai 요약입니다. <br />• 단순 참고
+		자료이며, 이 자료를 활용한 투자의 책임은 투자자 본인에게 귀속됩니다.
+	</>
+);
