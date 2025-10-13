@@ -25,7 +25,13 @@ export default function StockItem({ stock }: StockItemProps) {
 			<div className="flex items-center justify-between mb-2">
 				<div className="flex items-center gap-3">
 					<div>
-						<img src={stock.img} alt={stock.name} width={24} height={24} />
+						<img
+							src={stock.img}
+							alt={stock.name}
+							width={24}
+							height={24}
+							className="rounded-full"
+						/>
 					</div>
 
 					{/* 종목 정보 */}
