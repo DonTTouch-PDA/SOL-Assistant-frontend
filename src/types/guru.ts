@@ -25,6 +25,6 @@ export interface GuruViewData {
 	totalCount: number;
 }
 
-export type FilterType = 'most_bought' | 'most_sold';
-export type GuruType = 'short_term' | 'mid_term' | 'long_term';
-export type UserFilterType = 'guru' | 'me';
+export type FilterType = '많이 산' | '많이 판';
+export type GuruType = '단기' | '중기' | '장기';
+export type UserFilterType = '고수' | '나';

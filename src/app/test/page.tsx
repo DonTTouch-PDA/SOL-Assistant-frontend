@@ -1,6 +1,6 @@
 'use client';
-import BottomSheet from '@/components/common/bottomSheet';
-import CustomButton from '@/components/common/custombutton';
+import BottomSheet from '@/components/common/BottomSheet';
+import CustomButton from '@/components/common/Custombutton';
 import React, { useState } from 'react';
 
 export default function TestPage() {

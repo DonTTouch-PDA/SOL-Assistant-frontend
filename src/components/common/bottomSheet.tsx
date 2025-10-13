@@ -4,7 +4,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import CustomButton from './custombutton';
+import CustomButton from './Custombutton';
 
 interface BottomSheetProps {
 	title: string;

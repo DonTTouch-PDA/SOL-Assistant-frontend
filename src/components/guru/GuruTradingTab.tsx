@@ -1,8 +1,8 @@
 import React from 'react';
-import CustomDropdown from '@/components/common/customDropdown';
+import CustomDropdown from '@/components/common/CustomDropdown';
 import FilterButtons from '@/components/guru/FilterButtons';
 import { FilterType, GuruTrade } from '@/types/guru';
-import StockListItemCard from '@/components/common/stockListItemCard';
+import StockListItemCard from '@/components/common/StockListItemCard';
 
 interface GuruTradingTabProps {
 	guruType: string;
@@ -49,6 +49,7 @@ export default function GuruTradingTab({
 					changeRate={stock.changeRate}
 					volumeRate={stock.buyRate}
 					detail="buy"
+					onClick={() => {}}
 				/>
 			))}
 		</div>

@@ -6,7 +6,7 @@ export default function DashboardLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className="pt-[50px]">
+		<div className="relative h-full pt-[50px]">
 			<DashboardTab />
 			{children}
 		</div>
