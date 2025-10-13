@@ -29,7 +29,7 @@ export default function BottomSheet({
 				<>
 					{/* 오버레이 */}
 					<motion.div
-						className="absolute inset-0 bg-black/40 z-40"
+						className="fixed inset-0 bg-black/40 z-40"
 						initial={{ opacity: 0 }}
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
