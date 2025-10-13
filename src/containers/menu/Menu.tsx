@@ -44,6 +44,17 @@ export default function Menu() {
 	const [showPopover, setShowPopover] = useState(false);
 
 	useEffect(() => {
+		const savedMode = localStorage.getItem('assistMode');
+		if (savedMode !== null) {
+			setAssistMode(savedMode === 'true');
+		}
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem('assistMode', assistMode.toString());
+	}, [assistMode]);
+
+	useEffect(() => {
 		const handleClick = (e: MouseEvent) => {
 			const target = e.target as Node;
 			if (
@@ -58,7 +69,7 @@ export default function Menu() {
 
 		document.addEventListener('click', handleClick);
 		return () => document.removeEventListener('click', handleClick);
-	}, []);
+	}, [assistMode]);
 
 	return (
 		<div>

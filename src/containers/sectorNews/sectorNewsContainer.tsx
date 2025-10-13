@@ -8,9 +8,9 @@ import {
 	CarouselPrevious,
 	type CarouselApi,
 } from '@/components/ui/carousel';
-import CustomCard from '@/components/common/customCard';
+import CustomCard from '@/components/common/CustomCard';
 import { useState, useEffect } from 'react';
-import BottomSheet from '@/components/common/bottomSheet';
+import BottomSheet from '@/components/common/BottomSheet';
 import { AINEWS } from '@/constants/descriptions';
 
 const dummyUser = {

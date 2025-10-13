@@ -1,4 +1,4 @@
-import CustomButton from '@/components/common/Custombutton';
+import CustomButton from '@/components/common/CustomButton';
 import InputBox from '@/components/auth/InputBox';
 
 interface LoginFormComponentProps {
