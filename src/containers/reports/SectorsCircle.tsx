@@ -1,5 +1,5 @@
 'use client';
-import CustomCard from '@/components/common/customCard';
+import CustomCard from '@/components/common/CustomCard';
 import { Chart, DoughnutController, ArcElement, Legend } from 'chart.js';
 import { useEffect, useRef } from 'react';
 const data = {

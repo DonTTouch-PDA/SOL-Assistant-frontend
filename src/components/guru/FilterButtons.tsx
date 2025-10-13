@@ -1,37 +1,26 @@
 import React from 'react';
+import FilterButtons, { FilterOption } from '@/components/common/FilterButtons';
 import { FilterType } from '@/types/guru';
 
-interface FilterButtonsProps {
+interface GuruFilterButtonsProps {
 	activeFilter: FilterType;
 	onFilterChange: (filter: FilterType) => void;
 }
 
-export default function FilterButtons({
+const filterOptions: FilterOption<FilterType>[] = [
+	{ value: '많이 산', label: '많이 산' },
+	{ value: '많이 판', label: '많이 판' },
+];
+
+export default function GuruFilterButtons({
 	activeFilter,
 	onFilterChange,
-}: FilterButtonsProps) {
+}: GuruFilterButtonsProps) {
 	return (
-		<div className="flex gap-2">
-			<button
-				onClick={() => onFilterChange('most_bought')}
-				className={`rounded-[10px] px-4 py-[3px] ${
-					activeFilter === 'most_bought'
-						? 'bg-blue-700 text-white'
-						: 'bg-transparent text-gray-500'
-				}`}
-			>
-				많이 산
-			</button>
-			<button
-				onClick={() => onFilterChange('most_sold')}
-				className={`rounded-[10px] px-4 py-[3px] ${
-					activeFilter === 'most_sold'
-						? 'bg-blue-700 text-white'
-						: 'bg-transparent text-gray-500'
-				}`}
-			>
-				많이 판
-			</button>
-		</div>
+		<FilterButtons<FilterType>
+			activeFilter={activeFilter}
+			onFilterChange={onFilterChange}
+			options={filterOptions}
+		/>
 	);
 }

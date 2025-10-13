@@ -15,6 +15,21 @@ export const INVESTMENT_TYPES_ADD = (
 	</>
 );
 
+export const GURU_MORE_INFO_DESCRIPTION = (
+	<>
+		고수가 주목하는 종목 중 <br />
+		내가 주의깊게 보지 않은 종목이에요.
+	</>
+);
+
+export const SIMILAR_DETAIL_BOLLINGER_BANDS = (
+	<>
+		주가가 볼린저밴드 하단선을 터치하거나 밴드 하한선을 돌파한 후 다시 밴드
+		안으로 진입할 때이며, 이때 거래량 증가가 동반된다면 신뢰성을 높여 부분
+		매수를 고려해 볼 수 있습니다. 
+	</>
+);
+
 export const AINEWS = (
 	<>
 		• 보유주식 상위 3개 섹터 관련 뉴스의 ai 요약입니다. <br />• 단순 참고

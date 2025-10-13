@@ -1,5 +1,5 @@
 import React from 'react';
-import ProfitRate from './profitRate';
+import ProfitRate from './ProfitRate';
 
 interface StockListItemCardProps {
 	name: string;
@@ -11,6 +11,7 @@ interface StockListItemCardProps {
 	volume?: number;
 	rank?: number;
 	detail?: string;
+	onClick: () => void;
 }
 
 export default function StockListItemCard({
@@ -23,15 +24,16 @@ export default function StockListItemCard({
 	volume,
 	rank,
 	detail,
+	onClick,
 }: StockListItemCardProps) {
 	const formatPrice = (price: number) => {
 		return price.toLocaleString();
 	};
 
 	const formatVolume = (volume: number) => {
-		if (volume > 1000000000) {
+		if (volume >= 1000000000) {
 			return `${(volume / 1000000000).toFixed(2)}억`;
-		} else if (volume > 1000000) {
+		} else if (volume >= 1000000) {
 			return `${(volume / 1000000).toFixed(2)}만`;
 		} else {
 			return volume.toLocaleString();
@@ -39,7 +41,7 @@ export default function StockListItemCard({
 	};
 
 	return (
-		<div className="bg-white  pt-[12px] border-gray-100">
+		<div className="bg-white  pt-[12px] border-gray-100" onClick={onClick}>
 			<div className="flex items-center justify-between mb-2">
 				<div className="flex items-center gap-3">
 					{rank !== undefined && (

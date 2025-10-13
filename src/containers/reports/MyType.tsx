@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import BottomSheet from '@/components/common/bottomSheet';
+import BottomSheet from '@/components/common/BottomSheet';
 import {
 	INVESTMENT_TYPES,
 	INVESTMENT_TYPES_ADD,

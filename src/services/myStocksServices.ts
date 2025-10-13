@@ -30,6 +30,6 @@ export const fetchGetStocksSortedBy = async (sortedBy: string) => {
 					profit: 80.0,
 				},
 			]);
-		}, 1000);
+		}, 100);
 	});
 };

@@ -1,5 +1,6 @@
-import Header from '@/components/layout/header';
-import Footer from '@/components/layout/footer';
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+import ProtectedRoute from '@/containers/auth/ProtectedRoute';
 
 export default function MainLayout({
 	children,
@@ -7,10 +8,12 @@ export default function MainLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<div className="h-full w-full bg-white mb-[58px]">
-			<Header />
-			<main>{children}</main>
-			<Footer />
-		</div>
+		<ProtectedRoute>
+			<div className="h-full w-full bg-white mb-[58px]">
+				<Header />
+				<main>{children}</main>
+				<Footer />
+			</div>
+		</ProtectedRoute>
 	);
 }
