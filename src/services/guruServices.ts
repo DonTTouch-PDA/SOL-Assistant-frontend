@@ -7,8 +7,8 @@ import {
 } from '@/types/guru';
 
 export const fetchGetGuruByTrading = async (
-	filterType: FilterType = 'most_bought',
-	guruType: GuruType = 'short_term'
+	filterType: FilterType = '많이 산',
+	guruType: GuruType = '단기'
 ): Promise<GuruTradeData> => {
 	console.log('고수의 픽 거래종목 조회 :', { filterType, guruType });
 
@@ -55,13 +55,13 @@ export const fetchGetGuruByTrading = async (
 				],
 				totalCount: 4,
 			});
-		}, 1000);
+		}, 100);
 	});
 };
 
 export const fetchGetGuruByViewing = async (
-	userFilter: UserFilterType = 'guru',
-	guruType: GuruType = 'short_term'
+	userFilter: UserFilterType = '고수',
+	guruType: GuruType = '단기'
 ): Promise<GuruViewData> => {
 	console.log('고수의 픽 조회종목 조회 :', { userFilter, guruType });
 
@@ -104,6 +104,6 @@ export const fetchGetGuruByViewing = async (
 				],
 				totalCount: 4,
 			});
-		}, 1000);
+		}, 100);
 	});
 };

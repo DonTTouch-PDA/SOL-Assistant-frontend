@@ -6,7 +6,7 @@ const tabs = [
 	{ id: '', label: '내 종목' },
 	{ id: 'guru', label: '고수의 Pick' },
 	{ id: 'sector-news', label: '섹터 뉴스' },
-	{ id: 'chart-analysis', label: '차트 분석' },
+	{ id: 'similar-chart', label: '유사 차트' },
 	{ id: 'reports', label: '리포트' },
 ];
 

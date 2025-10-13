@@ -1,6 +1,6 @@
 import React from 'react';
 import { MyStock } from '@/types/myStock';
-import ProfitRate from '../common/profitRate';
+import ProfitRate from '../common/ProfitRate';
 
 interface StockItemProps {
 	stock: MyStock;
@@ -64,7 +64,7 @@ export default function StockItem({ stock }: StockItemProps) {
 			</div>
 
 			{/* 내 보유 정보 */}
-			<div className="flex justify-between items-center bg-gray-200">
+			<div className="flex justify-between items-center -mx-[22px] px-[22px] bg-gray-100 py-[4px]">
 				<div className="text-sm text-gray-700">
 					{stock.holding}주 {formatPrice(stock.buyAverage)}
 				</div>

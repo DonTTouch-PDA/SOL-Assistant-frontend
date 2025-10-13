@@ -1,5 +1,5 @@
 'use client';
-import CustomCard from '@/components/common/customCard';
+import CustomCard from '@/components/common/CustomCard';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 

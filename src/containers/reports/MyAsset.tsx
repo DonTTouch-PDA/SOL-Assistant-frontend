@@ -1,4 +1,4 @@
-import CustomCard from '@/components/common/customCard';
+import CustomCard from '@/components/common/CustomCard';
 const data = { asset: 1234320, diff: -123500 };
 
 export default function MyAsset() {

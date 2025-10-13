@@ -8,9 +8,9 @@ import {
 	CarouselPrevious,
 	type CarouselApi,
 } from '@/components/ui/carousel';
-import CustomCard from '@/components/common/customCard';
+import CustomCard from '@/components/common/CustomCard';
 import { useState, useEffect } from 'react';
-import BottomSheet from '@/components/common/bottomSheet';
+import BottomSheet from '@/components/common/BottomSheet';
 import { AINEWS } from '@/constants/descriptions';
 
 const dummyUser = {
@@ -22,7 +22,7 @@ const dummyNews = [
 		sector: '헬스케어',
 		opinion: '긍정',
 		summary:
-			'규제 리스크와 지정학 불확실성 압박 속에서도 일부 구조조정 움직임과 백신·의료기기 기술 수요 기대가 맞물림',
+			'규제 리스크와 지정학 불확실성 압박 속에서도 일부 구조조정 움직임과 백신/의료기기 기술 수요 기대가 맞물림',
 		newsList: [
 			{
 				date: '2025.10.10',
@@ -180,7 +180,7 @@ export default function SectorNewsContainer() {
 									<p className="text-[#999EA4] text-sm">
 										{news.date} {news.journal}
 									</p>
-									<a href={news.url} className="text-[#333951]">
+									<a href={news.url} className="text-[#333951] font-medium">
 										{news.title}
 									</a>
 								</div>

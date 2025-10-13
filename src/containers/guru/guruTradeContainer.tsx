@@ -1,12 +1,12 @@
 'use client';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { FilterType, GuruTrade, GuruType } from '@/types/guru';
 import GuruTradingTab from '@/components/guru/GuruTradingTab';
 import { fetchGetGuruByTrading } from '@/services/guruServices';
 
 export default function GuruTradeContainer() {
 	const [isOpenTrading, setIsOpenTrading] = useState(false);
-	const [activeFilter, setActiveFilter] = useState<FilterType>('most_bought');
+	const [activeFilter, setActiveFilter] = useState<FilterType>('많이 산');
 	const [stocks, setStocks] = useState<GuruTrade[]>([]);
 	const [guruType, setGuruType] = useState('단기 고수');
 
