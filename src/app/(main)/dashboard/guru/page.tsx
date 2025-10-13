@@ -1,1 +1,1 @@
-export { default } from '@/containers/guru/guruContainer';
+export { default } from '@/containers/guru/GuruContainer';

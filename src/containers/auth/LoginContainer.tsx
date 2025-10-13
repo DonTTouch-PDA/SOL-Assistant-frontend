@@ -4,9 +4,14 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { X } from 'lucide-react';
 import LoginFormComponent from '@/components/auth/LoginFormComponent';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function LoginContainer() {
 	const router = useRouter();
+	const { login } = useAuth();
+	const [isLoading, setIsLoading] = useState(false);
+	const [error, setError] = useState('');
+
 	const [formData, setFormData] = useState({
 		username: '',
 		password: '',
@@ -19,18 +24,32 @@ export default function LoginContainer() {
 			...prev,
 			[name]: type === 'checkbox' ? checked : value,
 		}));
+		setError(''); // 에러 메시지 초기화
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		if (!formData.username || !formData.password) {
+			setError('ID와 비밀번호를 입력해주세요.');
 			return;
 		}
 
-		// 로그인 로직 (임시로 성공으로 처리)
-		console.log('로그인 시도:', formData);
+		setIsLoading(true);
+		setError('');
 
-		// 로그인 성공 시 대시보드 페이지로 이동
-		router.push('/dashboard');
+		try {
+			const success = await login(formData.username, formData.password);
+
+			if (success) {
+				// 로그인 성공 시 대시보드 페이지로 이동
+				router.push('/dashboard');
+			} else {
+				setError('ID 또는 비밀번호가 올바르지 않습니다.');
+			}
+		} catch (error) {
+			setError('로그인 중 오류가 발생했습니다.');
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const isFormValid =
@@ -51,11 +70,18 @@ export default function LoginContainer() {
 					입력하세요
 				</h1>
 
+				{error && (
+					<div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+						<p className="text-red-600 text-sm">{error}</p>
+					</div>
+				)}
+
 				<LoginFormComponent
 					formData={formData}
 					onInputChange={handleInputChange}
 					onSubmit={handleSubmit}
 					isFormValid={isFormValid}
+					isLoading={isLoading}
 				/>
 			</div>
 		</div>

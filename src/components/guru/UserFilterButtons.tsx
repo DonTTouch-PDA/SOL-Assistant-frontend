@@ -1,4 +1,5 @@
 import React from 'react';
+import FilterButtons, { FilterOption } from '@/components/common/FilterButtons';
 import { UserFilterType } from '@/types/guru';
 
 interface UserFilterButtonsProps {
@@ -6,32 +7,20 @@ interface UserFilterButtonsProps {
 	onFilterChange: (filter: UserFilterType) => void;
 }
 
+const userFilterOptions: FilterOption<UserFilterType>[] = [
+	{ value: '고수', label: '고수' },
+	{ value: '나', label: '나' },
+];
+
 export default function UserFilterButtons({
 	activeFilter,
 	onFilterChange,
 }: UserFilterButtonsProps) {
 	return (
-		<div className="flex gap-2">
-			<button
-				onClick={() => onFilterChange('guru')}
-				className={`rounded-[10px] px-4 py-[6px] text-sm font-medium ${
-					activeFilter === 'guru'
-						? 'bg-blue-700 text-white'
-						: 'bg-transparent text-gray-500'
-				}`}
-			>
-				고수
-			</button>
-			<button
-				onClick={() => onFilterChange('me')}
-				className={`rounded-[10px] px-4 py-[6px] text-sm font-medium ${
-					activeFilter === 'me'
-						? 'bg-blue-700 text-white'
-						: 'bg-transparent text-gray-500'
-				}`}
-			>
-				나
-			</button>
-		</div>
+		<FilterButtons<UserFilterType>
+			activeFilter={activeFilter}
+			onFilterChange={onFilterChange}
+			options={userFilterOptions}
+		/>
 	);
 }
