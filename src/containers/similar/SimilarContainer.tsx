@@ -4,7 +4,7 @@ import { SignalType } from "@/types/similar";
 import FilterButtons from "@/components/common/FilterButtons";
 import { FilterOption } from "@/components/common/FilterButtons";
 import { SimilarChart } from "@/types/similar";
-import StockItem from "@/components/myStocks/StockItem";
+// import StockItem from "@/components/myStocks/StockItem";
 
 export default function SimilarChartContainer() {
   const [isUserHasStock, setIsUserHasStock] = useState(true);
@@ -46,9 +46,9 @@ export default function SimilarChartContainer() {
         onFilterChange={setSignalType}
         options={signalOptions}
       />
-      {stocks.map((stock) => (
-        <StockItem key={stock.code} />
-      ))}
+      {/*{stocks.map((stock) => (*/}
+      {/*  <StockItem key={stock.code} />*/}
+      {/*))}*/}
     </div>
   );
 }
