@@ -135,7 +135,7 @@ export default function Menu() {
 						{/* 어시스트모드 토글 */}
 
 						<div
-							className="fixed left-[calc((100%-430px)/2)] bottom-3 px-6"
+							className="fixed left-[calc((100%-430px)/2)] bottom-3 px-6 bg-[#F2F4F8] pt-2"
 							ref={buttonRef}
 						>
 							<div className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2">
