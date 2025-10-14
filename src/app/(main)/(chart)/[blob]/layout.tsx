@@ -1,7 +1,14 @@
+import StockInfoHeader from '@/containers/chart/StockInfoHeader';
+
 export default function ChartLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return <>{children}</>;
+	return (
+		<div className="relative h-full pt-[50px]">
+			<StockInfoHeader />
+			{children}
+		</div>
+	);
 }

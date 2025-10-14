@@ -47,6 +47,7 @@ export default function MyStocksContainer() {
 				onToggle={handleToggle}
 				fetchSortedBy={handleSortedBy}
 			/>
+			<div className="border-b border-gray-200 mt-[12px]"></div>
 			{isLoading ? (
 				<div>
 					{Array.from({ length: 3 }).map((_, index) => (
