@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
-import { getStockCodeFromLocalStorage } from '@/utils/storage';
+import { getStockCodeFromLocalStorage } from '@/utils/stockCodeStorage';
 
 export default function Header() {
 	const [isDashboard, setIsDashboard] = useState(true);
