@@ -2,16 +2,13 @@
 const RECENT_STOCK_KEY = 'recent_stock_code';
 
 export const getStockCodeFromLocalStorage = (): string | null => {
-	if (typeof window === 'undefined') return null;
 	return localStorage.getItem(RECENT_STOCK_KEY);
 };
 
 export const setStockCodeToLocalStorage = (stockCode: string): void => {
-	if (typeof window === 'undefined') return;
 	localStorage.setItem(RECENT_STOCK_KEY, stockCode);
 };
 
 export const clearStockCodeFromLocalStorage = (): void => {
-	if (typeof window === 'undefined') return;
 	localStorage.removeItem(RECENT_STOCK_KEY);
 };

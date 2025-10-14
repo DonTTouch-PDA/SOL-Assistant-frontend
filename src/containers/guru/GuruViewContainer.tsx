@@ -4,6 +4,7 @@ import GuruViewingTab from '@/components/guru/GuruViewingTab';
 import { fetchGetGuruByViewing } from '@/services/guruServices';
 import { GuruType, GuruView, UserFilterType } from '@/types/guru';
 
+//
 export default function GuruViewContainer() {
 	const [guruType, setGuruType] = useState('단기 고수');
 	const [isOpenViewing, setIsOpenViewing] = useState(false);

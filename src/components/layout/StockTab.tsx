@@ -1,16 +1,17 @@
 'use client';
 import { usePathname, useRouter } from 'next/navigation';
-import { StockCodeProps } from '@/containers/myStocks/ChartContainer';
 import { useState, useEffect, useRef } from 'react';
+import { getStockCodeFromLocalStorage } from '@/utils/stockCodeStorage';
+
 const tabMenus = [
 	{ id: '', label: '차트' },
 	{ id: 'orderbook', label: '호가' },
 	{ id: 'order', label: '주문' },
 	{ id: 'guru', label: '고수 거래량' },
 ];
-export default function StockTab({ stockCode }: StockCodeProps) {
+export default function StockTab() {
 	const router = useRouter();
-
+	const stockCode = getStockCodeFromLocalStorage();
 	const [currentTab, setCurrentTab] = useState('');
 	const pathname = usePathname();
 	useEffect(() => {

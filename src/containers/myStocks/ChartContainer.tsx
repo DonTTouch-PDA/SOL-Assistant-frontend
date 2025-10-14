@@ -1,18 +1,15 @@
 // src/containers/main/ChartContainer.tsx
 'use client';
 import { useEffect, useState } from 'react';
-import { setStockCodeToLocalStorage } from '@/utils/storage';
+import { setStockCodeToLocalStorage } from '@/utils/stockCodeStorage';
 import { fetchChartData } from '@/services/chartServices';
 import TradingViewChart from '@/components/chart/TradingViewChart';
 
-export interface StockCodeProps {
-	stockCode: string;
-}
-
-export default function ChartContainer({ stockCode }: StockCodeProps) {
+export default function ChartContainer({ stockCode }: { stockCode: string }) {
 	// 종목 코드를 로컬 스토리지에 저장
 	useEffect(() => {
 		setStockCodeToLocalStorage(stockCode);
+		console.log('stockCode', stockCode);
 	}, [stockCode]);
 
 	const [chartData, setChartData] = useState([]);

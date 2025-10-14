@@ -4,6 +4,7 @@ import { FilterType, GuruTrade, GuruType } from '@/types/guru';
 import GuruTradingTab from '@/components/guru/GuruTradingTab';
 import { fetchGetGuruByTrading } from '@/services/guruServices';
 
+//
 export default function GuruTradeContainer() {
 	const [isOpenTrading, setIsOpenTrading] = useState(false);
 	const [activeFilter, setActiveFilter] = useState<FilterType>('많이 산');
