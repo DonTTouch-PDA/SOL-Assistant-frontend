@@ -85,12 +85,17 @@ export default function Menu() {
 				<div className="flex gap-3">
 					<Search
 						onClick={() => {
-							console.log('search');
+							if (assistMode) {
+								router.push('/search');
+							}
 						}}
 					/>
+
 					<X
 						onClick={() => {
-							assistMode && router.back();
+							if (assistMode) {
+								router.back();
+							}
 						}}
 					/>
 				</div>
