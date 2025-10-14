@@ -3,9 +3,9 @@ import InputBox from '@/components/auth/InputBox';
 
 interface LoginFormComponentProps {
 	formData: {
-		username: string;
+		authId: string;
 		password: string;
-		rememberMe: boolean;
+		rememberId: boolean;
 	};
 	onInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 	onSubmit: () => void;
@@ -24,12 +24,11 @@ export default function LoginFormComponent({
 		<div className="flex-1 flex flex-col justify-between">
 			<div className="space-y-4">
 				<InputBox
-					name="username"
+					name="authId"
 					type="text"
 					placeholder="ID"
-					value={formData.username}
+					value={formData.authId}
 					onChange={onInputChange}
-					disabled={isLoading}
 				/>
 
 				<InputBox
@@ -38,17 +37,15 @@ export default function LoginFormComponent({
 					placeholder="접속 비밀번호"
 					value={formData.password}
 					onChange={onInputChange}
-					disabled={isLoading}
 				/>
 
 				<div className="flex items-center">
 					<input
 						type="checkbox"
 						id="saveId"
-						name="rememberMe"
-						checked={formData.rememberMe}
+						name="rememberId"
+						checked={formData.rememberId}
 						onChange={onInputChange}
-						disabled={isLoading}
 						className="w-4 h-4 bg-blue-500 border-blue-500 rounded text-white"
 					/>
 					<label htmlFor="saveId" className="ml-2 text-black text-sm">

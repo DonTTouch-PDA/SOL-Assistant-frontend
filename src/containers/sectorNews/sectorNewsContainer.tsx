@@ -44,18 +44,18 @@ const dummyNews = [
 		sector: '에너지',
 		opinion: '중립',
 		summary:
-			'규제 리스크와 지정학 불확실성 압박 속에서도 일부 구조조정 움직임과 백신·의료기기 기술 수요 기대가 맞물림',
+			'규제 속에서도 일부 구조조정 움직임과 백신·의료기기 기술 수요 기대가 맞물림',
 		newsList: [
 			{
 				date: '2025.10.10',
 				journal: '에너지뉴스',
-				title: '삼성바이오로직스, 바이오 재팬 2025서 경쟁력 입증',
+				title: '바이오 재팬 2025서 경쟁력 입증',
 				url: 'https://health.chosun.com/news/dailynews_view.jsp?mn_idx=563199',
 			},
 			{
 				date: '2025.10.10',
 				journal: '한경',
-				title: `NH올원뱅크 '15초 건강측정' 서비스 출시`,
+				title: `'15초 건강측정' 서비스 출시`,
 				url: 'https://www.hankyung.com/article/202510100514P',
 				imgUrl:
 					'https://img.hankyung.com/photo/202510/b99bca265e7b50fe563447c0bb766e16.png',
@@ -65,13 +65,12 @@ const dummyNews = [
 	{
 		sector: '정보기술',
 		opinion: '부정',
-		summary:
-			'규제 리스크와 지정학 불확실성 압박 속에서도 일부 구조조정 움직임과 백신·의료기기 기술 수요 기대가 맞물림',
+		summary: ' 구조조정 움직임과 백신·의료기기 기술 수요 기대가 맞물림',
 		newsList: [
 			{
 				date: '2025.10.10',
 				journal: '정보기술뉴스',
-				title: '삼성바이오로직스, 바이오 재팬 2025서 경쟁력 입증',
+				title: '삼성바이오로직스, 경쟁력 입증',
 				url: 'https://health.chosun.com/news/dailynews_view.jsp?mn_idx=563199',
 			},
 			{

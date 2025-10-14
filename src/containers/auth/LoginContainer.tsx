@@ -13,9 +13,9 @@ export default function LoginContainer() {
 	const [error, setError] = useState('');
 
 	const [formData, setFormData] = useState({
-		username: '',
+		authId: '',
 		password: '',
-		rememberMe: false,
+		rememberId: false,
 	});
 
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,11 +24,11 @@ export default function LoginContainer() {
 			...prev,
 			[name]: type === 'checkbox' ? checked : value,
 		}));
-		setError(''); // 에러 메시지 초기화
+		setError('');
 	};
 
 	const handleSubmit = async () => {
-		if (!formData.username || !formData.password) {
+		if (!formData.authId || !formData.password) {
 			setError('ID와 비밀번호를 입력해주세요.');
 			return;
 		}
@@ -37,7 +37,7 @@ export default function LoginContainer() {
 		setError('');
 
 		try {
-			const success = await login(formData.username, formData.password);
+			const success = await login(formData.authId, formData.password);
 
 			if (success) {
 				// 로그인 성공 시 대시보드 페이지로 이동
@@ -53,7 +53,7 @@ export default function LoginContainer() {
 	};
 
 	const isFormValid =
-		formData.username.trim() !== '' && formData.password.trim() !== '';
+		formData.authId.trim() !== '' && formData.password.trim() !== '';
 
 	return (
 		<div className="h-full bg-white pb-[34px] flex flex-col">
