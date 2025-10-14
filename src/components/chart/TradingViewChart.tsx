@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
 	createChart,
 	CandlestickSeries,
@@ -18,14 +18,26 @@ type RawCandle = {
 
 interface CandleChartProps {
 	data: RawCandle[];
-	height?: number;
 }
 
-const CandleChart: React.FC<CandleChartProps> = ({ data, height = 500 }) => {
+const CandleChart: React.FC<CandleChartProps> = ({ data }) => {
 	const containerRef = useRef<HTMLDivElement | null>(null);
+	const [height, setHeight] = useState(0);
 
 	useEffect(() => {
-		if (!containerRef.current) return;
+		const updateHeight = () => {
+			const headerHeight = 100;
+			const bottomMargin = 145;
+			const newHeight = window.innerHeight - headerHeight - bottomMargin;
+			setHeight(newHeight > 300 ? newHeight : 300); // 최소 300px 보장
+		};
+		updateHeight();
+		window.addEventListener('resize', updateHeight);
+		return () => window.removeEventListener('resize', updateHeight);
+	}, []);
+
+	useEffect(() => {
+		if (!containerRef.current || height === 0) return;
 
 		const wrapper = containerRef.current;
 		wrapper.innerHTML = '';
@@ -45,7 +57,6 @@ const CandleChart: React.FC<CandleChartProps> = ({ data, height = 500 }) => {
 		wrapper.appendChild(divider);
 		wrapper.appendChild(volumeEl);
 
-		// 공통 차트 옵션
 		const baseOptions = {
 			layout: { background: { color: '#fff' }, textColor: '#333' },
 			grid: {
@@ -55,7 +66,7 @@ const CandleChart: React.FC<CandleChartProps> = ({ data, height = 500 }) => {
 			crosshair: { mode: 1 },
 		};
 
-		// --- 메인 캔들차트 ---
+		// 캔들차트
 		const mainChart = createChart(candleEl, {
 			...baseOptions,
 			timeScale: { timeVisible: true, visible: false },
@@ -84,7 +95,7 @@ const CandleChart: React.FC<CandleChartProps> = ({ data, height = 500 }) => {
 			.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
 		candleSeries.setData(formatted);
 
-		// --- 거래량 차트 ---
+		// 거래량차트
 		const volumeChart = createChart(volumeEl, {
 			...baseOptions,
 			timeScale: { timeVisible: true },
@@ -108,7 +119,7 @@ const CandleChart: React.FC<CandleChartProps> = ({ data, height = 500 }) => {
 			.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
 		volumeSeries.setData(volData);
 
-		// --- 스케일 동기화 ---
+		//스케일 동기화
 		const mainScale = mainChart.timeScale();
 		const volScale = volumeChart.timeScale();
 
@@ -119,8 +130,6 @@ const CandleChart: React.FC<CandleChartProps> = ({ data, height = 500 }) => {
 			if (range) mainScale.setVisibleRange(range);
 		});
 
-		// --- y축 폭 동기화 ---
-		// 렌더링 이후 y축 실제 폭을 계산해야 하므로 setTimeout 사용
 		setTimeout(() => {
 			const mainY = mainChart.priceScale('right').width();
 			const volY = volumeChart.priceScale('right').width();
@@ -132,13 +141,9 @@ const CandleChart: React.FC<CandleChartProps> = ({ data, height = 500 }) => {
 			volumeChart.applyOptions({
 				rightPriceScale: { minimumWidth: maxY, borderColor: '#ccc' },
 			});
+		}, 0);
 
-			// 오른쪽 패딩도 동일하게
-			mainChart.timeScale().applyOptions({ rightOffset: 5 });
-			volumeChart.timeScale().applyOptions({ rightOffset: 5 });
-		}, 10);
-
-		// --- 리사이즈 ---
+		// 리사이즈 - 렌더링후 y축 폭 맞추기 위해
 		const handleResize = () => {
 			mainChart.resize(wrapper.clientWidth, Math.floor(height * 0.7));
 			volumeChart.resize(wrapper.clientWidth, Math.floor(height * 0.3));
@@ -152,7 +157,15 @@ const CandleChart: React.FC<CandleChartProps> = ({ data, height = 500 }) => {
 		};
 	}, [data, height]);
 
-	return <div ref={containerRef} style={{ width: '100%', height }} />;
+	return (
+		<div
+			ref={containerRef}
+			style={{
+				width: '100%',
+				height,
+			}}
+		/>
+	);
 };
 
 export default CandleChart;
