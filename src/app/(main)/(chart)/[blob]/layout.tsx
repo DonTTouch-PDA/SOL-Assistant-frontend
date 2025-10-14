@@ -1,3 +1,4 @@
+import StockTab from '@/components/layout/StockTab';
 import StockInfoHeader from '@/containers/chart/StockInfoHeader';
 
 export default function ChartLayout({

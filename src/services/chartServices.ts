@@ -1,3 +1,5 @@
+const baseUrl = 'https://sol-assistant.site/api';
+
 export const fetchStockInfo = async (stockCode: string) => {
 	return new Promise((resolve) => {
 		setTimeout(() => {
@@ -41,3 +43,11 @@ export const fetchStockInfo = async (stockCode: string) => {
 		}, 100);
 	});
 };
+
+export async function fetchChartData(stockCode: string) {
+	const res = await fetch(`${baseUrl}/v1/external/chart/${stockCode}/day`);
+	if (!res.ok) {
+		throw new Error('차트 데이터를 불러오는 데 실패했습니다.');
+	}
+	return res.json();
+}
