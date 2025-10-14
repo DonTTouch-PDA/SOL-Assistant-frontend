@@ -1,6 +1,7 @@
 'use client';
 import { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
+import { fetchGetLoginToken } from '@/services/authService';
 
 interface User {
 	id: string;
@@ -19,58 +20,22 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-	const [user, setUser] = useState<User | null>(null);
-	const [isLoading, setIsLoading] = useState(true);
+	// 테스트용으로 항상 인증된 상태로 설정
+	const [user, setUser] = useState<User | null>({
+		id: 'test',
+		name: 'Test User',
+	});
+	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
-
-	// 페이지 로드 시 로그인 상태 확인
-	useEffect(() => {
-		const checkAuth = async () => {
-			try {
-				const token = localStorage.getItem('auth_token');
-				if (token) {
-					// 토큰이 있으면 사용자 정보 가져오기
-					const response = await fetch('/api/v1/internal/member/login', {
-						headers: {
-							Authorization: `Bearer ${token}`,
-						},
-					});
-
-					if (response.ok) {
-						const userData = await response.json();
-						setUser(userData);
-					} else {
-						// 토큰이 유효하지 않으면 제거
-						localStorage.removeItem('auth_token');
-					}
-				}
-			} catch (error) {
-				console.error('인증 확인 실패:', error);
-				localStorage.removeItem('auth_token');
-			} finally {
-				setIsLoading(false);
-			}
-		};
-
-		checkAuth();
-	}, []);
 
 	const login = async (id: string, password: string): Promise<boolean> => {
 		try {
-			const response = await fetch('/api/v1/internal/member/login', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify({ id, password }),
-			});
+			const response = await fetchGetLoginToken(id, password);
+			// localStorage.setItem('accessToken', response.tokenResponse.accessToken);
+			// localStorage.setItem('refreshToken', response.tokenResponse.refreshToken);
 
-			if (response.ok) {
-				const data = await response.json();
-				localStorage.setItem('auth_token', data.token);
-				setUser(data.user);
-				return true;
-			}
+			console.log('refreshToken', response.tokenResponse.refreshToken);
+			console.log('accessToken', response.tokenResponse.accessToken);
 			return false;
 		} catch (error) {
 			console.error('로그인 실패:', error);

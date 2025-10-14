@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { Search } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
+import { getStockCodeFromLocalStorage } from '@/utils/storage';
 
 export default function Header() {
 	const [isDashboard, setIsDashboard] = useState(true);
@@ -34,7 +35,12 @@ export default function Header() {
 					className={`font-bold text-xl ${isDashboard ? focusColor[1] : focusColor[0]}`}
 					onClick={() => {
 						setIsDashboard(false);
-						router.push('/005930');
+						const stockCode = getStockCodeFromLocalStorage();
+						if (stockCode) {
+							router.push(`/${stockCode}`);
+						} else {
+							router.push('/005930');
+						}
 					}}
 				>
 					차트

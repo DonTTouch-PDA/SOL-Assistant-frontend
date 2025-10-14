@@ -1,11 +1,12 @@
 import ChartContainer from '@/containers/myStocks/ChartContainer';
 
 interface PageProps {
-	params: {
+	params: Promise<{
 		blob: string;
-	};
+	}>;
 }
 
-export default function ChartPage({ params }: PageProps) {
-	return <ChartContainer stockCode={params.blob} />;
+export default async function ChartPage({ params }: PageProps) {
+	const { blob } = await params;
+	return <ChartContainer stockCode={blob} />;
 }

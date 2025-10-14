@@ -49,7 +49,7 @@ export default function StockItem({ stock }: StockItemProps) {
 				</div>
 
 				{/* 가격 정보 */}
-				<div className="flex flex-col items-end text-right">
+				<div className="flex flex-col items-end text-right mb-[4px]">
 					<div
 						className={`${stock.changeRate >= 0 ? 'text-red-500' : 'text-blue-500'} font-semibold text-base`}
 					>
