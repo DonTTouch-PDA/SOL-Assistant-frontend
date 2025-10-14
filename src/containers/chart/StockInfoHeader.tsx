@@ -6,6 +6,7 @@ import {
 } from '@/utils/storage';
 import { fetchStockInfo } from '@/services/chartServices';
 import { StockInfo } from '@/types/chart';
+import StockTab from '@/components/layout/StockTab';
 
 export default function StockInfoHeader() {
 	const [stockCode, setStockCode] = useState<string | null>(null);
@@ -32,23 +33,34 @@ export default function StockInfoHeader() {
 		loadStockData();
 	}, [stockCode]);
 
+	const { price = 0, prevPrice = 0 } = stockInfo || {};
+	const diff = price - prevPrice;
+	const isUp = diff > 0;
+
 	return (
-		<div className="flex justify-between">
-			<div>
-				<p className="text-[30px] font-bold">{stockInfo?.stockName}</p>
+		<div>
+			<div className="flex justify-between pb-7">
+				<div>
+					<p className="text-[30px] font-bold">{stockInfo?.stockName}</p>
+				</div>
+				<div className="text-right">
+					<p className="text-2xl font-semibold">
+						{stockInfo?.price.toLocaleString()}원
+					</p>
+					{stockInfo && (
+						<div>
+							<p
+								className={`font-semibold text-${isUp ? '[#FB4C5E]' : '[#4D8CFB]'}`}
+							>
+								{isUp ? '+' : ''}
+								{diff.toLocaleString()}원 (
+								{Math.abs((diff / prevPrice) * 100).toFixed(2)}%)
+							</p>
+						</div>
+					)}
+				</div>
 			</div>
-			<div>
-				<p>{stockInfo?.price}</p>
-				<p>
-					{stockInfo && stockInfo.price - stockInfo.prevPrice > 0 ? '+' : ''}
-					{stockInfo &&
-						(
-							((stockInfo.price - stockInfo.prevPrice) / stockInfo.prevPrice) *
-							100
-						).toFixed(2)}
-					%
-				</p>
-			</div>
+			<StockTab stockCode={stockCode} />
 		</div>
 	);
 }
