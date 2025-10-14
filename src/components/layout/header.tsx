@@ -44,7 +44,7 @@ export default function Header() {
 			<Search
 				className="w-6 h-6 cursor-pointer"
 				onClick={() => {
-					console.log('search');
+					router.push('/search');
 				}}
 			/>
 		</header>
