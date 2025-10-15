@@ -63,13 +63,7 @@ export default function LoginContainer() {
 		formData.authId.trim() !== '' && formData.password.trim() !== '';
 
 	return (
-		<div className="h-full bg-white pb-[34px] flex flex-col">
-			<header className="flex justify-end mb-8">
-				<button className="text-gray-600 text-xl">
-					<X size={20} />
-				</button>
-			</header>
-
+		<div className="h-full bg-white py-[34px] flex flex-col">
 			<div className="flex-1 flex flex-col">
 				<h1 className="text-xl font-bold text-black leading-tight mb-8">
 					ID와 접속 비밀번호를
