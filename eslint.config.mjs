@@ -17,6 +17,9 @@ const eslintConfig = [
 			'@next/next/no-img-element': 'warn',
 			'jsx-a11y/alt-text': 'warn',
 		},
+	},
+
+	{
 		ignores: [
 			'node_modules/**',
 			'.next/**',
