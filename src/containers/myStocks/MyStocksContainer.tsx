@@ -1,9 +1,9 @@
 'use client';
-import CustomDropdown from '@/components/common/CustomDropdown';
+import CustomDropdown from '@/components/common/customDropdown';
 import { useState, useEffect } from 'react';
 import { fetchGetStocksSortedBy } from '@/services/myStocksServices';
 import { MyStock } from '@/types/myStock';
-import StockItem from '@/components/myStocks/StockItem';
+import StockItem from '@/components/myStocks/stockItem';
 import StockItemSkeleton from '@/components/myStocks/StockItemSkeleton';
 
 export default function MyStocksContainer() {

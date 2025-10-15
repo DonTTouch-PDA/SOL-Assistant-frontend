@@ -18,7 +18,7 @@ export default function MyType() {
 	return (
 		<div>
 			<div className="p-10 flex flex-row items-center gap-5">
-				<Image src={`/type${type}.svg`} width={83} height={83} alt="type" />
+				<Image src={`/type${type}.png`} width={83} height={83} alt="type" />
 				<div>
 					<h2 className="text-xl font-semibold">
 						{user.name}님은 <br />

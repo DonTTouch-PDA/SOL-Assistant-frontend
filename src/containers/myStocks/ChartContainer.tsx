@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { setStockCodeToLocalStorage } from '@/utils/stockCodeStorage';
 import { fetchChartData } from '@/services/chartServices';
-import TradingViewChart from '@/components/chart/TradingViewChart';
+import MainChart from '@/components/chart/MainChart';
 
 export default function ChartContainer({ stockCode }: { stockCode: string }) {
 	// 종목 코드를 로컬 스토리지에 저장
@@ -22,7 +22,7 @@ export default function ChartContainer({ stockCode }: { stockCode: string }) {
 		// <div className="p-4 w-full max-w-[430px] min-w-[375px] md:w-[393px]">
 		<div className="-mx-5">
 			<div className="flex justify-center">
-				<TradingViewChart data={chartData} />
+				<MainChart data={chartData} />
 			</div>
 		</div>
 	);
