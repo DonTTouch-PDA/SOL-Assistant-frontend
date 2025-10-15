@@ -1,13 +1,23 @@
-// @ts-ignore
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { X } from 'lucide-react';
 import LoginFormComponent from '@/components/auth/LoginFormComponent';
 import { useAuth } from '@/hooks/useAuth';
 
 export default function LoginContainer() {
 	const router = useRouter();
-	const { login } = useAuth();
+	const { login, isAuthenticated } = useAuth();
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
+
+	// 이미 로그인되어 있으면 대시보드로 리다이렉트
+	useEffect(() => {
+		if (isAuthenticated) {
+			router.replace('/dashboard');
+		}
+	}, [isAuthenticated, router]);
 
 	const [formData, setFormData] = useState({
 		authId: '',
@@ -38,7 +48,7 @@ export default function LoginContainer() {
 
 			if (success) {
 				// 로그인 성공 시 대시보드 페이지로 이동
-				router.push('/dashboard');
+				router.replace('/dashboard');
 			} else {
 				setError('ID 또는 비밀번호가 올바르지 않습니다.');
 			}
@@ -53,13 +63,7 @@ export default function LoginContainer() {
 		formData.authId.trim() !== '' && formData.password.trim() !== '';
 
 	return (
-		<div className="h-full bg-white pb-[34px] flex flex-col">
-			<header className="flex justify-end mb-8">
-				<button className="text-gray-600 text-xl">
-					<X size={20} />
-				</button>
-			</header>
-
+		<div className="h-full bg-white py-[34px] flex flex-col">
 			<div className="flex-1 flex flex-col">
 				<h1 className="text-xl font-bold text-black leading-tight mb-8">
 					ID와 접속 비밀번호를

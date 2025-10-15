@@ -3,6 +3,7 @@ import { useState } from 'react';
 import GuruViewContainer from './GuruViewContainer';
 import GuruTradeContainer from './GuruTradeContainer';
 
+//
 export default function GuruContainer() {
 	const [activeTab, setActiveTab] = useState<string>('거래 순');
 

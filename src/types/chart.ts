@@ -1,7 +1,15 @@
 export interface StockInfo {
+	symbol: string;
 	stockName: string;
-	price: number;
-	prevPrice: number;
+	previousClose: number;
+	prePreviousClose: number;
+}
+
+export interface StockRisk {
+	symbol: string;
+	stockName: string;
+	management: boolean;
+	delisting: boolean;
 }
 
 export interface GuruStockData {

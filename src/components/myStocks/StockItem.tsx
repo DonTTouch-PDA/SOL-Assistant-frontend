@@ -2,12 +2,15 @@ import React from 'react';
 import { MyStock } from '@/types/myStock';
 import ProfitRate from '../common/ProfitRate';
 import Image from 'next/image';
+import { setStockCodeToLocalStorage } from '@/utils/stockCodeStorage';
+import { useRouter } from 'next/navigation';
 
 interface StockItemProps {
 	stock: MyStock;
 }
 
 export default function StockItem({ stock }: StockItemProps) {
+	const router = useRouter();
 	const formatPrice = (price: number) => {
 		return price.toLocaleString();
 	};
@@ -23,7 +26,13 @@ export default function StockItem({ stock }: StockItemProps) {
 	return (
 		<div className="bg-white border-b pt-[12px] border-gray-100">
 			{/* 상단 행 */}
-			<div className="flex items-center justify-between mb-2">
+			<div
+				className="flex items-center justify-between mb-2"
+				onClick={() => {
+					setStockCodeToLocalStorage(stock.code);
+					router.push(`/${stock.code}`);
+				}}
+			>
 				<div className="flex items-center gap-3">
 					<div>
 						<Image

@@ -27,7 +27,6 @@ export default function BottomSheet({
 		<AnimatePresence>
 			{isOpen && (
 				<>
-					{/* 오버레이 */}
 					<motion.div
 						className="fixed inset-0 bg-black/40 z-40"
 						initial={{ opacity: 0 }}

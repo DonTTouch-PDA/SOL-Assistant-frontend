@@ -1,15 +1,14 @@
 'use client';
 import { createContext, useState, useEffect, ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { fetchGetLoginToken } from '@/services/authService';
-
-interface User {
-	id: string;
-	name: string;
-}
+import { postLoginToken } from '@/services/authService';
+import {
+	setAccessToken,
+	setRefreshToken,
+	getAccessToken,
+} from '@/utils/tokenStorage';
 
 interface AuthContextType {
-	user: User | null;
 	isLoading: boolean;
 	login: (id: string, password: string) => Promise<boolean>;
 	isAuthenticated: boolean;
@@ -20,35 +19,34 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-	// 테스트용으로 항상 인증된 상태로 설정
-	const [user, setUser] = useState<User | null>({
-		id: 'test',
-		name: 'Test User',
-	});
 	const [isLoading, setIsLoading] = useState(false);
+	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const router = useRouter();
+
+	useEffect(() => {
+		// 앱 시작 시 토큰 확인
+		const accessToken = getAccessToken();
+		setIsAuthenticated(!!accessToken);
+		setIsLoading(false);
+	}, []);
 
 	const login = async (id: string, password: string): Promise<boolean> => {
 		try {
-			const response = await fetchGetLoginToken(id, password);
-			// localStorage.setItem('accessToken', response.tokenResponse.accessToken);
-			// localStorage.setItem('refreshToken', response.tokenResponse.refreshToken);
+			const response = await postLoginToken(id, password);
+			setAccessToken(response.tokenResponse.accessToken);
+			setRefreshToken(response.tokenResponse.refreshToken);
 
-			console.log('refreshToken', response.tokenResponse.refreshToken);
-			console.log('accessToken', response.tokenResponse.accessToken);
-			return false;
+			setIsAuthenticated(true);
+			return true;
 		} catch (error) {
 			console.error('로그인 실패:', error);
 			return false;
 		}
 	};
 
-	const isAuthenticated = !!user;
-
 	return (
 		<AuthContext.Provider
 			value={{
-				user,
 				isLoading,
 				login,
 				isAuthenticated,

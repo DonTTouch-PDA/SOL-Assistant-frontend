@@ -1,29 +1,44 @@
 import { LoginTokenResponse } from '@/types/auth';
+import { getRefreshToken } from '@/utils/tokenStorage';
 
-// response type
-// {
-//     "tokenResponse": {
-//         "accessToken": "",
-//         "refreshToken": ""
-//     }
-// }
-export const fetchGetLoginToken = async (id: string, password: string) => {
+export const postLoginToken = async (authId: string, password: string) => {
 	try {
 		const data = await fetch('/api/v1/internal/login', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ id, password }),
+			body: JSON.stringify({ authId, password }),
+		});
+
+		if (!data.ok) {
+			throw new Error(`HTTP error! status: ${data.status}`);
+		}
+		console.log('로그인 성공');
+		return data.json() as Promise<LoginTokenResponse>;
+	} catch (error) {
+		console.error('로그인 실패:', error);
+		throw error;
+	}
+};
+
+export const refreshAccessToken = async () => {
+	try {
+		const data = await fetch('/api/v1/internal/member/reissue', {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${getRefreshToken()}`,
+			},
 		});
 
 		if (!data.ok) {
 			throw new Error(`HTTP error! status: ${data.status}`);
 		}
 
+		console.log('토큰 갱신 성공');
 		return data.json() as Promise<LoginTokenResponse>;
 	} catch (error) {
-		console.error('로그인 실패:', error);
+		console.error('토큰 갱신 실패:', error);
 		throw error;
 	}
 };
