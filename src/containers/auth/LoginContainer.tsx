@@ -1,7 +1,4 @@
-'use client';
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+// @ts-ignore
 import { X } from 'lucide-react';
 import LoginFormComponent from '@/components/auth/LoginFormComponent';
 import { useAuth } from '@/hooks/useAuth';

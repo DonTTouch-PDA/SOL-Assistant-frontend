@@ -1,7 +1,7 @@
 'use client';
 import GuruRetentionChart from '@/components/chart/GuruRetentionChart';
 import GuruTradeChart from '@/components/chart/GuruTradeChart';
-import CustomDropdown from '@/components/common/CustomDropdown';
+import CustomDropdown from '@/components/common/customDropdown';
 import { useState, useEffect } from 'react';
 import { fetchGuruTradeData } from '@/services/chartServices';
 import { GuruStockData } from '@/types/chart';
