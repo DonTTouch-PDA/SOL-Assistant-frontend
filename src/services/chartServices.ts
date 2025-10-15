@@ -1,7 +1,5 @@
 import { StockInfo, StockRisk } from '@/types/chart';
 
-const baseUrl = 'https://sol-assistant.site/api';
-
 export const fetchStockInfo = async (stockCode: string) => {
 	try {
 		const res = await fetch(`/api/v1/external/chart/${stockCode}/lastPrice`);
@@ -29,7 +27,7 @@ export const fetchStockRiskCheck = async (stockCode: string) => {
 };
 
 export async function fetchChartData(stockCode: string) {
-	const res = await fetch(`${baseUrl}/v1/external/chart/${stockCode}/day`);
+	const res = await fetch(`/api/v1/external/chart/${stockCode}/day`);
 	if (!res.ok) {
 		throw new Error('차트 데이터를 불러오는 데 실패했습니다.');
 	}

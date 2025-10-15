@@ -21,7 +21,7 @@ export default function LoginFormComponent({
 	isLoading = false,
 }: LoginFormComponentProps) {
 	return (
-		<div className="flex-1 flex flex-col justify-between">
+		<div className="flex-1 flex flex-col justify-between py-[30px]">
 			<div className="space-y-4">
 				<InputBox
 					name="authId"
