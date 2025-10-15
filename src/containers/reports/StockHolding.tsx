@@ -57,7 +57,7 @@ export default function StockHolding() {
 					}
 				}
 				.animate-reveal {
-					animation: reveal 1.2s ease-out forwards;
+					animation: reveal 0.6s ease-out forwards;
 				}
 			`}</style>
 		</CustomCard>
