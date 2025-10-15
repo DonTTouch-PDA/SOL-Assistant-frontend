@@ -9,7 +9,7 @@ export default function Menu() {
 		{ id: 'dashboard', label: '대시보드' },
 		{ id: 'chart', label: '차트' },
 	];
-	const menus = {
+	const menus: Record<string, Array<{ id: string; label: string }>> = {
 		dashboard: [
 			{ id: '', label: '내 종목' },
 			{ id: 'guru', label: '고수의 Pick' },
@@ -178,7 +178,7 @@ export default function Menu() {
 								</h1>
 								<div className="w-full border-[0.5px] border-[#EEEEEE]" />
 								<div className="flex flex-col pt-1">
-									{menus[currentTab].map((menu) => (
+									{menus[currentTab]?.map((menu) => (
 										<button
 											key={menu.id}
 											className="text-left p-2 text-[#333950] text-lg"
