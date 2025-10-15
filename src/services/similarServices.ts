@@ -1,7 +1,7 @@
 import { SignalType } from '@/types/similar';
 export const fetchGetSimilarChart = async (
 	isUserHasStock: boolean,
-	filterType: SignalType = 'buy'
+	filterType: SignalType = '매수'
 ) => {
 	console.log('유사 차트 조회 :', { isUserHasStock, filterType });
 	return new Promise((resolve) => {
