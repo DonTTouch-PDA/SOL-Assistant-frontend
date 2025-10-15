@@ -2,14 +2,15 @@
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { setStockCodeToLocalStorage } from '@/utils/stockCodeStorage';
 
 export default function Search() {
 	const router = useRouter();
 	const [keyword, setKeyword] = useState('');
-	const [result, setResult] = useState([]);
+	const [result, setResult] = useState<{ stock: string; code: string }[]>([]);
 
 	const dummyResult = [
-		{ stock: '삼성전자', code: '005230' },
+		{ stock: '삼성전자', code: '005930' },
 		{ stock: '한화에어로스페이스', code: '012450' },
 	];
 
@@ -47,6 +48,7 @@ export default function Search() {
 							<span>
 								<button
 									onClick={() => {
+										setStockCodeToLocalStorage(data.code);
 										router.push(`/${data.code}`);
 									}}
 									className="border px-2 py-0.5 rounded-sm text-sm text-gray-500"
