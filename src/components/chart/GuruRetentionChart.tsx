@@ -1,18 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import {
-	createChart,
-	ColorType,
-	LineSeries,
-	AreaSeries,
-} from 'lightweight-charts';
+import { createChart, ColorType, AreaSeries } from 'lightweight-charts';
 
-interface DataPoint {
-	time: string; // 'YYYY-MM-DD' 형식
-	value: number;
-}
-
+import { GuruStockData } from '@/types/chart';
 interface TimeChartProps {
-	data: DataPoint[];
+	data: GuruStockData[];
 	height?: number;
 }
 export default function GuruRetentionChart({

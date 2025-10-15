@@ -3,14 +3,10 @@
 import React, { useEffect, useRef } from 'react';
 import { createChart, HistogramSeries, ColorType } from 'lightweight-charts';
 
-type TradeVolume = {
-	time: string;
-	buyVolume: number;
-	sellVolume: number;
-};
+import { GuruStockData } from '@/types/chart';
 
 interface DualHistogramChartProps {
-	data: TradeVolume[];
+	data: GuruStockData[];
 	height?: number;
 }
 export default function GuruTradeChart({
