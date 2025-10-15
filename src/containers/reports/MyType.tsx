@@ -1,10 +1,11 @@
 'use client';
 import { useState } from 'react';
-import BottomSheet from '@/components/common/bottomSheet';
+import BottomSheet from '@/components/common/BottomSheet';
 import {
 	INVESTMENT_TYPES,
 	INVESTMENT_TYPES_ADD,
 } from '@/constants/descriptions';
+import Image from 'next/image';
 
 const user = { type: 3, name: '프디아' };
 const typeCharacters = ['플리', '도레미', '몰리'];
@@ -17,7 +18,7 @@ export default function MyType() {
 	return (
 		<div>
 			<div className="p-10 flex flex-row items-center gap-5">
-				<img src={`type${type}.svg`} width={83} />
+				<Image src={`/type${type}.svg`} width={83} height={83} alt="type" />
 				<div>
 					<h2 className="text-xl font-semibold">
 						{user.name}님은 <br />
@@ -28,7 +29,13 @@ export default function MyType() {
 					</h2>
 					<span className="text-sm inline-flex gap-2">
 						{types[type - 1]}
-						<img src="question.png" width={20} onClick={() => setOpen(true)} />
+						<Image
+							src="/question.png"
+							width={20}
+							height={20}
+							onClick={() => setOpen(true)}
+							alt="info"
+						/>
 					</span>
 				</div>
 			</div>

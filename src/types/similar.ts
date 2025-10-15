@@ -7,8 +7,13 @@ export interface SimilarChart {
 	amount: number;
 }
 export interface SimilarChartData {
-	charts: SimilarChart[];
+	stocks: SimilarChart[];
 	totalCount: number;
 }
 
-export type SignalType = 'buy' | 'sell';
+export type SignalType = '매수' | '매도';
+
+export interface SimilarChartDetail {
+	code: string;
+	signalType: string;
+}

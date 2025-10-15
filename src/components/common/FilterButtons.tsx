@@ -18,16 +18,12 @@ export default function FilterButtons<T = string>({
 	options,
 	className = '',
 }: FilterButtonsProps<T>) {
-	console.log('🔴 공통필터버튼 - 현재필터:', activeFilter);
-	console.log('🔴 공통필터버튼 - 옵션들:', options);
-
 	return (
 		<div className={`flex gap-2 ${className}`}>
 			{options.map((option) => (
 				<button
 					key={String(option.value)}
 					onClick={() => {
-						console.log('🔴 버튼클릭됨 - 선택된값:', option.value);
 						onFilterChange(option.value);
 					}}
 					className={`rounded-[10px] px-4 py-[6px] text-sm font-medium ${
