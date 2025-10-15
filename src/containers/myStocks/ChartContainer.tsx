@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { setStockCodeToLocalStorage } from '@/utils/storage';
 import { fetchChartData } from '@/services/chartServices';
-import TradingViewChart from '@/components/chart/TradingViewChart';
+import MainChart from '@/components/chart/MainChart';
 
 export interface StockCodeProps {
 	stockCode: string;
@@ -25,7 +25,7 @@ export default function ChartContainer({ stockCode }: StockCodeProps) {
 		// <div className="p-4 w-full max-w-[430px] min-w-[375px] md:w-[393px]">
 		<div className="-mx-5">
 			<div className="flex justify-center">
-				<TradingViewChart data={chartData} />
+				<MainChart data={chartData} />
 			</div>
 		</div>
 	);

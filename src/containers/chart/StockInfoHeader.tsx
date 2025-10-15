@@ -50,7 +50,7 @@ export default function StockInfoHeader() {
 					{stockInfo && (
 						<div>
 							<p
-								className={`font-semibold text-${isUp ? '[#FB4C5E]' : '[#4D8CFB]'}`}
+								className={`font-semibold ${isUp ? 'text-[#FB4C5E]' : 'text-[#4D8CFB]'}`}
 							>
 								{isUp ? '+' : ''}
 								{diff.toLocaleString()}원 (
