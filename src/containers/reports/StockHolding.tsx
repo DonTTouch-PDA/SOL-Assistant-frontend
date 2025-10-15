@@ -1,4 +1,4 @@
-// 시간남으면 여기도 애니메이션
+'use client';
 import CustomCard from '@/components/common/CustomCard';
 import Image from 'next/image';
 const data = { holding: 23, percentile: 80 };
@@ -13,8 +13,15 @@ export default function StockHolding() {
 					일간 주식을 보유했어요
 				</h2>
 
-				<div className="relative ">
-					<Image src="/HoldingGraph.svg" width={200} height={100} alt="graph" />
+				<div className="relative">
+					<div className="animate-reveal">
+						<Image
+							src="/HoldingGraph.svg"
+							width={200}
+							height={100}
+							alt="graph"
+						/>
+					</div>
 
 					<div className="relative mt-2">
 						<span className="flex justify-between text-gray-500 text-xs">
@@ -40,6 +47,19 @@ export default function StockHolding() {
 					</div>
 				</div>
 			</div>
+			<style jsx>{`
+				@keyframes reveal {
+					0% {
+						clip-path: inset(0 100% 0 0);
+					}
+					100% {
+						clip-path: inset(0 0 0 0);
+					}
+				}
+				.animate-reveal {
+					animation: reveal 0.6s ease-out forwards;
+				}
+			`}</style>
 		</CustomCard>
 	);
 }
