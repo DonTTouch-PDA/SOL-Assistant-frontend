@@ -1,5 +1,5 @@
 import React from 'react';
-import CustomDropdown from '@/components/common/CustomDropdown';
+import CustomDropdown from '@/components/common/customDropdown';
 import UserFilterButtons from '@/components/guru/UserFilterButtons';
 import { GuruView, UserFilterType } from '@/types/guru';
 import StockListItemCard from '@/components/common/StockListItemCard';
