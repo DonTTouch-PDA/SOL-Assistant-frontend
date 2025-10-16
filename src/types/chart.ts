@@ -11,3 +11,10 @@ export interface StockRisk {
 	management: boolean;
 	delisting: boolean;
 }
+
+export interface GuruStockData {
+	time: string;
+	buyVolume: number;
+	sellVolume: number;
+	value: number;
+}

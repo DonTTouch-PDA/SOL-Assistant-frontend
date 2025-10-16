@@ -19,10 +19,10 @@ export default function CustomDropdown({
 	return (
 		<div className="relative">
 			<button
-				className="flex flex-row px-[10px] py-[4.5px] gap-2 text-sm rounded-[8px] bg-gray-200"
+				className="flex flex-row px-[10px] py-[4.5px] gap-2 text-sm rounded-[8px] bg-[#F7F7F7] text-[#111111]"
 				onClick={onToggle}
 			>
-				<span className="font-semibold text-[12px]">{setSortedBy}</span>
+				<span className="font-medium text-[12px] ">{setSortedBy}</span>
 				<span
 					className={`flex items-center font-semibold transform ${isOpen ? 'rotate-180' : ''}`}
 				>
