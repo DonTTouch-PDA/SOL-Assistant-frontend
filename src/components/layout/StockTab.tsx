@@ -55,8 +55,8 @@ export default function StockTab() {
 				<div
 					className="absolute bottom-0 h-0.5 bg-black transition-all duration-300 ease-in-out"
 					style={{
-						left: underlineStyle.left + 12, // ml-3 보정
-						width: underlineStyle.width - 16, // padding 감안
+						left: underlineStyle.left + 12,
+						width: underlineStyle.width - 16,
 					}}
 				/>
 			</div>

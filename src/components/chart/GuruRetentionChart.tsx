@@ -43,7 +43,11 @@ export default function GuruRetentionChart({
 			bottomColor: 'rgba(41, 98, 255, 0.28)',
 		});
 
-		areaSeries.setData(data);
+		//null값 제거
+		const formattedData = data.filter(
+			(d) => !isNaN(d.value) && d.value !== null
+		);
+		areaSeries.setData(formattedData);
 
 		// 반응형 리사이즈
 		const resize = () =>

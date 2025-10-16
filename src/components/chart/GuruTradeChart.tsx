@@ -56,8 +56,16 @@ export default function GuruTradeChart({
 		const buyData = data.map((d) => ({ time: d.time, value: d.buyVolume }));
 		const sellData = data.map((d) => ({ time: d.time, value: -d.sellVolume }));
 
-		buySeries.setData(buyData);
-		sellSeries.setData(sellData);
+		//null값제거
+		const formattedBuyData = buyData.filter(
+			(d) => !isNaN(d.value) && d.value !== null
+		);
+		const formattedSellData = sellData.filter(
+			(d) => !isNaN(d.value) && d.value !== null
+		);
+
+		buySeries.setData(formattedBuyData);
+		sellSeries.setData(formattedSellData);
 
 		// y축 기준선(0)을 중앙에 고정
 		chart.priceScale('left').applyOptions({

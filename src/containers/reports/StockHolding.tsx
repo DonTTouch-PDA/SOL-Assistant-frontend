@@ -1,7 +1,7 @@
 'use client';
 import CustomCard from '@/components/common/CustomCard';
 import Image from 'next/image';
-const data = { holding: 23, percentile: 80 };
+const data = { holding: 23, percentile: 82 };
 
 export default function StockHolding() {
 	return (

@@ -7,10 +7,11 @@ import { SimilarChart } from '@/types/similar';
 import StockListItemCard from '@/components/common/StockListItemCard';
 import { fetchGetSignalList } from '@/services/signalServices';
 import SimilarDetailContainer from './SimilarDetailContainer';
+import UnderLinedTab from '@/components/layout/UnderLinedTab';
 
 export default function SimilarChartContainer() {
 	const [hasStockFilter, setHasStockFilter] = useState('보유');
-	const [signalType, setSignalType] = useState<SignalType>('매수');
+	const [signalType, setSignalType] = useState<SignalType>('매도');
 	const signalOptions: FilterOption<SignalType>[] = [
 		{ value: '매수', label: '매수신호' },
 		{ value: '매도', label: '매도신호' },
@@ -32,9 +33,22 @@ export default function SimilarChartContainer() {
 	useEffect(() => {
 		getSignalList();
 	}, [getSignalList]);
+
+	const tabList = [
+		{ id: '보유', label: '보유' },
+		{ id: '전체', label: '전체' },
+	];
 	return (
 		<div className="w-full mt-[26px]">
-			<div className="flex border-b mb-[16px] border-gray-200 relative">
+			<UnderLinedTab
+				tabList={tabList}
+				currentTab={hasStockFilter}
+				onClick={(tab) => {
+					setHasStockFilter(tab);
+					setSignalType(tab === '보유' ? '매도' : '매수');
+				}}
+			/>
+			{/* <div className="flex border-b mb-[16px] border-gray-200 relative">
 				<button
 					onClick={() => {
 						setHasStockFilter('보유');
@@ -63,7 +77,7 @@ export default function SimilarChartContainer() {
 						hasStockFilter === '보유' ? 'left-0 w-1/2' : 'left-1/2 w-1/2'
 					}`}
 				/>
-			</div>
+			</div> */}
 			<FilterButtons
 				activeFilter={signalType}
 				onFilterChange={setSignalType}

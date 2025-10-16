@@ -8,13 +8,15 @@ const data = {
 	breakdown: [
 		{
 			stock: '신한지주',
-			profit: 340220,
+			type: '매도',
+			profit: 34022,
 			imgUrl:
 				'https://static.toss.im/png-icons/securities/icn-sec-fill-055550.png',
 		},
 		{
 			stock: 'NAVER',
 			profit: 232500,
+			type: '매수',
 			imgUrl:
 				'https://static.toss.im/png-icons/securities/icn-sec-fill-035420.png',
 		},
@@ -61,7 +63,7 @@ export default function MonthlyProfit() {
 				</div>
 			</div>
 			{/*이번달 매매내역*/}
-			<h1 className="text-lg font-medium pt-3 pb-2">이번달 매매내역</h1>
+			<h1 className="text-lg font-medium pt-3 pb-2">최근 매매내역</h1>
 			{data.breakdown.map((data, idx) => (
 				<div
 					key={idx}
@@ -77,7 +79,15 @@ export default function MonthlyProfit() {
 						/>
 						{data.stock}
 					</div>
-					<p className="">{data.profit.toLocaleString()}</p>
+					<div className="flex gap-2 items-center">
+						<p
+							className={`text-sm font-semibold ${data.type == '매도' ? 'text-[#2d77fa]' : 'text-[#fb2d42]'}`}
+						>
+							{data.type}
+						</p>
+
+						<p>{data.profit.toLocaleString()}</p>
+					</div>
 				</div>
 			))}
 		</CustomCard>
