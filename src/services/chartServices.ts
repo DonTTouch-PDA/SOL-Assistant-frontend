@@ -63,7 +63,7 @@ export async function fetchGuruTradeData(
 ): Promise<GuruStockData[]> {
 	const apiGuruType = guruTypeMap[guruType];
 	const res = await fetch(
-		`${baseUrl}/v1/external/chart/${stockCode}/guruTrade/${apiGuruType}`
+		`${baseUrl}/v1/internal/member/guruTrade/${stockCode}/${apiGuruType}`
 	);
 	if (!res.ok) {
 		throw new Error('고수의 거래량 데이터를 불러오는 데 실패했습니다.');

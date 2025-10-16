@@ -19,8 +19,8 @@ export default function Menu() {
 		],
 		chart: [{ id: '', label: '' }],
 	};
-	const fakeTabs = ['국내/해외주식', 'ETF/ETN', '종목찾기'];
-	const fakeMenus = {
+	const shinhanTabs = ['국내/해외주식', 'ETF/ETN', '종목찾기'];
+	const shinhanMenus = {
 		'국내/해외주식': [
 			'주식종목검색',
 			'관심',
@@ -38,6 +38,16 @@ export default function Menu() {
 	};
 
 	const [assistMode, setAssistMode] = useState(false);
+	const [mounted, setMounted] = useState(false);
+
+	useEffect(() => {
+		const savedMode = localStorage.getItem('assistMode');
+		if (savedMode !== null) {
+			setAssistMode(savedMode === 'true');
+		}
+		setMounted(true);
+	}, []);
+
 	const router = useRouter();
 
 	const buttonRef = useRef<HTMLDivElement>(null);
@@ -127,7 +137,7 @@ export default function Menu() {
 							</div>
 						) : (
 							<div>
-								{fakeTabs.map((tab) => (
+								{shinhanTabs.map((tab) => (
 									<button
 										key={tab}
 										className={`${tab == '국내/해외주식' ? 'bg-white font-semibold' : 'text-[#333950]'} w-full py-3 px-6 text-left`}
@@ -139,36 +149,38 @@ export default function Menu() {
 						)}
 
 						{/* 어시스트모드 토글 */}
-						<div
-							className="fixed left-[calc((100%-430px)/2)] bottom-3 px-6 bg-[#F2F4F8] pt-2"
-							ref={buttonRef}
-						>
-							<div className="absolute bottom-full mb-2 left-[60%] -translate-x-1/2">
-								<CustomPopOver
-									text="어시스트 모드를 켜 보세요!"
-									isShowPopover={showPopover}
-								/>
-							</div>
-							<p className="text-sm">어시스트 모드</p>
+						{mounted && (
 							<div
-								className="flex items-center justify-between rounded-lg py-2 cursor-pointer"
-								onClick={() => {
-									setAssistMode((prev) => !prev);
-								}}
+								className="fixed left-[calc((100%-430px)/2)] bottom-3 px-6 bg-[#F2F4F8] pt-2"
+								ref={buttonRef}
 							>
-								<div
-									className={`w-10 h-5 rounded-full p-[2px] transition-colors duration-300 ${
-										assistMode ? 'bg-[#0046FF]' : 'bg-gray-300'
-									}`}
-								>
-									<div
-										className={`h-4 w-4 bg-white rounded-full shadow transform transition-transform duration-300 ${
-											assistMode ? 'translate-x-5' : 'translate-x-0'
-										}`}
+								<div className="absolute bottom-full mb-2 left-[60%] -translate-x-1/2">
+									<CustomPopOver
+										text="어시스트 모드를 켜 보세요!"
+										isShowPopover={showPopover}
 									/>
 								</div>
+								<p className="text-sm">어시스트 모드</p>
+								<div
+									className="flex items-center justify-between rounded-lg py-2 cursor-pointer"
+									onClick={() => {
+										setAssistMode((prev) => !prev);
+									}}
+								>
+									<div
+										className={`w-10 h-5 rounded-full p-[2px] transition-colors duration-300 ${
+											assistMode ? 'bg-[#0046FF]' : 'bg-gray-300'
+										}`}
+									>
+										<div
+											className={`h-4 w-4 bg-white rounded-full shadow transform transition-transform duration-300 ${
+												assistMode ? 'translate-x-5' : 'translate-x-0'
+											}`}
+										/>
+									</div>
+								</div>
 							</div>
-						</div>
+						)}
 					</section>
 					<section className="w-2/3 p-3">
 						{assistMode ? (
@@ -196,7 +208,7 @@ export default function Menu() {
 								<h1 className="p-2 font-semibold">국내/해외주식</h1>
 								<div className="w-full border-[0.5px] border-[#EEEEEE]" />
 								<div className="flex flex-col pt-1">
-									{fakeMenus['국내/해외주식'].map((menu) => (
+									{shinhanMenus['국내/해외주식'].map((menu) => (
 										<button
 											key={menu}
 											className="text-left p-2 text-[#333950] text-lg"
