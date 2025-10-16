@@ -41,21 +41,17 @@ export default function Search() {
 			{/* 검색결과목록 */}
 			<div>
 				{result.map((data) => (
-					<div key={data.stock}>
+					<div
+						key={data.stock}
+						onClick={() => {
+							setStockCodeToLocalStorage(data.code);
+							router.push(`/${data.code}`);
+						}}
+					>
 						<div className="grid grid-cols-[1fr_3fr_1fr] py-3.5">
 							<span className="text-sm text-gray-500">국내주식</span>
 							<span>{data.stock}</span>
-							<span>
-								<button
-									onClick={() => {
-										setStockCodeToLocalStorage(data.code);
-										router.push(`/${data.code}`);
-									}}
-									className="border px-2 py-0.5 rounded-sm text-sm text-gray-500"
-								>
-									현재가
-								</button>
-							</span>
+							<span></span>
 						</div>
 						<div className="w-[100%]  border-[0.5px] border-[#EEEEEE]" />
 					</div>
