@@ -34,9 +34,37 @@ Chart.register(
 	LinearScale,
 	Title,
 	CategoryScale,
-	Legend,
-	Tooltip
+	Legend
 );
+
+const chartOptions = {
+	plugins: {
+		legend: {
+			labels: {
+				font: {
+					size: 10,
+				},
+				boxHeight: 0,
+			},
+		},
+	},
+	scales: {
+		x: {
+			ticks: {
+				font: {
+					size: 10,
+				},
+			},
+		},
+		y: {
+			ticks: {
+				font: {
+					size: 10,
+				},
+			},
+		},
+	},
+};
 
 export default function SimilarChart({ data, today }: SimilarChartProps) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -65,17 +93,19 @@ export default function SimilarChart({ data, today }: SimilarChartProps) {
 						label: '오늘',
 						data: data.trendToday.map((item) => item.Close),
 						borderColor: '#2A3FEC',
-						pointStyle: '',
+						pointRadius: 0,
 					},
 					{
 						type: 'line',
 						label: '과거',
 						data: data.trendPastScaled.map((item) => item.ScaledClose),
 						borderColor: '#C1C1C1',
+						pointRadius: 0,
 					},
 				],
 				labels: getDateLabels(today),
 			},
+			options: chartOptions,
 		});
 		return () => chart.destroy();
 	}, []);
