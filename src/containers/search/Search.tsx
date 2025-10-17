@@ -1,18 +1,29 @@
 'use client';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { setStockCodeToLocalStorage } from '@/utils/stockCodeStorage';
+import searchStock from '@/services/search';
 
 export default function Search() {
 	const router = useRouter();
 	const [keyword, setKeyword] = useState('');
-	const [result, setResult] = useState<{ stock: string; code: string }[]>([]);
+	const [result, setResult] = useState<{ stockName: string; symbol: string }[]>(
+		[]
+	);
 
-	const dummyResult = [
-		{ stock: '삼성전자', code: '005930' },
-		{ stock: '한화에어로스페이스', code: '012450' },
-	];
+	// const dummyResult = [
+	// 	{ stock: '삼성전자', code: '005930' },
+	// 	{ stock: '한화에어로스페이스', code: '012450' },
+	// ];
+
+	// useEffect(() => {
+	// 	searchStock(keyword).then((res) => {
+	// 		if (res.length > 0) {
+	// 			setResult(res);
+	// 		}
+	// 	});
+	// }, [keyword]);
 
 	return (
 		<>
@@ -34,7 +45,11 @@ export default function Search() {
 					className="focus:outline-none text-lg"
 					onChange={(e) => {
 						setKeyword(e.target.value);
-						setResult(dummyResult);
+						searchStock(keyword).then((res) => {
+							if (res.length > 0) {
+								setResult(res);
+							}
+						});
 					}}
 				></input>
 			</div>
@@ -42,15 +57,15 @@ export default function Search() {
 			<div>
 				{result.map((data) => (
 					<div
-						key={data.stock}
+						key={data.stockName}
 						onClick={() => {
-							setStockCodeToLocalStorage(data.code);
-							router.push(`/${data.code}`);
+							setStockCodeToLocalStorage(data.symbol);
+							router.push(`/${data.symbol}`);
 						}}
 					>
 						<div className="grid grid-cols-[1fr_3fr_1fr] py-3.5">
 							<span className="text-sm text-gray-500">국내주식</span>
-							<span>{data.stock}</span>
+							<span>{data.stockName}</span>
 							<span></span>
 						</div>
 						<div className="w-[100%]  border-[0.5px] border-[#EEEEEE]" />
