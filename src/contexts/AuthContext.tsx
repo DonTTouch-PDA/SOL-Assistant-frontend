@@ -12,6 +12,7 @@ interface AuthContextType {
 	isLoading: boolean;
 	login: (id: string, password: string) => Promise<boolean>;
 	isAuthenticated: boolean;
+	isInitialized: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -19,14 +20,16 @@ export const AuthContext = createContext<AuthContextType | undefined>(
 );
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(true); // 초기값을 true로 변경
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [isInitialized, setIsInitialized] = useState(false);
 	const router = useRouter();
 
 	useEffect(() => {
 		// 앱 시작 시 토큰 확인
 		const accessToken = getAccessToken();
 		setIsAuthenticated(!!accessToken);
+		setIsInitialized(true);
 		setIsLoading(false);
 	}, []);
 
@@ -50,6 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				isLoading,
 				login,
 				isAuthenticated,
+				isInitialized,
 			}}
 		>
 			{children}

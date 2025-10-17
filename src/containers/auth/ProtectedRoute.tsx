@@ -8,17 +8,17 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-	const { isLoading, isAuthenticated } = useAuth();
+	const { isLoading, isAuthenticated, isInitialized } = useAuth();
 	const router = useRouter();
 
 	useEffect(() => {
-		if (!isLoading && !isAuthenticated) {
+		if (isInitialized && !isAuthenticated) {
 			router.push('/login');
 		}
-	}, [isLoading, isAuthenticated, router]);
+	}, [isInitialized, isAuthenticated, router]);
 
-	// 로딩 중이거나 인증되지 않은 경우
-	if (isLoading) {
+	// 초기화되지 않았거나 로딩 중일 때
+	if (!isInitialized || isLoading) {
 		return (
 			<div className="flex items-center justify-center min-h-screen">
 				<div className="text-center">
@@ -30,7 +30,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 	}
 
 	if (!isAuthenticated) {
-		return null; // 리다이렉트 중
+		return null;
 	}
 
 	return <>{children}</>;

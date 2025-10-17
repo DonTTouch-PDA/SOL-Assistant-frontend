@@ -47,7 +47,11 @@ export default function StockInfoHeader() {
 		<div>
 			<div className="flex justify-between">
 				<div className="h-[103px]">
-					<p className="text-[30px] font-bold">{stockInfo?.stockName}</p>
+					<p
+						className={`${stockInfo?.stockName.length && stockInfo?.stockName.length > 6 ? 'text-[25px]' : 'text-[30px]'} font-bold`}
+					>
+						{stockInfo?.stockName}
+					</p>
 					<div className="flex items-center gap-2">
 						{!stockRisk?.management && (
 							<RiskItemBadge
@@ -63,7 +67,9 @@ export default function StockInfoHeader() {
 				</div>
 				<div className="text-right">
 					<div className="flex flex-col items-end gap-2">
-						<p className="text-[23px] font-semibold">
+						<p
+							className={`text-[${(stockInfo?.previousClose?.toString().length || 0) > 6 ? '20px' : '23px'}] font-semibold`}
+						>
 							{stockInfo?.previousClose.toLocaleString()}원
 						</p>
 					</div>
@@ -73,7 +79,7 @@ export default function StockInfoHeader() {
 							<p
 								className={`font-semibold ${
 									isUp ? 'text-[#FB4C5E]' : 'text-[#4D8CFB]'
-								}`}
+								} ${diff.toLocaleString().length > 3 ? 'text-[15px]' : 'text-[20px]'}`}
 							>
 								{isUp ? '+' : ''}
 								{diff.toLocaleString()}원 (
