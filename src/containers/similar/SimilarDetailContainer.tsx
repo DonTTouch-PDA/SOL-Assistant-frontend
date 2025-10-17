@@ -328,7 +328,7 @@ export default function SimilarDetailContainer({
 				<div className="relative">
 					<div className="absolute top-0 right-0 translate-x-[10px] -translate-y-[15px]">
 						<CustomPopOver
-							text="이날 볼린저밴드 하단선을 터치했어요!"
+							text={`${dummyData.description}`}
 							upSideDown={true}
 							isShowPopover={showPopover}
 						/>
@@ -340,7 +340,8 @@ export default function SimilarDetailContainer({
 							{similarChart?.signalType}
 						</p>
 						<p className="text-[16px] leading-5">
-							{SIMILAR_DETAIL_BOLLINGER_BANDS}
+							{/* {SIMILAR_DETAIL_BOLLINGER_BANDS} */}
+							{dummyData.descriptionDetail}
 						</p>
 					</div>
 				</CustomCard>
