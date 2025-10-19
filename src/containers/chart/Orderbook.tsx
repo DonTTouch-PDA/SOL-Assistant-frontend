@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useStock } from '@/contexts/StockContext';
+import OrderbookModal from './OrderbookModal';
 
 interface OrderbookData {
 	price: number;
@@ -12,9 +13,13 @@ interface OrderbookData {
 export default function Orderbook() {
 	const [orderbookData, setOrderbookData] = useState<OrderbookData[]>([]);
 	const [currentPrice, setCurrentPrice] = useState(0); // 현재가 기준
-	const { stockInfo, isLoading } = useStock();
+	const { stockInfo, stockRisk, isLoading } = useStock();
 	const scrollRef = useRef<HTMLDivElement>(null);
-
+	const [modalOpen, setModalOpen] = useState(false);
+	//모달 선택 시 전달 될 값
+	const [selectedPrice, setSelectedPrice] = useState<number>(0);
+	const [selectedChangeRate, setSelectedChangeRate] = useState<number>(0);
+	const [coordinateY, setCoordinateY] = useState<number>(0);
 	// 주식 가격대에 따른 호가단위 계산
 	const getPriceUnit = (price: number): number => {
 		if (price < 2000) return 1;
@@ -45,7 +50,7 @@ export default function Orderbook() {
 					i < 0 ? Math.floor(Math.random() * 1000000) + 5000 : 0;
 
 				data.push({
-					price,
+					price: price,
 					askQuantity,
 					bidQuantity,
 					changeRate,
@@ -68,8 +73,8 @@ export default function Orderbook() {
 			setTimeout(() => {
 				if (scrollRef.current) {
 					const containerHeight = scrollRef.current.clientHeight;
-					const itemHeight = 45; // 각 호가 행의 높이 (h-10 = 40px)
-					const currentPriceIndex = 10; // 현재가는 중앙(인덱스 10)에 위치
+					const itemHeight = 45;
+					const currentPriceIndex = 10;
 					const scrollTop =
 						currentPriceIndex * itemHeight -
 						containerHeight / 2 +
@@ -92,11 +97,11 @@ export default function Orderbook() {
 					...item,
 					askQuantity:
 						item.price > currentPrice
-							? Math.floor(Math.random() * 1000000) + 5000
+							? Math.floor(Math.random() * 1000000) + 3000
 							: 0,
 					bidQuantity:
 						item.price <= currentPrice
-							? Math.floor(Math.random() * 1000000) + 5000
+							? Math.floor(Math.random() * 1000000) + 3000
 							: 0,
 				}))
 			);
@@ -177,7 +182,15 @@ export default function Orderbook() {
 
 							{/* 호가 */}
 							<div
-								className={`w-1/3 text-center ${isCurrentPrice ? 'border border-black rounded-[8px]' : ''}`}
+								className={`w-1/3 text-center overflow-x-hidden ${isCurrentPrice ? 'border border-black rounded-[8px]' : ''}`}
+								onClick={(e) => {
+									setSelectedPrice(item.price);
+									setSelectedChangeRate(item.changeRate);
+									// 클릭한 요소의 위치 계산
+									const rect = e.currentTarget.getBoundingClientRect();
+									setCoordinateY(rect.top);
+									setModalOpen(true);
+								}}
 							>
 								<div
 									className={`text-sm font-medium ${getPriceColor(item.changeRate)}`}
@@ -211,6 +224,16 @@ export default function Orderbook() {
 					);
 				})}
 			</div>
+			{/* 모달 만들기 */}
+			{modalOpen && (
+				<OrderbookModal
+					price={selectedPrice}
+					changeRate={selectedChangeRate}
+					onClose={() => setModalOpen(false)}
+					needWarning={(stockRisk?.management || stockRisk?.delisting) ?? false}
+					coordinateY={coordinateY}
+				/>
+			)}
 		</div>
 	);
 }

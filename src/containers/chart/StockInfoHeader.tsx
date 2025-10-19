@@ -46,21 +46,21 @@ export default function StockInfoHeader() {
 	return (
 		<div>
 			<div className="flex justify-between">
-				<div className="h-[103px]">
+				<div className="h-[90px]">
 					<p
 						className={`${stockInfo?.stockName.length && stockInfo?.stockName.length > 6 ? 'text-[25px]' : 'text-[30px]'} font-bold`}
 					>
 						{stockInfo?.stockName}
 					</p>
 					<div className="flex items-center gap-2">
-						{!stockRisk?.management && (
+						{stockRisk?.management && (
 							<RiskItemBadge
-								riskType={!stockRisk?.management ? '관리종목' : '관리종목'}
+								riskType={stockRisk.management ? '관리종목' : '관리종목'}
 							/>
 						)}
-						{!stockRisk?.delisting && (
+						{stockRisk?.delisting && (
 							<RiskItemBadge
-								riskType={!stockRisk?.delisting ? '정리매매' : '정리매매'}
+								riskType={stockRisk.delisting ? '정리매매' : '정리매매'}
 							/>
 						)}
 					</div>
@@ -79,7 +79,7 @@ export default function StockInfoHeader() {
 							<p
 								className={`font-semibold ${
 									isUp ? 'text-[#FB4C5E]' : 'text-[#4D8CFB]'
-								} ${diff.toLocaleString().length > 3 ? 'text-[15px]' : 'text-[20px]'}`}
+								} ${diff.toLocaleString().length > 5 ? 'text-[15px]' : 'text-[20px]'}`}
 							>
 								{isUp ? '+' : ''}
 								{diff.toLocaleString()}원 (
