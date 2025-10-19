@@ -1,14 +1,11 @@
 'use client';
 
-import {
-	Trading,
-	DailyTrading,
-	MonthlyHistory,
-	ProfitHistoryData,
-} from '@/types/ProfitHistory';
+import { FetchMonthlyProfit } from '@/services/reportServices';
+import { Trading, DailyTrading, MonthlyHistory } from '@/types/ProfitHistory';
+import { formatToYearMonth } from '@/utils/date';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const dummy = {
 	currentMonth: {
@@ -56,7 +53,7 @@ const dummy = {
 			},
 		],
 	},
-	previousMonths: [],
+	prevMonths: [],
 };
 const dummyRes = {
 	month: '2025.08',
@@ -117,9 +114,46 @@ const dummyRes = {
 	],
 };
 
+interface ProfitHistoryBreakdown {
+	date: string;
+	tradings: ProfitHistoryTrading[];
+}
+interface ProfitHistoryTrading {
+	stock: string;
+	imgUrl: string;
+	type: string;
+	amount: number;
+	price: number;
+}
+
+interface ProfitHistoryData {
+	month: string;
+	total: {
+		sum: number;
+		diff: number;
+		buy: { count: number; price: number };
+		sell: { count: number; price: number };
+	};
+	breakdown: ProfitHistoryBreakdown[];
+}
+
 export default function ProfitHistory() {
 	const router = useRouter();
-	const [data, setData] = useState<ProfitHistoryData>(dummy);
+	const thisMonth = formatToYearMonth(new Date());
+	const [data, setData] = useState<ProfitHistoryData>({
+		month: thisMonth,
+		total: {
+			sum: 0,
+			diff: 0,
+			buy: { count: 0, price: 0 },
+			sell: { count: 0, price: 0 },
+		},
+		breakdown: [],
+	});
+
+	useEffect(() => {
+		FetchMonthlyProfit(thisMonth).then((d) => setData(d));
+	}, []);
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [showLoadMore, setShowLoadMore] = useState(true);
@@ -128,10 +162,10 @@ export default function ProfitHistory() {
 		setIsLoading(true);
 		await UseSleep(1000);
 		const prevData = dummyRes;
-		setData((prev) => ({
-			...prev,
-			previousMonths: [...prev.previousMonths, prevData],
-		}));
+		// setData((prev) => ({
+		// 	...prev,
+		// 	prevMonths: [...prev.prevMonths, prevData],
+		// }));
 		setShowLoadMore(false);
 	};
 
@@ -153,25 +187,21 @@ export default function ProfitHistory() {
 			<div className="px-2">
 				{/* 월 총계 */}
 				<div className="py-2">
-					<p className="font-medium text-lg pb-1">
-						{data.currentMonth.month.slice(5)}월 실현수익
-					</p>
+					<p className="font-medium text-lg pb-1">{thisMonth}월 실현수익</p>
 					<div className="flex items-end gap-2 pb-4">
 						<h1 className="text-3xl font-semibold">
-							<b className="font-semibold">
-								{data.currentMonth.total.sum >= 0 && '+'}
-							</b>
-							{data.currentMonth.total.sum.toLocaleString()}원
+							<b className="font-semibold">{data.total.sum >= 0 && '+'}</b>
+							{data.total.sum.toLocaleString()}원
 						</h1>
 
 						<div className="text-sm font-semibold">
-							{data.currentMonth.total.diff >= 0 ? (
+							{data.total.diff >= 0 ? (
 								<p className=" bg-[#FCF4F4] text-[#FA2D42] rounded-sm px-1.5">
-									+{data.currentMonth.total.diff}%
+									+{data.total.diff}%
 								</p>
 							) : (
 								<p className=" bg-[#F4F9FF] text-[#2E77FA] rounded-sm px-1.5">
-									{data.currentMonth.total.diff}%
+									{data.total.diff}%
 								</p>
 							)}
 						</div>
@@ -183,37 +213,50 @@ export default function ProfitHistory() {
 						<p className="text-sm font-medium">
 							매수
 							<b className="pl-2 font-medium text-[#FB2D42]">
-								{data.currentMonth.total.buy.count}건
+								{data.total.buy.count}건
 							</b>
 						</p>
 						<h1 className="text-2xl font-semibold text-[#FB2D42]">
-							{data.currentMonth.total.buy.price.toLocaleString()}원
+							{data.total.buy.price.toLocaleString()}원
 						</h1>
 					</div>
 					<div className="flex flex-col justify-center p-7">
 						<p className="text-sm font-medium">
 							매도
 							<b className="pl-2 font-medium text-[#2D77FA]">
-								{data.currentMonth.total.sell.count}건
+								{data.total.sell.count}건
 							</b>
 						</p>
 						<h1 className="text-2xl font-semibold text-[#2D77FA]">
-							{data.currentMonth.total.sell.price.toLocaleString()}원
+							{data.total.sell.price.toLocaleString()}원
 						</h1>
 					</div>
 				</div>
 
 				{/* 상세내역 */}
 				{/* 이번달 */}
-				<MonthSection data={data.currentMonth} />
+				{data.breakdown.length > 0 ? (
+					<MonthSection data={data} />
+				) : (
+					<div className="flex flex-col items-center gap-4 p-10">
+						<Image
+							src="/notification.svg"
+							alt="notification"
+							width={40}
+							height={40}
+						/>
+						<p className="text-gray-500 text-lg">아직 매매 내역이 없어요.</p>
+					</div>
+				)}
+
 				{/* 지난달(전체) */}
-				{data.previousMonths?.map((monthData, i) => (
+				{/* {data.prevMonths?.map((monthData, i) => (
 					<MonthSection key={i} data={monthData} />
-				))}
+				))} */}
 				{/* 더보기 */}
 				{showLoadMore && (
 					<div className="flex justify-center gap-1 pt-2">
-						<p>{isLoading ? '불러오는 중...' : '이전 거래내역 더보기'}</p>
+						<p>{isLoading ? '불러오는 중...' : '이전 1개월 거래내역 더보기'}</p>
 						<Image
 							src="/arrow-down.svg"
 							alt="더보기"
