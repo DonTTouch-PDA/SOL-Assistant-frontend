@@ -6,11 +6,12 @@ import {
 	useEffect,
 	ReactNode,
 } from 'react';
-import { fetchStockInfo } from '@/services/chartServices';
-import { StockInfo } from '@/types/chart';
+import { fetchStockInfo, fetchStockRiskCheck } from '@/services/chartServices';
+import { StockInfo, StockRisk } from '@/types/chart';
 
 interface StockContextType {
 	stockInfo: StockInfo | null;
+	stockRisk: StockRisk | null;
 	isLoading: boolean;
 }
 
@@ -18,6 +19,7 @@ const StockContext = createContext<StockContextType | undefined>(undefined);
 
 export function StockProvider({ children }: { children: ReactNode }) {
 	const [stockInfo, setStockInfo] = useState<StockInfo | null>(null);
+	const [stockRisk, setStockRisk] = useState<StockRisk | null>(null);
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
@@ -32,6 +34,8 @@ export function StockProvider({ children }: { children: ReactNode }) {
 				if (stockCode && stockCode !== 'chart') {
 					const info = await fetchStockInfo(stockCode);
 					setStockInfo(info as StockInfo);
+					const risk = await fetchStockRiskCheck(stockCode);
+					setStockRisk(risk as StockRisk);
 				}
 			} catch (error) {
 				console.error('주식 정보 로딩 실패:', error);
@@ -47,6 +51,7 @@ export function StockProvider({ children }: { children: ReactNode }) {
 		<StockContext.Provider
 			value={{
 				stockInfo,
+				stockRisk,
 				isLoading,
 			}}
 		>
