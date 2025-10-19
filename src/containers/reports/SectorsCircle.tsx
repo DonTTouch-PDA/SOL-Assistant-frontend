@@ -1,22 +1,41 @@
 'use client';
 import CustomCard from '@/components/common/CustomCard';
+import { FetchCircleChartData } from '@/services/reportServices';
 import { Chart, DoughnutController, ArcElement, Legend } from 'chart.js';
-import { useEffect, useRef } from 'react';
-const data = {
-	labels: ['헬스케어', '에너지', '정보기술'],
-	datasets: [
-		{
-			data: [60, 25, 15],
-			backgroundColor: ['#0040E8', '#4C7DFF', '#B3C8FF'],
-		},
-	],
-};
+import { useEffect, useRef, useState } from 'react';
+// const data = {
+// 	labels: ['헬스케어', '에너지', '정보기술'],
+// 	datasets: [
+// 		{
+// 			data: [60, 25, 15],
+// 			backgroundColor: ['#0040E8', '#4C7DFF', '#B3C8FF'],
+// 		},
+// 	],
+// };
 
 Chart.register(ArcElement, DoughnutController, Legend);
 
 export default function SectorsCircle() {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const [circleData, setCircleData] = useState<{
+		sectorNames: string[];
+		percentages: number[];
+	}>({ sectorNames: [], percentages: [] });
 
+	useEffect(() => {
+		FetchCircleChartData().then((d) => setCircleData(d));
+	}, []);
+
+	const data = {
+		labels: circleData?.sectorNames,
+		datasets: [
+			{
+				data: circleData?.percentages,
+				backgroundColor: ['#0040E8', '#4C7DFF', '#B3C8FF'], //이후변경
+			},
+		],
+	};
+
+	const canvasRef = useRef<HTMLCanvasElement>(null);
 	useEffect(() => {
 		const ctx = canvasRef.current?.getContext('2d');
 		if (!ctx) return;
@@ -35,8 +54,10 @@ export default function SectorsCircle() {
 	return (
 		<CustomCard>
 			<p className="pb-5 font-medium text-xl">
-				<b className="font-semibold text-blue-700">{data.labels.length}</b>개
-				섹터의 주식을 보유하고 있어요
+				<b className="font-semibold text-blue-700">
+					{circleData?.percentages.length}
+				</b>
+				개 섹터의 주식을 보유하고 있어요
 			</p>
 			<div className="flex items-center justify-around">
 				<canvas ref={canvasRef} height={100} width={100} />

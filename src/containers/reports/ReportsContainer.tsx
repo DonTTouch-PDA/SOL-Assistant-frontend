@@ -1,4 +1,4 @@
-import MonthlyProfit from './MonthyProfit';
+import MonthlyProfit from './MonthlyProfit';
 import MyAsset from './MyAsset';
 import MyType from './MyType';
 import SectorsCircle from './SectorsCircle';

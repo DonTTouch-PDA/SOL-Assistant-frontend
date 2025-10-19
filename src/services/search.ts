@@ -6,9 +6,6 @@ export default async function searchStock(params: string) {
 		const res = await fetch(
 			`${baseUrl}/v1/external/chart/search/${encodeURIComponent(params)}`
 		);
-		// const res = await apiClient.request(
-		// 	`${baseUrl}/v1/external/chart/search/${encodeURIComponent(params)}`
-		// );
 		if (!res.ok) {
 			throw new Error(`HTTP ${res.status}`);
 		}
