@@ -11,7 +11,10 @@ interface StockHoldingData {
 }
 
 export default function StockHolding() {
-	const [data, setData] = useState<StockHoldingData>();
+	const [data, setData] = useState<StockHoldingData>({
+		averageHoldingDays: 0,
+		quantile: 0,
+	});
 	useEffect(() => {
 		FetchMyRetention().then((d) => setData(d));
 	}, []);

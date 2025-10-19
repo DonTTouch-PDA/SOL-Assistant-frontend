@@ -118,30 +118,53 @@ export default function SectorNewsContainer() {
 
 	return (
 		<div className="p-2">
-			<section className="flex items-end gap-1 py-2">
-				<h1 className="text-xl font-semibold">
-					{dummyUser.name}님의 관심 섹터
-				</h1>
-				{news.length > 0 && <br />}
-				<h1 className="text-xl font-semibold">
-					{news.length > 0 && (
+			{news.length == 0 ? (
+				<section className="flex items-end gap-1 py-2">
+					<h1 className="text-xl font-semibold">
+						{dummyUser.name}님의 관심 섹터
+					</h1>
+					{news.length > 0 && <br />}
+					<h1 className="text-xl font-semibold">
+						{news.length > 0 && (
+							<b className="font-bold text-[#2A3FEC]">
+								{dummyUser.sector.toLocaleString()}
+							</b>
+						)}
+						{` `}
+						연관 뉴스
+					</h1>
+					<Image
+						src="/question.png"
+						width={21}
+						height={21}
+						alt="info"
+						onClick={() => {
+							setOpen(true);
+						}}
+					/>
+				</section>
+			) : (
+				<section>
+					<h1 className="text-xl font-semibold">
+						{dummyUser.name}님의 관심 섹터
+					</h1>
+					<h1 className="text-xl font-semibold flex items-end gap-1">
 						<b className="font-bold text-[#2A3FEC]">
 							{dummyUser.sector.toLocaleString()}
 						</b>
-					)}
-					{` `}
-					연관 뉴스
-				</h1>
-				<Image
-					src="/question.png"
-					width={21}
-					height={21}
-					alt="info"
-					onClick={() => {
-						setOpen(true);
-					}}
-				/>
-			</section>
+						연관 뉴스
+						<Image
+							src="/question.png"
+							width={21}
+							height={21}
+							alt="info"
+							onClick={() => {
+								setOpen(true);
+							}}
+						/>
+					</h1>
+				</section>
+			)}
 
 			{/* Carousel */}
 			<section className="px-10 pt-4 -mx-5 pb-6">
