@@ -1,13 +1,23 @@
+'use client';
 import CustomCard from '@/components/common/CustomCard';
-const data = { asset: 1234320, diff: -123500 };
+import { FetchMyAsset } from '@/services/reportServices';
+import { useEffect, useState } from 'react';
+// const data = { asset: 1234320, diff: -123500 };
 
 export default function MyAsset() {
-	const diff = data.diff;
+	const [assetData, setAssetData] = useState({ totalBalance: 0, principal: 0 });
+
+	useEffect(() => {
+		FetchMyAsset().then((d) => setAssetData(d));
+	}, []);
+	const diff = assetData.principal;
 	return (
 		<CustomCard>
 			<h1 className="text-xl font-medium pb-1">MY 자산</h1>
 			<p className="pb-2 text-xl font-medium">
-				<b className="text-3xl font-semibold">{data.asset.toLocaleString()}</b>{' '}
+				<b className="text-3xl font-semibold">
+					{assetData.totalBalance.toLocaleString()}
+				</b>{' '}
 				원
 			</p>
 			<span>

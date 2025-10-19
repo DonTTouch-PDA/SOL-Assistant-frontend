@@ -12,6 +12,21 @@ export default function Search() {
 		[]
 	);
 
+	useEffect(() => {
+		if (!keyword.trim()) {
+			setResult([]);
+			return;
+		}
+
+		const timer = setTimeout(() => {
+			searchStock(keyword).then((res) => {
+				setResult(res || []);
+			});
+		}, 300);
+
+		return () => clearTimeout(timer);
+	}, [keyword]);
+
 	// const dummyResult = [
 	// 	{ stock: '삼성전자', code: '005930' },
 	// 	{ stock: '한화에어로스페이스', code: '012450' },
@@ -44,12 +59,13 @@ export default function Search() {
 					autoFocus
 					className="focus:outline-none text-lg"
 					onChange={(e) => {
+						// setKeyword(e.target.value);
+						// searchStock(keyword).then((res) => {
+						// 	if (res.length > 0) {
+						// 		setResult(res);
+						// 	}
+						// });
 						setKeyword(e.target.value);
-						searchStock(keyword).then((res) => {
-							if (res.length > 0) {
-								setResult(res);
-							}
-						});
 					}}
 				></input>
 			</div>
