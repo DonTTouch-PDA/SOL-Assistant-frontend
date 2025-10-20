@@ -14,84 +14,48 @@ import BottomSheet from '@/components/common/BottomSheet';
 import { AINEWS } from '@/constants/descriptions';
 import { fetchSectorNews } from '@/services/sectorNewsService';
 import { newsList } from '@/types/news';
+import {
+	Anvil,
+	Cigarette,
+	Factory,
+	FlaskConical,
+	Fuel,
+	Landmark,
+	Laptop,
+	Settings,
+	Ship,
+	SmartphoneNfc,
+	Tablets,
+	Truck,
+	Zap,
+} from 'lucide-react';
 
 const dummyUser = {
 	name: '프디아',
 	sector: ['헬스케어', '에너지', '정보기술'],
 };
-// const dummyNews = [
-// 	{
-// 		sector: '헬스케어',
-// 		opinion: '긍정',
-// 		summary:
-// 			'규제 리스크와 지정학 불확실성 압박 속에서도 일부 구조조정 움직임과 백신/의료기기 기술 수요 기대가 맞물림',
-// 		newsList: [
-// 			{
-// 				date: '2025.10.10',
-// 				journal: '헬스케어뉴스',
-// 				title: '삼성바이오로직스, 바이오 재팬 2025서 경쟁력 입증',
-// 				url: 'https://health.chosun.com/news/dailynews_view.jsp?mn_idx=563199',
-// 			},
-// 			{
-// 				date: '2025.10.10',
-// 				journal: '한경',
-// 				title: `NH올원뱅크 '15초 건강측정' 서비스 출시`,
-// 				url: 'https://www.hankyung.com/article/202510100514P',
-// 				imgUrl:
-// 					'https://img.hankyung.com/photo/202510/b99bca265e7b50fe563447c0bb766e16.png',
-// 			},
-// 		],
-// 	},
-// 	{
-// 		sector: '에너지',
-// 		opinion: '중립',
-// 		summary:
-// 			'규제 속에서도 일부 구조조정 움직임과 백신·의료기기 기술 수요 기대가 맞물림',
-// 		newsList: [
-// 			{
-// 				date: '2025.10.10',
-// 				journal: '에너지뉴스',
-// 				title: '바이오 재팬 2025서 경쟁력 입증',
-// 				url: 'https://health.chosun.com/news/dailynews_view.jsp?mn_idx=563199',
-// 			},
-// 			{
-// 				date: '2025.10.10',
-// 				journal: '한경',
-// 				title: `'15초 건강측정' 서비스 출시`,
-// 				url: 'https://www.hankyung.com/article/202510100514P',
-// 				imgUrl:
-// 					'https://img.hankyung.com/photo/202510/b99bca265e7b50fe563447c0bb766e16.png',
-// 			},
-// 		],
-// 	},
-// 	{
-// 		sector: '정보기술',
-// 		opinion: '부정',
-// 		summary: ' 구조조정 움직임과 백신·의료기기 기술 수요 기대가 맞물림',
-// 		newsList: [
-// 			{
-// 				date: '2025.10.10',
-// 				journal: '정보기술뉴스',
-// 				title: '삼성바이오로직스, 경쟁력 입증',
-// 				url: 'https://health.chosun.com/news/dailynews_view.jsp?mn_idx=563199',
-// 			},
-// 			{
-// 				date: '2025.10.10',
-// 				journal: '한경',
-// 				title: `NH올원뱅크 '15초 건강측정' 서비스 출시`,
-// 				url: 'https://www.hankyung.com/article/202510100514P',
-// 				imgUrl:
-// 					'https://img.hankyung.com/photo/202510/b99bca265e7b50fe563447c0bb766e16.png',
-// 			},
-// 		],
-// 	},
-// ];
+
+const icons = {
+	금속: Anvil,
+	제약: Tablets,
+	운송장비·부품: Ship,
+	화학: FlaskConical,
+	통신: SmartphoneNfc,
+	기타금융: Landmark,
+	전기·전자: Zap,
+	'IT 서비스': Laptop,
+	유통: Truck,
+	기계·장비: Settings,
+	음식료·담배: Cigarette,
+	전기·가스: Fuel,
+	건설: Factory,
+};
 
 export default function SectorNewsContainer() {
 	const opinionColors: Record<string, string> = {
-		긍정: 'bg-[#EAF5F0] text-[#169F6E] ',
-		부정: 'bg-[#FCF4F4] text-[#FA2D42]',
-		중립: 'bg-[#FFF9E8] text-[#EA9635] ',
+		POSITIVE: 'bg-[#EAF5F0] text-[#169F6E] ',
+		NEGATIVE: 'bg-[#FCF4F4] text-[#FA2D42]',
+		NEUTRAL: 'bg-[#FFF9E8] text-[#EA9635] ',
 	};
 
 	const [api, setApi] = useState<CarouselApi>();
@@ -118,30 +82,43 @@ export default function SectorNewsContainer() {
 
 	return (
 		<div className="p-2">
-			<section className="flex items-end gap-1 py-2">
-				<h1 className="text-xl font-semibold">
-					{dummyUser.name}님의 관심 섹터
-				</h1>
-				{news.length > 0 && <br />}
-				<h1 className="text-xl font-semibold">
-					{news.length > 0 && (
+			{news.length == 0 ? (
+				<section className="flex items-end gap-1 py-2">
+					<h1 className="text-xl font-semibold">
+						{dummyUser.name}님의 관심 섹터 연관 뉴스
+					</h1>
+					<Image
+						src="/question.png"
+						width={21}
+						height={21}
+						alt="info"
+						onClick={() => {
+							setOpen(true);
+						}}
+					/>
+				</section>
+			) : (
+				<section>
+					<h1 className="text-xl font-semibold">
+						{dummyUser.name}님의 관심 섹터
+					</h1>
+					<h1 className="text-xl font-semibold flex items-end gap-1">
 						<b className="font-bold text-[#2A3FEC]">
-							{dummyUser.sector.toLocaleString()}
+							{news.map((n) => n.sector).toLocaleString()}
 						</b>
-					)}
-					{` `}
-					연관 뉴스
-				</h1>
-				<Image
-					src="/question.png"
-					width={21}
-					height={21}
-					alt="info"
-					onClick={() => {
-						setOpen(true);
-					}}
-				/>
-			</section>
+						연관 뉴스
+						<Image
+							src="/question.png"
+							width={21}
+							height={21}
+							alt="info"
+							onClick={() => {
+								setOpen(true);
+							}}
+						/>
+					</h1>
+				</section>
+			)}
 
 			{/* Carousel */}
 			<section className="px-10 pt-4 -mx-5 pb-6">
@@ -153,20 +130,28 @@ export default function SectorNewsContainer() {
 									<CustomCard>
 										<div>
 											<div className="flex gap-3 items-center pb-2">
-												<Image
-													src={`/${sector.sector}.svg`}
-													width={46}
-													height={46}
-													alt={sector.sector}
-												/>
+												{(() => {
+													const IconComponent =
+														icons[sector.sector as keyof typeof icons];
+													return (
+														<div className="bg-[#F5F5F5] w-[44px] h-[44px] rounded-full flex items-center justify-center">
+															<IconComponent className="w-7 h-7 stroke-gray-800" />
+														</div>
+													);
+												})()}
+
 												<div className="flex items-end gap-2">
 													<h1 className="text-lg font-semibold">
 														{sector.sector}
 													</h1>
 													<span
-														className={`rounded-sm px-1.5 text-sm font-semibold ${opinionColors[sector.opinion]}`}
+														className={`rounded-sm px-1.5 text-sm font-semibold ${opinionColors[sector.emotion]}`}
 													>
-														{sector.opinion}
+														{sector.emotion === 'POSITIVE'
+															? '긍정'
+															: sector.emotion === 'NEGATIVE'
+																? '부정'
+																: '중립'}
 													</span>
 												</div>
 											</div>

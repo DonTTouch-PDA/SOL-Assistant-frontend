@@ -1,4 +1,4 @@
-import ChartContainer from '@/containers/myStocks/ChartContainer';
+import ChartContainer from '@/containers/chart/ChartContainer';
 
 interface PageProps {
 	params: Promise<{

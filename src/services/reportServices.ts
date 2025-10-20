@@ -7,7 +7,11 @@ export async function FetchMyRetention() {
 	if (!res.ok) {
 		throw new Error('보유일을 불러오는 데 실패했습니다.');
 	}
-	return res.json();
+	const json = await res.json();
+	return {
+		averageHoldingDays: json.averageHoldingDays,
+		quantile: 100 - json.quantile,
+	};
 }
 
 export interface CircleSector {
