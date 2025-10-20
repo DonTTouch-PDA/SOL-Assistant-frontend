@@ -71,7 +71,7 @@ export default function OrderbookModal({
 					<div className="flex text-center items-center h-[55px] bg-white rounded-[8px]">
 						<button
 							onClick={handleSellClick}
-							className="w-1/4 bg-red-500 text-white h-full rounded-l-[8px]"
+							className="w-1/4 bg-blue-500 text-white h-full rounded-l-[8px]"
 						>
 							판매
 						</button>
@@ -81,7 +81,7 @@ export default function OrderbookModal({
 						</div>
 						<button
 							onClick={handleBuyClick}
-							className="w-1/4 bg-blue-500 text-white h-full rounded-r-[8px]"
+							className="w-1/4 bg-red-500 text-white h-full rounded-r-[8px]"
 						>
 							구매
 						</button>

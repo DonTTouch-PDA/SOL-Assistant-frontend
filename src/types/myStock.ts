@@ -1,13 +1,11 @@
 export interface MyStock {
-	id: number;
-	img: string;
-	name: string;
-	code: string;
+	stockName: string;
+	symbol: string;
 	currentPrice: number;
 	changeRate: number;
-	type: string;
-	holding: number;
-	buyAverage: number;
+	market: string;
+	quantity: number;
+	costBasis: number;
 	diff: number;
 	profit: number;
 }
