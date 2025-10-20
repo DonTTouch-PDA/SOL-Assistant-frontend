@@ -22,10 +22,10 @@ export default function SectorsCircle() {
 	}>({ sectorNames: [], percentages: [] });
 
 	useEffect(() => {
-		// setCircleData({
-		// 	sectorNames: ['커뮤니케이션', '2', '3', '4', '5'],
-		// 	percentages: [40, 40, 10, 10, 10],
-		// });
+		setCircleData({
+			sectorNames: ['커뮤니케이션', '2', '3', '4', '5'],
+			percentages: [40, 40, 10, 10, 10],
+		});
 		FetchCircleChartData().then((d) => setCircleData(d));
 	}, []);
 
@@ -35,13 +35,7 @@ export default function SectorsCircle() {
 		let labels = [...circleData.sectorNames];
 		let values = [...circleData.percentages];
 
-		const baseColors5 = [
-			'#1539CB', // 1
-			'#0040E8', // 2
-			'#005DF9', // 3
-			'#94ABFA', // 4
-			'#B3C8FF', // 5
-		];
+		const baseColors5 = ['#1539CB', '#0046FF', '#005DF9', '#94ABFA', '#B3C8FF'];
 		const baseColorsEtc = [
 			'#0040E8',
 			'#005DF9',

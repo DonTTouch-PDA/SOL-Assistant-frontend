@@ -3,14 +3,13 @@ const baseUrl = 'https://sol-assistant.site/api';
 
 export default async function searchStock(params: string) {
 	try {
-		const res = await fetch(
+		const res = await apiClient.request(
 			`${baseUrl}/v1/external/chart/search/${encodeURIComponent(params)}`
 		);
 		if (!res.ok) {
 			throw new Error(`HTTP ${res.status}`);
 		}
-		const data = await res.json();
-		return data.stockList;
+		return res.json();
 	} catch (err) {
 		console.error('검색 요청 실패', err);
 		return [];

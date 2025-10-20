@@ -1,5 +1,6 @@
 import React from 'react';
 import ProfitRate from './ProfitRate';
+import Image from 'next/image';
 
 interface StockListItemCardProps {
 	name: string;
@@ -52,7 +53,7 @@ export default function StockListItemCard({
 
 					{/* 종목 로고 */}
 					<div>
-						<img
+						<Image
 							src={img}
 							alt={name}
 							width={36}
@@ -63,7 +64,7 @@ export default function StockListItemCard({
 
 					{/* 종목 정보 */}
 					<div className="text-left">
-						<h2 className="text-black text-base">{name}</h2>
+						<h2 className="text-black text-base font-medium">{name}</h2>
 						{detail === 'buy' && (
 							<div className="inline-block text-red-500 rounded-[4px] bg-red-100 px-[4px] text-sm font-medium">
 								매수 +{volumeRate}%
