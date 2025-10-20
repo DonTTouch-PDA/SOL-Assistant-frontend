@@ -1,5 +1,5 @@
 import { LoginTokenResponse } from '@/types/auth';
-import { getRefreshToken } from '@/utils/tokenStorage';
+import { getAccessToken, getRefreshToken } from '@/utils/tokenStorage';
 
 export const postLoginToken = async (authId: string, password: string) => {
 	try {
@@ -27,7 +27,9 @@ export const refreshAccessToken = async () => {
 		const data = await fetch('/api/v1/internal/member/reissue', {
 			method: 'GET',
 			headers: {
-				Authorization: `Bearer ${getRefreshToken()}`,
+				'Content-Type': 'application/json',
+				accessToken: `${getAccessToken()}`,
+				refreshToken: `${getRefreshToken()}`,
 			},
 		});
 

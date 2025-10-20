@@ -109,9 +109,9 @@ export default function MonthlyProfit() {
 					</div>
 					<div className="flex gap-2 items-center">
 						<p
-							className={`text-sm font-semibold ${data.side == '매도' ? 'text-[#2d77fa]' : 'text-[#fb2d42]'}`}
+							className={`text-sm font-semibold ${data.side == 'SELL' ? 'text-[#2d77fa]' : 'text-[#fb2d42]'}`}
 						>
-							{data.side}
+							{data.side == 'SELL' ? '매도' : '매수'}
 						</p>
 
 						<p>{data.totalPrice.toLocaleString()}</p>

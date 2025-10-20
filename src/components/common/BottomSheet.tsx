@@ -42,7 +42,7 @@ export default function BottomSheet({
                             w-full max-w-[430px] min-w-[375px]
                             flex flex-col
                             rounded-t-2xl shadow-lg
-                            bg-white z-50
+                            bg-white z-60
                             px-1.5 pt-1 pb-8
                         "
 						initial={{ y: '100%' }}

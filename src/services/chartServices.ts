@@ -1,9 +1,12 @@
 import { StockInfo, StockRisk } from '@/types/chart';
-const baseUrl = 'https://sol-assistant.site/api';
+import { apiClient } from './apiClient';
+const baseUrl = 'https://sol-assistant.site/api/v1';
 
 export const fetchStockInfo = async (stockCode: string) => {
 	try {
-		const res = await fetch(`/api/v1/external/chart/${stockCode}/lastPrice`);
+		const res = await apiClient.request(
+			`${baseUrl}/external/chart/${stockCode}/lastPrice`
+		);
 		if (!res.ok) {
 			throw new Error('종목 정보를 불러오는 데 실패했습니다.');
 		}
@@ -16,7 +19,9 @@ export const fetchStockInfo = async (stockCode: string) => {
 
 export const fetchStockRiskCheck = async (stockCode: string) => {
 	try {
-		const res = await fetch(`/api/v1/external/chart/${stockCode}/stockRisk`);
+		const res = await apiClient.request(
+			`${baseUrl}/external/chart/${stockCode}/stockRisk`
+		);
 		if (!res.ok) {
 			throw new Error('종목 경고 체크를 불러오는 데 실패했습니다.');
 		}
@@ -28,7 +33,9 @@ export const fetchStockRiskCheck = async (stockCode: string) => {
 };
 
 export async function fetchChartData(stockCode: string) {
-	const res = await fetch(`/api/v1/external/chart/${stockCode}/day`);
+	const res = await apiClient.request(
+		`/api/v1/external/chart/${stockCode}/day`
+	);
 	if (!res.ok) {
 		throw new Error('차트 데이터를 불러오는 데 실패했습니다.');
 	}
@@ -62,8 +69,8 @@ export async function fetchGuruTradeData(
 	guruType: string
 ): Promise<GuruStockData[]> {
 	const apiGuruType = guruTypeMap[guruType];
-	const res = await fetch(
-		`${baseUrl}/v1/internal/member/guruTrade/${stockCode}/${apiGuruType}`
+	const res = await apiClient.request(
+		`${baseUrl}/internal/expertt/${stockCode}/${apiGuruType}`
 	);
 	if (!res.ok) {
 		throw new Error('고수의 거래량 데이터를 불러오는 데 실패했습니다.');

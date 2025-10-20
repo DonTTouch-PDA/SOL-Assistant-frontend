@@ -2,6 +2,8 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { useStock } from '@/contexts/StockContext';
+import { orderBuyStock, orderSellStock } from '@/services/orderServices';
+import { toast } from 'react-toastify';
 
 interface OrderbookData {
 	price: number;
@@ -229,6 +231,40 @@ export default function Order({
 						</div>
 						<button
 							className={`w-full h-[50px] text-white rounded-lg ${tradeType === 'buy' ? 'bg-red-500' : 'bg-blue-500'}`}
+							onClick={async () => {
+								if (stockInfo) {
+									try {
+										if (tradeType === 'buy') {
+											const response = await orderBuyStock(
+												stockInfo.symbol,
+												orderPrice,
+												orderQuantity
+											);
+											if (response.status === 'SUCCESS') {
+												toast.success(response.message);
+											} else {
+												toast.error(response.message);
+											}
+										} else {
+											const response = await orderSellStock(
+												stockInfo.symbol,
+												orderPrice,
+												orderQuantity
+											);
+											if (response.status === 'SUCCESS') {
+												toast.success(response.message);
+											} else {
+												toast.error(response.message);
+											}
+										}
+									} catch (error) {
+										console.error('주문 처리 중 오류:', error);
+										toast.error(
+											'주문 처리 중 오류가 발생했습니다. 다시 시도해주세요.'
+										);
+									}
+								}
+							}}
 						>
 							{tradeType === 'buy' ? '구매하기' : '판매하기'}
 						</button>
