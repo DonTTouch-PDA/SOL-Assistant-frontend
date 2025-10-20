@@ -99,7 +99,7 @@ export default function MonthlyProfit() {
 				>
 					<div className="flex items-center gap-3 py-2">
 						<Image
-							src={`https://static.toss.im/png-icons/securities/icn-sec-fill-${data.stockName}.png`}
+							src={`https://static.toss.im/png-icons/securities/icn-sec-fill-${data.symbol}.png`}
 							alt={data.stockName}
 							height={34}
 							width={34}

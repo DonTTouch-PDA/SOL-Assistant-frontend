@@ -42,9 +42,24 @@ const MainChart: React.FC<CandleChartProps> = ({ data }) => {
 		const wrapper = containerRef.current;
 		wrapper.innerHTML = '';
 
-		const sorted = [...data].sort(
-			(a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-		);
+		const sorted = [...data]
+			.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+			.reduce(
+				(acc, current) => {
+					const lastItem = acc[acc.length - 1];
+					if (
+						lastItem &&
+						new Date(lastItem.date).getTime() ===
+							new Date(current.date).getTime()
+					) {
+						acc[acc.length - 1] = current;
+					} else {
+						acc.push(current);
+					}
+					return acc;
+				},
+				[] as typeof data
+			);
 
 		const candleEl = document.createElement('div');
 		const divider = document.createElement('div');

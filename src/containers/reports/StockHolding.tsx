@@ -11,7 +11,10 @@ interface StockHoldingData {
 }
 
 export default function StockHolding() {
-	const [data, setData] = useState<StockHoldingData>();
+	const [data, setData] = useState<StockHoldingData>({
+		averageHoldingDays: 0,
+		quantile: 0,
+	});
 	useEffect(() => {
 		FetchMyRetention().then((d) => setData(d));
 	}, []);
@@ -45,7 +48,7 @@ export default function StockHolding() {
 						<div
 							className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 flex flex-col items-center"
 							style={{
-								left: `calc(${85 - data?.quantile * 0.7}%)`,
+								left: `calc(${85 - (data?.quantile || 0) * 0.7}%)`,
 							}}
 						>
 							<p className="text-[8px] pt-5">▲</p>

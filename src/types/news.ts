@@ -8,7 +8,7 @@ export interface news {
 
 export interface newsList {
 	sector: string;
-	opinion: string;
+	emotion: string;
 	summary: string;
 	newsList: news[];
 }
