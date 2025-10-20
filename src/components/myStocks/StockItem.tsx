@@ -29,15 +29,15 @@ export default function StockItem({ stock }: StockItemProps) {
 			<div
 				className="flex items-center justify-between mb-2"
 				onClick={() => {
-					setStockCodeToLocalStorage(stock.code);
-					router.push(`/${stock.code}`);
+					setStockCodeToLocalStorage(stock.symbol);
+					router.push(`/${stock.symbol}`);
 				}}
 			>
 				<div className="flex items-center gap-3">
 					<div>
 						<Image
-							src={stock.img}
-							alt={stock.name}
+							src={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stock.symbol}.png`}
+							alt={stock.stockName}
 							width={32}
 							height={32}
 							className="rounded-full"
@@ -46,10 +46,12 @@ export default function StockItem({ stock }: StockItemProps) {
 
 					{/* 종목 정보 */}
 					<div>
-						<h2 className="font-semibold text-black text-base">{stock.name}</h2>
+						<h2 className="font-semibold text-black text-base">
+							{stock.stockName}
+						</h2>
 						<div className="flex text-gray-500 gap-1 text-xs">
-							<p>{stock.code}</p>
-							<p>{stock.type}</p>
+							<p>{stock.symbol}</p>
+							<p>{stock.market}</p>
 						</div>
 					</div>
 				</div>
@@ -75,17 +77,17 @@ export default function StockItem({ stock }: StockItemProps) {
 
 			{/* 내 보유 정보 */}
 			<div className="flex justify-between items-center -mx-[22px] pr-[22px] pl-[65px] bg-gray-100 py-[4px] font-normal">
-				<div className="text-sm text-[#777F8A]">
-					{stock.holding}주 {formatPrice(stock.buyAverage)}
+				<div className="w-1/3 text-sm text-[#777F8A]">
+					{stock.quantity}주 {formatPrice(stock.costBasis)}
 				</div>
-				<div className="flex gap-4 text-sm">
+				<div className="w-2/3 flex text-right gap-2 text-sm">
 					<span
-						className={`${stock.profit >= 0 ? 'text-red-500' : 'text-blue-500'}`}
+						className={`w-1/2 ${stock.profit >= 0 ? 'text-red-500' : 'text-blue-500'}`}
 					>
 						{formatChangeRate(stock.profit)}
 					</span>
 					<span
-						className={`${stock.diff >= 0 ? 'text-red-500' : 'text-blue-500'}`}
+						className={`w-1/2 ${stock.diff >= 0 ? 'text-red-500' : 'text-blue-500'}`}
 					>
 						{formatChangeAmount(stock.diff)}
 					</span>
