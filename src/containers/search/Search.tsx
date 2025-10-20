@@ -59,12 +59,6 @@ export default function Search() {
 					autoFocus
 					className="focus:outline-none text-lg"
 					onChange={(e) => {
-						// setKeyword(e.target.value);
-						// searchStock(keyword).then((res) => {
-						// 	if (res.length > 0) {
-						// 		setResult(res);
-						// 	}
-						// });
 						setKeyword(e.target.value);
 					}}
 				></input>

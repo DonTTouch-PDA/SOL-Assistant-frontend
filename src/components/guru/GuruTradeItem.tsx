@@ -1,6 +1,7 @@
 import React from 'react';
 import { GuruTrade } from '@/types/guru';
 import ProfitRate from '../common/ProfitRate';
+import Image from 'next/image';
 
 interface GuruTradeItemProps {
 	trade: GuruTrade;
@@ -24,7 +25,7 @@ export default function GuruTradeItem({ trade, index }: GuruTradeItemProps) {
 
 					{/* 종목 로고 */}
 					<div>
-						<img
+						<Image
 							src={trade.img}
 							alt={trade.name}
 							width={36}

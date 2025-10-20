@@ -56,9 +56,9 @@ export default function StockItem({ stock }: StockItemProps) {
 					</div>
 				</div>
 
-				<div className="w-16 h-8 bg-gray-100 rounded flex items-center justify-center">
+				{/* <div className="w-16 h-8 bg-gray-100 rounded flex items-center justify-center">
 					<span className="text-gray-400 text-xs">차트</span>
-				</div>
+				</div> */}
 
 				{/* 가격 정보 */}
 				<div className="flex flex-col items-end text-right mb-[4px]">
@@ -68,7 +68,7 @@ export default function StockItem({ stock }: StockItemProps) {
 						{formatPrice(stock.currentPrice)}
 					</div>
 					<div
-						className={`flex text-sm ${stock.changeRate >= 0 ? 'text-red-500' : 'text-blue-500'}`}
+						className={`flex text-sm font-medium ${stock.changeRate >= 0 ? 'text-red-500' : 'text-blue-500'}`}
 					>
 						<ProfitRate profitRate={stock.changeRate} />
 					</div>
@@ -77,17 +77,17 @@ export default function StockItem({ stock }: StockItemProps) {
 
 			{/* 내 보유 정보 */}
 			<div className="flex justify-between items-center -mx-[22px] pr-[22px] pl-[65px] bg-gray-100 py-[4px] font-normal">
-				<div className="w-1/3 text-sm text-[#777F8A]">
+				<div className="w-1/3 text-sm text-[#777F8A] font-medium">
 					{stock.quantity}주 {formatPrice(stock.costBasis)}
 				</div>
-				<div className="w-2/3 flex text-right gap-2 text-sm">
+				<div className="w-2/3 flex text-right gap-2 text-sm font-medium">
 					<span
 						className={`w-1/2 ${stock.profit >= 0 ? 'text-red-500' : 'text-blue-500'}`}
 					>
 						{formatChangeRate(stock.profit)}
 					</span>
 					<span
-						className={`w-1/2 ${stock.diff >= 0 ? 'text-red-500' : 'text-blue-500'}`}
+						className={`w-1/2 ${stock.diff >= 0 ? 'text-red-500' : 'text-blue-500'} `}
 					>
 						{formatChangeAmount(stock.diff)}
 					</span>
