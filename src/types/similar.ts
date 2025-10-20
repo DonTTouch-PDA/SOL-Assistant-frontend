@@ -1,19 +1,32 @@
-export interface SimilarChart {
+export interface SimilarStock {
+	signalType: SignalType;
 	name: string;
-	img: string;
-	code: string;
+	stock_code: string;
 	currentPrice: number;
-	changeRate: number;
-	amount: number;
-}
-export interface SimilarChartData {
-	stocks: SimilarChart[];
-	totalCount: number;
+	change_rate: number;
+	today_volume: number;
 }
 
-export type SignalType = '매수' | '매도';
+export type SignalType = 'buy' | 'sell';
 
 export interface SimilarChartDetail {
-	code: string;
-	signalType: string;
+	stockName: string;
+	signalType: string; //매수,매도 아님. 볼린저 밴드 등 기술 신호
+	trendToday: TrendData[];
+	trendPastScaled: TrendPastScaled[];
+	todayDate: string;
+	pastDate: string;
+	description: string;
+	descriptionDetail: string;
+}
+
+export interface TrendData {
+	offset: number;
+	Close: number;
+}
+
+export interface TrendPastScaled {
+	offset: number;
+	Close: number;
+	ScaledClose: number;
 }

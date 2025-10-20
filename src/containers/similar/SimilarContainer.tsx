@@ -1,32 +1,46 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
-import { SignalType } from '@/types/similar';
+import { SignalType, SimilarStock } from '@/types/similar';
 import FilterButtons from '@/components/common/FilterButtons';
 import { FilterOption } from '@/components/common/FilterButtons';
-import { SimilarChart } from '@/types/similar';
 import StockListItemCard from '@/components/common/StockListItemCard';
-import { fetchGetSignalList } from '@/services/signalServices';
 import SimilarDetailContainer from './SimilarDetailContainer';
 import UnderLinedTab from '@/components/layout/UnderLinedTab';
+import {
+	fetchMyStockSimilarChart,
+	fetchAllStockSimilarChart,
+} from '@/services/similarServices';
+
+interface SelectedStockType {
+	stockCode: string;
+	stockName: string;
+}
 
 export default function SimilarChartContainer() {
 	const [hasStockFilter, setHasStockFilter] = useState('보유');
-	const [signalType, setSignalType] = useState<SignalType>('매도');
+	const [signalType, setSignalType] = useState<SignalType>('sell');
 	const signalOptions: FilterOption<SignalType>[] = [
-		{ value: '매수', label: '매수신호' },
-		{ value: '매도', label: '매도신호' },
+		{ value: 'buy', label: '매수신호' },
+		{ value: 'sell', label: '매도신호' },
 	];
-	const [stocks, setStocks] = useState<SimilarChart[]>([]);
+	const [stocks, setStocks] = useState<SimilarStock[]>([]);
 
 	// 상세 종목 코드
-	const [selectedStock, setSelectedStock] = useState<SimilarChart | null>(null);
+	const [selectedStock, setSelectedStock] = useState<SelectedStockType | null>(
+		null
+	);
 
 	const getSignalList = useCallback(async () => {
 		try {
-			const data = await fetchGetSignalList(hasStockFilter, signalType);
-			setStocks(data.stocks);
+			if (hasStockFilter === '보유') {
+				const data = await fetchMyStockSimilarChart(signalType);
+				setStocks(data);
+			} else {
+				const data = await fetchAllStockSimilarChart(signalType);
+				setStocks(data);
+			}
 		} catch (error) {
-			console.error('신호 조회 실패:', error);
+			console.error('유사 차트 조회 실패:', error);
 		}
 	}, [hasStockFilter, signalType]);
 
@@ -45,39 +59,9 @@ export default function SimilarChartContainer() {
 				currentTab={hasStockFilter}
 				onClick={(tab) => {
 					setHasStockFilter(tab);
-					setSignalType(tab === '보유' ? '매도' : '매수');
+					setSignalType(tab === '보유' ? 'sell' : 'buy');
 				}}
 			/>
-			{/* <div className="flex border-b mb-[16px] border-gray-200 relative">
-				<button
-					onClick={() => {
-						setHasStockFilter('보유');
-						setSignalType('매수');
-					}}
-					className={`flex-1 pb-1 text-center transition-colors duration-300 ${
-						hasStockFilter === '보유' ? 'text-black' : 'text-gray-500'
-					}`}
-				>
-					보유
-				</button>
-				<button
-					onClick={() => {
-						setHasStockFilter('전체');
-						setSignalType('매수');
-					}}
-					className={`flex-1 pb-1 text-center transition-colors duration-300 ${
-						hasStockFilter === '전체' ? 'text-black' : 'text-gray-500'
-					}`}
-				>
-					전체
-				</button>
-
-				<div
-					className={`absolute bottom-0 h-0.5 bg-black transition-all duration-300 ease-in-out ${
-						hasStockFilter === '보유' ? 'left-0 w-1/2' : 'left-1/2 w-1/2'
-					}`}
-				/>
-			</div> */}
 			<FilterButtons
 				activeFilter={signalType}
 				onFilterChange={setSignalType}
@@ -85,24 +69,28 @@ export default function SimilarChartContainer() {
 			/>
 			{stocks.map((stock, index) => (
 				<StockListItemCard
-					key={stock.code}
+					key={index}
 					name={stock.name}
-					img={stock.img}
-					code={stock.code}
+					img={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stock.stock_code}.png`}
+					code={stock.stock_code}
 					rank={index}
 					onClick={() => {
-						setSelectedStock(stock);
+						setSelectedStock({
+							stockCode: stock.stock_code,
+							stockName: stock.name,
+						});
 					}}
 					currentPrice={stock.currentPrice}
-					changeRate={stock.changeRate}
-					volume={stock.amount}
+					changeRate={stock.change_rate}
+					volume={stock.today_volume}
 					detail="volume"
 				/>
 			))}
 			{selectedStock && (
 				<SimilarDetailContainer
-					stockCode={selectedStock.code}
-					stockName={selectedStock.name}
+					stockCode={selectedStock.stockCode}
+					stockName={selectedStock.stockName}
+					signalType={signalType}
 					onclose={() => setSelectedStock(null)}
 				/>
 			)}

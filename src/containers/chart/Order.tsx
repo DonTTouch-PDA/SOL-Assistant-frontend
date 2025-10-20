@@ -2,8 +2,13 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { useStock } from '@/contexts/StockContext';
-import { orderBuyStock, orderSellStock } from '@/services/orderServices';
-import { toast } from 'react-toastify';
+import {
+	orderBuyStock,
+	orderSellStock,
+	stockUserHasCount,
+} from '@/services/orderServices';
+import CustomToast from '@/components/common/CustomToast';
+import { FetchMyAsset } from '@/services/reportServices';
 
 interface OrderbookData {
 	price: number;
@@ -30,6 +35,10 @@ export default function Order({
 	const { stockInfo, isLoading } = useStock();
 	const [currentPrice, setCurrentPrice] = useState(0);
 	const scrollRef = useRef<HTMLDivElement>(null);
+	const [openToast, setOpenToast] = useState(false);
+	const [toastMessage, setToastMessage] = useState('');
+	const [toastType, setToastType] = useState<'success' | 'fail'>('success');
+	const [canTradeCount, setCanTradeCount] = useState(0);
 
 	const getPriceUnit = (price: number): number => {
 		if (price < 2000) return 1;
@@ -92,6 +101,36 @@ export default function Order({
 		}
 	}, [stockInfo, isLoading, generateOrderbookData]);
 
+	// 매매 가능 수량 삽입
+	useEffect(() => {
+		if (stockInfo && tradeType === 'sell') {
+			getUserHasCount(stockInfo.symbol);
+		}
+		if (stockInfo && tradeType === 'buy' && currentPrice > 0) {
+			getUserCanBuyCount();
+		}
+	}, [stockInfo, tradeType, currentPrice]);
+
+	const getUserHasCount = async (symbol: string) => {
+		try {
+			const response = await stockUserHasCount(symbol);
+			setCanTradeCount(response);
+		} catch (error) {
+			setCanTradeCount(0);
+			console.error('종목 보유 수량 조회 실패:', error);
+		}
+	};
+
+	const getUserCanBuyCount = async () => {
+		try {
+			const response = await FetchMyAsset();
+			setCanTradeCount(Math.floor(response.totalBalance / currentPrice));
+		} catch (error) {
+			setCanTradeCount(0);
+			console.error('종목 매수 가능 수량 조회 실패:', error);
+		}
+	};
+
 	useEffect(() => {
 		const interval = setInterval(() => {
 			setOrderBookData((prev) =>
@@ -110,6 +149,38 @@ export default function Order({
 		const maxQuantity = 1000000;
 		const percentage = (quantity / maxQuantity) * 100;
 		return `${Math.min(percentage, 100)}%`;
+	};
+
+	//토스트 관리
+	const onSubmitOrder = async () => {
+		if (!stockInfo) return;
+
+		try {
+			if (tradeType === 'buy') {
+				const response = await orderBuyStock(
+					stockInfo.symbol,
+					orderPrice,
+					orderQuantity
+				);
+				setToastMessage(response.message);
+				setToastType(response.status === 'SUCCESS' ? 'success' : 'fail');
+				setOpenToast(true);
+			} else {
+				const response = await orderSellStock(
+					stockInfo.symbol,
+					orderPrice,
+					orderQuantity
+				);
+				setToastMessage(response.message);
+				setToastType(response.status === 'SUCCESS' ? 'success' : 'fail');
+				setOpenToast(true);
+			}
+		} catch (error) {
+			console.error('주문 처리 중 오류:', error);
+			setToastMessage('주문 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+			setToastType('fail');
+			setOpenToast(true);
+		}
 	};
 
 	return (
@@ -204,11 +275,30 @@ export default function Order({
 						>
 							{orderPrice.toLocaleString()}원
 						</div>
-						<p className="text-[16px] font-bold pl-[5px]">수량</p>
+						<div className="flex items-center gap-1">
+							<p className="text-[16px] font-bold pl-[5px]">수량</p>
+							<p className="text-[13px] text-gray-500">
+								({tradeType === 'buy' ? '보유: ' : '가능: '}
+								{canTradeCount.toLocaleString()}주)
+							</p>
+						</div>
+
 						<div className="flex items-center gap-2 border justify-between border-black rounded-lg p-2">
-							<Minus onClick={() => setOrderQuantity(orderQuantity - 1)} />
+							<Minus
+								onClick={() => {
+									if (orderQuantity > 0) {
+										setOrderQuantity(orderQuantity - 1);
+									}
+								}}
+							/>
 							<p>{orderQuantity.toLocaleString()}주</p>
-							<Plus onClick={() => setOrderQuantity(orderQuantity + 1)} />
+							<Plus
+								onClick={() => {
+									if (orderQuantity < canTradeCount) {
+										setOrderQuantity(orderQuantity + 1);
+									}
+								}}
+							/>
 						</div>
 					</div>
 				</div>
@@ -230,47 +320,30 @@ export default function Order({
 							</p>
 						</div>
 						<button
-							className={`w-full h-[50px] text-white rounded-lg ${tradeType === 'buy' ? 'bg-red-500' : 'bg-blue-500'}`}
-							onClick={async () => {
-								if (stockInfo) {
-									try {
-										if (tradeType === 'buy') {
-											const response = await orderBuyStock(
-												stockInfo.symbol,
-												orderPrice,
-												orderQuantity
-											);
-											if (response.status === 'SUCCESS') {
-												toast.success(response.message);
-											} else {
-												toast.error(response.message);
-											}
-										} else {
-											const response = await orderSellStock(
-												stockInfo.symbol,
-												orderPrice,
-												orderQuantity
-											);
-											if (response.status === 'SUCCESS') {
-												toast.success(response.message);
-											} else {
-												toast.error(response.message);
-											}
-										}
-									} catch (error) {
-										console.error('주문 처리 중 오류:', error);
-										toast.error(
-											'주문 처리 중 오류가 발생했습니다. 다시 시도해주세요.'
-										);
-									}
-								}
-							}}
+							className={`w-full h-[50px] text-white rounded-lg ${
+								orderQuantity === 0
+									? tradeType === 'buy'
+										? 'bg-red-400 opacity-60 cursor-not-allowed'
+										: 'bg-blue-400 opacity-60 cursor-not-allowed'
+									: tradeType === 'buy'
+										? 'bg-red-500'
+										: 'bg-blue-500'
+							}`}
+							onClick={onSubmitOrder}
+							disabled={orderQuantity === 0}
 						>
 							{tradeType === 'buy' ? '구매하기' : '판매하기'}
 						</button>
 					</div>
 				</div>
 			</div>
+			{openToast && (
+				<CustomToast
+					message={toastMessage}
+					type={toastType}
+					onClose={() => setOpenToast(false)}
+				/>
+			)}
 		</div>
 	);
 }

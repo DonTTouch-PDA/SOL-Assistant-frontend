@@ -1,3 +1,4 @@
+import { TrendData, TrendPastScaled } from '@/types/similar';
 import {
 	Chart,
 	LineController,
@@ -10,20 +11,14 @@ import {
 	ScriptableScaleContext,
 } from 'chart.js';
 import annotationPlugin from 'chartjs-plugin-annotation';
-import { ExecSyncOptionsWithStringEncoding } from 'child_process';
 import { useRef, useEffect } from 'react';
 
 interface SimilarChartData {
 	stockName: string;
-	trendPastScaled: TrendData[];
+	trendPastScaled: TrendPastScaled[];
 	trendToday: TrendData[];
 	todayDate: string;
 	pastDate: string;
-}
-interface TrendData {
-	offset: number;
-	Close: number;
-	ScaledClose?: number;
 }
 
 interface SimilarChartProps {
@@ -151,7 +146,13 @@ export default function SimilarChart({ data }: SimilarChartProps) {
 			},
 		});
 		return () => chart.destroy();
-	}, []);
+	}, [
+		data.stockName,
+		data.todayDate,
+		data.pastDate,
+		data.trendToday,
+		data.trendPastScaled,
+	]);
 	return (
 		<>
 			<canvas ref={canvasRef} />
