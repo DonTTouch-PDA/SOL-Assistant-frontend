@@ -11,7 +11,7 @@ const tabs = [
 
 export default function Footer() {
 	return (
-		<nav className="fixed bottom-0 border-t border-gray-200 bg-white w-full h-[58px] max-w-[430px] left-1/2 transform -translate-x-1/2 z-10">
+		<nav className="fixed bottom-0 border-t border-gray-200 bg-white w-full h-[58px] max-w-[430px] left-1/2 transform -translate-x-1/2 z-50">
 			<div className="flex justify-between items-center">
 				<ul className="flex px-8 gap-10 pb-2">
 					{tabs.map((tab) => (
