@@ -27,7 +27,7 @@ const MainChart: React.FC<CandleChartProps> = ({ data }) => {
 	useEffect(() => {
 		const updateHeight = () => {
 			const headerHeight = 100;
-			const bottomMargin = 150;
+			const bottomMargin = 170;
 			const newHeight = window.innerHeight - headerHeight - bottomMargin;
 			setHeight(newHeight > 300 ? newHeight : 300);
 		};
