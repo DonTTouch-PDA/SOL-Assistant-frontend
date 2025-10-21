@@ -1,12 +1,13 @@
 import React from 'react';
 import { ChevronDown } from 'lucide-react';
+import { GuruType } from '@/types/guru';
 
 interface customDropdownProps {
 	options: string[];
-	setSortedBy: string;
+	setSortedBy: GuruType;
 	isOpen: boolean;
 	onToggle: () => void;
-	fetchSortedBy: (value: string) => void;
+	fetchSortedBy: (value: GuruType) => void;
 }
 
 export default function CustomDropdown({
@@ -22,7 +23,15 @@ export default function CustomDropdown({
 				className="flex flex-row px-[10px] py-[4.5px] gap-2 text-sm rounded-[8px] bg-[#F7F7F7] text-[#111111]"
 				onClick={onToggle}
 			>
-				<span className="font-medium text-[12px] ">{setSortedBy}</span>
+				<span className="font-medium text-[12px] ">
+					{setSortedBy === 'DAY'
+						? '단기 고수'
+						: setSortedBy === 'SWING'
+							? '중기 고수'
+							: setSortedBy === 'HOLD'
+								? '장기 고수'
+								: setSortedBy}
+				</span>
 				<span
 					className={`flex items-center font-semibold transform ${isOpen ? 'rotate-180' : ''}`}
 				>
@@ -35,7 +44,7 @@ export default function CustomDropdown({
 						<button
 							key={option}
 							className="w-full text-left p-2 text-[12px] hover:bg-gray-50 first:rounded-t-[8px] last:rounded-b-[8px]"
-							onClick={() => fetchSortedBy(option)}
+							onClick={() => fetchSortedBy(option as GuruType)}
 						>
 							{option}
 						</button>
