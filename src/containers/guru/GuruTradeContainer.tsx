@@ -31,6 +31,7 @@ export default function GuruTradeContainer() {
 				(a, b) => b.volumeChangePercent - a.volumeChangePercent
 			)
 		);
+		console.log(data.stockVolumeList);
 	};
 
 	const handleToggleTrading = () => {
