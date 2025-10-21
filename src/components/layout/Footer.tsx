@@ -26,9 +26,18 @@ export default function Footer() {
 			setStockCodeToLocalStorage(currentStockCode);
 		} else {
 			const stockCode = getStockCodeFromLocalStorage();
-			if (stockCode) {
-				setRecentStockCode(stockCode);
-			}
+			if (stockCode) setRecentStockCode(stockCode);
+		}
+
+		// pathname 기준으로 currentTab 설정
+		if (pathname.startsWith('/dashboard')) {
+			setCurrentTab('홈');
+		} else if (/^\/\d{6}(\/)?$/.test(pathname)) {
+			setCurrentTab('현재가');
+		} else if (/^\/\d{6}\/order/.test(pathname)) {
+			setCurrentTab('주문');
+		} else if (/^\/\d{6}\/guru/.test(pathname)) {
+			setCurrentTab('');
 		}
 	}, [pathname]);
 
@@ -38,6 +47,8 @@ export default function Footer() {
 		{ href: `/${recentStockCode}/order`, label: '주문' },
 	];
 
+	const [currentTab, setCurrentTab] = useState('홈');
+
 	return (
 		<nav className="fixed bottom-0 border-t border-gray-200 bg-white w-full h-[58px] max-w-[430px] left-1/2 transform -translate-x-1/2 z-50">
 			<div className="flex justify-between items-center">
@@ -46,7 +57,10 @@ export default function Footer() {
 						<li key={tab.href}>
 							<Link
 								href={tab.href}
-								className="text-gray-500 font-medium text-sm"
+								className={`${currentTab === tab.label ? 'text-[#293FEB] font-semibold' : 'text-gray-500'} font-medium text-sm`}
+								onClick={() => {
+									setCurrentTab(tab.label);
+								}}
 							>
 								{tab.label}
 							</Link>

@@ -25,12 +25,18 @@ export default function NewHomeContainer() {
 				<CarouselContent className="px-5 py-1">
 					{myStockData.length != 0 ? (
 						myStockData?.map((stock, idx) => (
-							<CarouselItem key={idx} className="">
+							<CarouselItem key={idx} className="pr-1">
 								<StockSummaryCard data={stock} />
 							</CarouselItem>
 						))
 					) : (
-						<CustomCard>보유종목이 없습니다.</CustomCard>
+						<div className="w-full text-center">
+							<CustomCard>
+								<div className="h-[300px] pt-30 text-gray-600">
+									종목을 매매하고 <br />내 종목 요약을 받아보세요!
+								</div>
+							</CustomCard>
+						</div>
 					)}
 				</CarouselContent>
 				<CarouselPrevious className="-left-4" />

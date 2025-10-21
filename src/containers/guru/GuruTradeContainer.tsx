@@ -7,26 +7,30 @@ import { fetchGetGuruByTrading } from '@/services/guruServices';
 //
 export default function GuruTradeContainer() {
 	const [isOpenTrading, setIsOpenTrading] = useState(false);
-	const [activeFilter, setActiveFilter] = useState<FilterType>('많이 산');
+	const [activeFilter, setActiveFilter] = useState<FilterType>('BUY');
 	const [stocks, setStocks] = useState<GuruTrade[]>([]);
-	const [guruType, setGuruType] = useState('단기 고수');
+	const [guruType, setGuruType] = useState<GuruType>('DAY');
 
 	useEffect(() => {
 		getGuruItemList();
-	}, []);
+	}, [activeFilter, guruType]);
 
-	const handleGuruTypeChange = (value: string) => {
+	const handleGuruTypeChange = (value: GuruType) => {
 		setGuruType(value);
 		setIsOpenTrading(false);
-		getGuruItemList();
 	};
 
 	const getGuruItemList = async () => {
+		console.log('데이터 재조회', { activeFilter, guruType });
 		const data = await fetchGetGuruByTrading(
 			activeFilter,
 			guruType as GuruType
 		);
-		setStocks(data.stocks);
+		setStocks(
+			data.stockVolumeList.sort(
+				(a, b) => b.volumeChangePercent - a.volumeChangePercent
+			)
+		);
 	};
 
 	const handleToggleTrading = () => {
@@ -35,7 +39,6 @@ export default function GuruTradeContainer() {
 
 	const handleFilterChange = (filter: FilterType) => {
 		setActiveFilter(filter);
-		getGuruItemList();
 	};
 
 	return (

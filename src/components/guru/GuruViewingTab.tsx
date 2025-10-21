@@ -1,19 +1,22 @@
 import React from 'react';
 import CustomDropdown from '@/components/common/CustomDropdown';
 import UserFilterButtons from '@/components/guru/UserFilterButtons';
-import { GuruView, UserFilterType } from '@/types/guru';
+import { UserFilterType, GuruTrade } from '@/types/guru';
 import StockListItemCard from '@/components/common/StockListItemCard';
 import GuruMoreInfoCard from './GuruMoreInfoCard';
 import { AnimatePresence, motion } from 'framer-motion';
+import { GuruType } from '@/types/guru';
+import TreeMapContainer from '@/containers/guru/TreeMapContainer';
 
 interface GuruViewingTabProps {
-	guruType: string;
-	onGuruTypeChange: (value: string) => void;
+	guruType: GuruType;
+	onGuruTypeChange: (value: GuruType) => void;
 	isOpen: boolean;
 	onToggle: () => void;
 	userFilter: UserFilterType;
 	onUserFilterChange: (filter: UserFilterType) => void;
-	viewingStocks: GuruView[];
+	viewingStocks: GuruTrade[];
+	viewingStocks2: GuruTrade[];
 	isOpenMoreInfo: boolean;
 	onMoreInfo: () => void;
 	popoverRef: React.RefObject<HTMLDivElement | null>;
@@ -27,12 +30,13 @@ export default function GuruViewingTab({
 	userFilter,
 	onUserFilterChange,
 	viewingStocks,
+	viewingStocks2,
 	isOpenMoreInfo,
 	onMoreInfo,
 	popoverRef,
 }: GuruViewingTabProps) {
 	return (
-		<div className="animate-fadeIn">
+		<div className="animate-fadeIn flex flex-col ">
 			<div className="flex items-center pb-[16px] justify-between">
 				<UserFilterButtons
 					activeFilter={userFilter}
@@ -40,15 +44,24 @@ export default function GuruViewingTab({
 				/>
 				<CustomDropdown
 					options={['단기 고수', '중기 고수', '장기 고수']}
-					setSortedBy={guruType}
+					setSortedBy={guruType as GuruType}
 					isOpen={isOpen}
 					onToggle={onToggle}
-					fetchSortedBy={onGuruTypeChange}
+					fetchSortedBy={(label) => {
+						const typeMap: Record<string, GuruType> = {
+							'단기 고수': 'DAY',
+							'중기 고수': 'SWING',
+							'장기 고수': 'HOLD',
+						};
+						onGuruTypeChange(typeMap[label] || 'DAY');
+					}}
 				/>
 			</div>
+			{/* 트리맵 */}
+			<TreeMapContainer data={viewingStocks} />
 
 			{/* 제목 */}
-			<div className="flex items-center gap-1 mb-4 relative">
+			<div className="flex items-center gap-1 mt-6 relative">
 				<h3 className="text-lg font-semibold text-black">
 					고수들은 이 종목을 더 보고 있어요
 				</h3>
@@ -79,16 +92,17 @@ export default function GuruViewingTab({
 			</div>
 
 			{/* 조회종목 리스트 */}
-			{viewingStocks.map((stock, index) => (
+			{viewingStocks2.map((stock) => (
 				<StockListItemCard
-					key={stock.code}
-					name={stock.name}
-					img={stock.img}
-					code={stock.code}
-					currentPrice={stock.currentPrice}
-					changeRate={stock.changeRate}
-					volume={stock.amount}
-					detail="volume"
+					key={stock.stockSymbol}
+					name={stock.stockName}
+					img={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stock.stockSymbol}.png`}
+					code={stock.stockSymbol}
+					currentPrice={stock.todayClosePrice}
+					changeRate={stock.priceChangePercent}
+					volumeRate={stock.volumeChangePercent}
+					volume={stock.todayVolume}
+					detail="VOLUME"
 					onClick={() => {}}
 				/>
 			))}
