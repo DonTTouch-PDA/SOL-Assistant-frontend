@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
 const tabs = [
-	{ id: '', label: '내 종목' },
+	{ id: '', label: '내 종목 요약' },
 	{ id: 'guru', label: '고수의 Pick' },
 	{ id: 'sector-news', label: '섹터 뉴스' },
 	{ id: 'similar-chart', label: '유사 차트' },
 	{ id: 'reports', label: '리포트' },
+	{ id: 'my-stock', label: '보유종목' },
 ];
 
 export default function DashboardTab() {
