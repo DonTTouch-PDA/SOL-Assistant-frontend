@@ -8,8 +8,8 @@ interface GuruFilterButtonsProps {
 }
 
 const filterOptions: FilterOption<FilterType>[] = [
-	{ value: '많이 산', label: '많이 산' },
-	{ value: '많이 판', label: '많이 판' },
+	{ value: 'BUY', label: '많이 산' },
+	{ value: 'SELL', label: '많이 판' },
 ];
 
 export default function GuruFilterButtons({

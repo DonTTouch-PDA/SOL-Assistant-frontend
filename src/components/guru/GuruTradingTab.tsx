@@ -1,12 +1,12 @@
 import React from 'react';
 import CustomDropdown from '@/components/common/CustomDropdown';
 import FilterButtons from '@/components/guru/FilterButtons';
-import { FilterType, GuruTrade } from '@/types/guru';
+import { FilterType, GuruTrade, GuruType } from '@/types/guru';
 import StockListItemCard from '@/components/common/StockListItemCard';
 
 interface GuruTradingTabProps {
-	guruType: string;
-	onGuruTypeChange: (value: string) => void;
+	guruType: GuruType;
+	onGuruTypeChange: (value: GuruType) => void;
 	isOpen: boolean;
 	onToggle: () => void;
 	activeFilter: FilterType;
@@ -35,20 +35,27 @@ export default function GuruTradingTab({
 					setSortedBy={guruType}
 					isOpen={isOpen}
 					onToggle={onToggle}
-					fetchSortedBy={onGuruTypeChange}
+					fetchSortedBy={(label) => {
+						const typeMap: Record<string, GuruType> = {
+							'단기 고수': 'DAY',
+							'중기 고수': 'SWING',
+							'장기 고수': 'HOLD',
+						};
+						onGuruTypeChange(typeMap[label] || 'DAY');
+					}}
 				/>
 			</div>
 			{stocks.map((stock, index) => (
 				<StockListItemCard
-					key={stock.code}
+					key={stock.stockSymbol}
 					rank={index}
-					name={stock.name}
-					img={stock.img}
-					code={stock.code}
-					currentPrice={stock.currentPrice}
-					changeRate={stock.changeRate}
-					volumeRate={stock.buyRate}
-					detail="buy"
+					name={stock.stockName}
+					img={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stock.stockSymbol}.png`}
+					code={stock.stockSymbol}
+					currentPrice={stock.todayClosePrice}
+					changeRate={stock.priceChangePercent}
+					volumeRate={stock.volumeChangePercent}
+					detail={activeFilter}
 					onClick={() => {}}
 				/>
 			))}
