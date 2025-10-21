@@ -64,17 +64,17 @@ export default function StockListItemCard({
 					{/* 종목 정보 */}
 					<div className="text-left">
 						<h2 className="text-black text-base font-medium">{name}</h2>
-						{detail === 'buy' && (
+						{detail === 'BUY' && (
 							<div className="inline-block text-red-500 rounded-[4px] bg-red-100 px-[4px] text-sm font-medium">
-								매수 +{volumeRate}%
+								매수 +{volumeRate ? volumeRate.toFixed(2) : '0.00'}%
 							</div>
 						)}
-						{detail === 'sell' && (
+						{detail === 'SELL' && (
 							<div className="inline-block text-blue-500 rounded-[4px] bg-blue-100 px-[4px] text-sm font-medium">
-								매도 +{volumeRate}%
+								매도 +{volumeRate ? volumeRate.toFixed(2) : '0.00'}%
 							</div>
 						)}
-						{detail === 'volume' && (
+						{detail === 'VOLUME' && (
 							<div className="inline-block text-gray-500 rounded-[4px] bg-gray-100 px-[4px] text-sm font-medium">
 								거래량 {volume ? formatVolume(volume) : '-'}
 							</div>
@@ -92,7 +92,9 @@ export default function StockListItemCard({
 					<div
 						className={`flex text-sm ${changeRate >= 0 ? 'text-red-500' : 'text-blue-500'}`}
 					>
-						<ProfitRate profitRate={changeRate} />
+						<ProfitRate
+							profitRate={changeRate ? Number(changeRate.toFixed(2)) : 0}
+						/>
 					</div>
 				</div>
 			</div>

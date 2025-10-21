@@ -41,13 +41,13 @@ export default function GuruTrade() {
 
 			<h1 className="text-lg font-semibold">고수의 매매량</h1>
 			<div className="flex justify-center -mx-5">
-				<GuruTradeChart data={data} height={230} />
+				<GuruTradeChart data={data} />
 			</div>
 
-			<h1 className="text-lg font-semibold">고수의 보유율</h1>
-			<div className="flex justify-center -mx-5">
+			{/* <h1 className="text-lg font-semibold">고수의 보유율</h1> */}
+			{/* <div className="flex justify-center -mx-5">
 				<GuruRetentionChart data={data} height={230} />
-			</div>
+			</div> */}
 		</div>
 	);
 }
