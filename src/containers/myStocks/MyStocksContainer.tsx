@@ -1,7 +1,7 @@
 'use client';
 import CustomDropdown from '@/components/common/CustomDropdown';
 import { useState, useEffect } from 'react';
-import { fetchGetStocksSortedBy } from '@/services/myStocksServices';
+import { fetchGetMyStocks } from '@/services/myStocksServices';
 import { MyStock } from '@/types/myStock';
 import StockItem from '@/components/myStocks/StockItem';
 import StockItemSkeleton from '@/components/myStocks/StockItemSkeleton';
@@ -15,8 +15,8 @@ export default function MyStocksContainer() {
 	const fetchData = async (sortBy: string) => {
 		setIsLoading(true);
 		try {
-			const data = await fetchGetStocksSortedBy(sortBy);
-			setStocks(data as MyStock[]);
+			const data = await fetchGetMyStocks();
+			setStocks(data);
 		} catch (error) {
 			console.error('fetch 실패:', error);
 		} finally {
@@ -54,12 +54,14 @@ export default function MyStocksContainer() {
 						<StockItemSkeleton key={index} />
 					))}
 				</div>
-			) : (
+			) : stocks ? (
 				<div>
-					{stocks.map((stock) => (
-						<StockItem key={stock.id} stock={stock} />
+					{stocks.map((stock, idx) => (
+						<StockItem key={idx} stock={stock} />
 					))}
 				</div>
+			) : (
+				<div>종목이 없습니다.</div>
 			)}
 		</div>
 	);

@@ -1,1 +1,1 @@
-export { default } from '@/containers/myStocks/MyStocksContainer';
+export { default } from '@/containers/newHome/NewHomeContainer';

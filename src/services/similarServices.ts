@@ -1,64 +1,75 @@
-import { SignalType } from '@/types/similar';
-export const fetchGetSimilarChart = async (
-	isUserHasStock: boolean,
-	filterType: SignalType = '매수'
+import { SimilarStock, SignalType, SimilarChartDetail } from '@/types/similar';
+import { getAccessToken } from '@/utils/tokenStorage';
+
+export const fetchMyStockSimilarChart = async (
+	filterType: SignalType = 'buy'
 ) => {
-	console.log('유사 차트 조회 :', { isUserHasStock, filterType });
-	return new Promise((resolve) => {
-		setTimeout(() => {
-			if (isUserHasStock) {
-				resolve({
-					charts: [
-						{
-							name: 'NAVER',
-							img: 'https://static.toss.im/png-icons/securities/icn-sec-fill-035420.png',
-							code: '035420',
-							currentPrice: 253500,
-							changeRate: 11.18,
-							amount: 1000000000000,
-						},
-						{
-							name: '삼성전자',
-							img: 'https://static.toss.im/png-icons/securities/icn-sec-fill-005930.png',
-							code: '005930',
-							currentPrice: 85900,
-							changeRate: 0.59,
-							amount: 1000000000000,
-						},
-						{
-							name: 'SK하이닉스',
-							img: 'https://static.toss.im/png-icons/securities/icn-sec-fill-000660.png',
-							code: '000660',
-							currentPrice: 356000,
-							changeRate: -0.42,
-							amount: 1000000000000,
-						},
-					],
-					totalCount: 3,
-				});
-			} else {
-				resolve({
-					charts: [
-						{
-							name: '두산에너빌리티',
-							img: 'https://static.toss.im/png-icons/securities/icn-sec-fill-034020.png',
-							code: '034020',
-							currentPrice: 64100,
-							changeRate: -2.73,
-							amount: 1000000000000,
-						},
-						{
-							name: '카카오',
-							img: 'https://static.toss.im/png-icons/securities/icn-sec-fill-035720.png',
-							code: '035720',
-							currentPrice: 45000,
-							changeRate: 1.2,
-							amount: 1000000000000,
-						},
-					],
-					totalCount: 2,
-				});
+	try {
+		const res = await fetch(
+			`/api/v1/insight/chart-similarity/my-stock?signal-type=${filterType}`,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getAccessToken()}`,
+				},
 			}
-		}, 1000);
-	});
+		);
+		if (!res.ok) {
+			throw new Error(`HTTP error! status: ${res.status}`);
+		}
+		const data: SimilarStock[] = await res.json();
+		return data;
+	} catch (error) {
+		console.error('보유 종목 유사 차트 조회 실패:', error);
+		throw error;
+	}
+};
+
+export const fetchAllStockSimilarChart = async (
+	filterType: SignalType = 'buy'
+) => {
+	try {
+		const res = await fetch(
+			`/api/v1/insight/chart-similarity/all-stock?signal-type=${filterType}`,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getAccessToken()}`,
+				},
+			}
+		);
+		if (!res.ok) {
+			throw new Error(`HTTP error! status: ${res.status}`);
+		}
+		const data: SimilarStock[] = await res.json();
+		return data;
+	} catch (error) {
+		console.error('전체 종목 유사 차트 조회 실패:', error);
+		throw error;
+	}
+};
+
+export const fetchSimilarChartDetail = async (
+	stockCode: string,
+	signalType: SignalType
+) => {
+	try {
+		const res = await fetch(
+			`/api/v1/insight/chart-similarity/${stockCode}?signal-type=${signalType}`,
+			{
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${getAccessToken()}`,
+				},
+			}
+		);
+		if (!res.ok) {
+			throw new Error(`HTTP error! status: ${res.status}`);
+		}
+		const data: SimilarChartDetail = await res.json();
+		return data;
+	} catch (error) {
+		console.error('유사 차트 상세 조회 실패:', error);
+		throw error;
+	}
 };

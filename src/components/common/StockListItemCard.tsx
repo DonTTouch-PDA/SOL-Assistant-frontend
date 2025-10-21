@@ -1,5 +1,6 @@
 import React from 'react';
 import ProfitRate from './ProfitRate';
+import Image from 'next/image';
 
 interface StockListItemCardProps {
 	name: string;
@@ -16,7 +17,6 @@ interface StockListItemCardProps {
 
 export default function StockListItemCard({
 	name,
-	img,
 	code,
 	currentPrice,
 	changeRate,
@@ -31,10 +31,10 @@ export default function StockListItemCard({
 	};
 
 	const formatVolume = (volume: number) => {
-		if (volume >= 1000000000) {
-			return `${(volume / 1000000000).toFixed(2)}억`;
-		} else if (volume >= 1000000) {
-			return `${(volume / 1000000).toFixed(2)}만`;
+		if (volume >= 100000000) {
+			return `${(volume / 100000000).toFixed(1)}억`;
+		} else if (volume >= 10000) {
+			return `${(volume / 10000).toFixed(1)}만`;
 		} else {
 			return volume.toLocaleString();
 		}
@@ -52,8 +52,8 @@ export default function StockListItemCard({
 
 					{/* 종목 로고 */}
 					<div>
-						<img
-							src={img}
+						<Image
+							src={`https://static.toss.im/png-icons/securities/icn-sec-fill-${code}.png`}
 							alt={name}
 							width={36}
 							height={36}
@@ -63,7 +63,7 @@ export default function StockListItemCard({
 
 					{/* 종목 정보 */}
 					<div className="text-left">
-						<h2 className="text-black text-base">{name}</h2>
+						<h2 className="text-black text-base font-medium">{name}</h2>
 						{detail === 'buy' && (
 							<div className="inline-block text-red-500 rounded-[4px] bg-red-100 px-[4px] text-sm font-medium">
 								매수 +{volumeRate}%
@@ -76,7 +76,7 @@ export default function StockListItemCard({
 						)}
 						{detail === 'volume' && (
 							<div className="inline-block text-gray-500 rounded-[4px] bg-gray-100 px-[4px] text-sm font-medium">
-								거래대금 {volume ? formatVolume(volume) : '-'}
+								거래량 {volume ? formatVolume(volume) : '-'}
 							</div>
 						)}
 					</div>
@@ -87,7 +87,7 @@ export default function StockListItemCard({
 					<div
 						className={`${changeRate >= 0 ? 'text-red-500' : 'text-blue-500'} font-semibold text-base`}
 					>
-						{formatPrice(currentPrice)}
+						{formatPrice(currentPrice)}원
 					</div>
 					<div
 						className={`flex text-sm ${changeRate >= 0 ? 'text-red-500' : 'text-blue-500'}`}

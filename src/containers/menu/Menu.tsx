@@ -11,13 +11,19 @@ export default function Menu() {
 	];
 	const menus: Record<string, Array<{ id: string; label: string }>> = {
 		dashboard: [
-			{ id: '', label: '내 종목' },
+			{ id: '', label: '내 종목 요약' },
 			{ id: 'guru', label: '고수의 Pick' },
 			{ id: 'sector-news', label: '섹터 뉴스' },
 			{ id: 'similar-chart', label: '차트 분석' },
 			{ id: 'reports', label: '리포트' },
+			{ id: 'my-stock', label: '보유종목' },
 		],
-		chart: [{ id: '', label: '' }],
+		chart: [
+			{ id: '', label: '실시간 차트' },
+			{ id: 'orderbook', label: '호가' },
+			{ id: 'order', label: '주문' },
+			{ id: 'guru', label: '고수의 거래량' },
+		],
 	};
 	const shinhanTabs = ['국내/해외주식', 'ETF/ETN', '종목찾기'];
 	const shinhanMenus = {
@@ -73,6 +79,16 @@ export default function Menu() {
 		document.addEventListener('click', handleClick);
 		return () => document.removeEventListener('click', handleClick);
 	}, [assistMode]);
+
+	const [recentStockCode, setRecentStockCode] = useState('');
+	useEffect(() => {
+		const storedCode = localStorage.getItem('recent_stock_code');
+		if (storedCode) {
+			setRecentStockCode(storedCode);
+		} else {
+			setRecentStockCode('005930');
+		}
+	}, []);
 
 	return (
 		<div>
@@ -192,7 +208,9 @@ export default function Menu() {
 													key={menu.id}
 													className="text-left p-2 text-[#333950] text-lg"
 													onClick={() => {
-														router.push(`${currentTab}/${menu.id}`);
+														router.push(
+															`${currentTab === 'dashboard' ? 'dashboard' : recentStockCode}/${menu.id}`
+														);
 													}}
 												>
 													{menu.label}

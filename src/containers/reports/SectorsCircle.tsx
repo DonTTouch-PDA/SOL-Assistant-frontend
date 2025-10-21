@@ -2,7 +2,7 @@
 import CustomCard from '@/components/common/CustomCard';
 import { FetchCircleChartData } from '@/services/reportServices';
 import { Chart, DoughnutController, ArcElement, Legend } from 'chart.js';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 // const data = {
 // 	labels: ['헬스케어', '에너지', '정보기술'],
 // 	datasets: [
@@ -22,18 +22,53 @@ export default function SectorsCircle() {
 	}>({ sectorNames: [], percentages: [] });
 
 	useEffect(() => {
+		setCircleData({
+			sectorNames: ['커뮤니케이션', '2', '3', '4', '5'],
+			percentages: [40, 40, 10, 10, 10],
+		});
 		FetchCircleChartData().then((d) => setCircleData(d));
 	}, []);
 
-	const data = {
-		labels: circleData?.sectorNames,
-		datasets: [
-			{
-				data: circleData?.percentages,
-				backgroundColor: ['#0040E8', '#4C7DFF', '#B3C8FF'], //이후변경
-			},
-		],
-	};
+	const data = useMemo(() => {
+		if (!circleData?.sectorNames?.length) return { labels: [], datasets: [] };
+
+		let labels = [...circleData.sectorNames];
+		let values = [...circleData.percentages];
+
+		const baseColors5 = ['#1539CB', '#0046FF', '#005DF9', '#94ABFA', '#B3C8FF'];
+		const baseColorsEtc = [
+			'#0040E8',
+			'#005DF9',
+			'#94ABFA',
+			'#B3C8FF',
+			'#D7DDEE',
+		];
+
+		// 6개 이상이면 앞 4개 + 기타
+		if (labels.length > 5) {
+			const mainLabels = labels.slice(0, 4);
+			const mainValues = values.slice(0, 4);
+			const etcValue = values.slice(4).reduce((sum, v) => sum + v, 0);
+
+			labels = [...mainLabels, '기타'];
+			values = [...mainValues, etcValue];
+		}
+
+		const colors =
+			circleData.sectorNames.length > 5
+				? baseColorsEtc
+				: baseColors5.slice(0, labels.length);
+
+		return {
+			labels,
+			datasets: [
+				{
+					data: values,
+					backgroundColor: colors,
+				},
+			],
+		};
+	}, [circleData]);
 
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	useEffect(() => {
@@ -49,7 +84,7 @@ export default function SectorsCircle() {
 			},
 		});
 		return () => chart.destroy();
-	}, []);
+	}, [data]);
 
 	return (
 		<CustomCard>

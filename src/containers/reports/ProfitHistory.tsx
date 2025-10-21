@@ -187,10 +187,12 @@ export default function ProfitHistory() {
 			<div className="px-2">
 				{/* 월 총계 */}
 				<div className="py-2">
-					<p className="font-medium text-lg pb-1">{thisMonth}월 실현수익</p>
+					<p className="font-medium text-lg pb-1">
+						{thisMonth.split('-')[1]}월 실현수익
+					</p>
 					<div className="flex items-end gap-2 pb-4">
 						<h1 className="text-3xl font-semibold">
-							<b className="font-semibold">{data.total.sum >= 0 && '+'}</b>
+							<b className="font-semibold">{data.total.sum > 0 && '+'}</b>
 							{data.total.sum.toLocaleString()}원
 						</h1>
 

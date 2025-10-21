@@ -6,7 +6,7 @@ import StockHolding from './StockHolding';
 
 export default function ReportsContainer() {
 	return (
-		<div>
+		<div className="pb-3">
 			<MyType />
 			<StockHolding />
 			<SectorsCircle />
