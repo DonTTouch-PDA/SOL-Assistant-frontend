@@ -278,7 +278,7 @@ export default function Order({
 						<div className="flex items-center gap-1">
 							<p className="text-[16px] font-bold pl-[5px]">수량</p>
 							<p className="text-[13px] text-gray-500">
-								({tradeType === 'buy' ? '보유: ' : '가능: '}
+								({tradeType === 'buy' ? '가능: ' : '보유: '}
 								{canTradeCount.toLocaleString()}주)
 							</p>
 						</div>
