@@ -1,118 +1,16 @@
 'use client';
 
-import { FetchMonthlyProfit } from '@/services/reportServices';
+import BottomSheet from '@/components/common/BottomSheet';
+import {
+	FetchHasMoreTradeHistory,
+	FetchMonthlyProfit,
+} from '@/services/reportServices';
 import { Trading, DailyTrading, MonthlyHistory } from '@/types/ProfitHistory';
 import { formatToYearMonth } from '@/utils/date';
+import { Check, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-
-const dummy = {
-	currentMonth: {
-		month: '2025.09',
-		total: {
-			sum: 234320,
-			diff: 23.2,
-			buy: { count: 3, price: 315700 },
-			sell: { count: 1, price: 62300 },
-		},
-		breakdown: [
-			{
-				date: '2025.09.16',
-				tradings: [
-					{
-						stock: '신한지주',
-						imgUrl:
-							'https://static.toss.im/png-icons/securities/icn-sec-fill-055550.png',
-						type: '매도',
-						amount: 1,
-						price: 62300,
-					},
-				],
-			},
-			{
-				date: '2025.09.12',
-				tradings: [
-					{
-						stock: '신한지주',
-						imgUrl:
-							'https://static.toss.im/png-icons/securities/icn-sec-fill-055550.png',
-						type: '매수',
-						amount: 2,
-						price: 59900,
-					},
-					{
-						stock: 'NAVER',
-						imgUrl:
-							'https://static.toss.im/png-icons/securities/icn-sec-fill-035420.png',
-						type: '매수',
-						amount: 1,
-						price: 59900,
-					},
-				],
-			},
-		],
-	},
-	prevMonths: [],
-};
-const dummyRes = {
-	month: '2025.08',
-	total: {
-		sum: 153200,
-		diff: -5.3,
-		buy: { count: 4, price: 421000 },
-		sell: { count: 3, price: 574200 },
-	},
-	breakdown: [
-		{
-			date: '2025.08.28',
-			tradings: [
-				{
-					stock: '삼성전자',
-					imgUrl:
-						'https://static.toss.im/png-icons/securities/icn-sec-fill-005930.png',
-					type: '매수',
-					amount: 3,
-					price: 73000,
-				},
-			],
-		},
-		{
-			date: '2025.08.21',
-			tradings: [
-				{
-					stock: 'LG에너지솔루션',
-					imgUrl:
-						'https://static.toss.im/png-icons/securities/icn-sec-fill-373220.png',
-					type: '매도',
-					amount: 1,
-					price: 415000,
-				},
-			],
-		},
-		{
-			date: '2025.08.09',
-			tradings: [
-				{
-					stock: 'NAVER',
-					imgUrl:
-						'https://static.toss.im/png-icons/securities/icn-sec-fill-035420.png',
-					type: '매수',
-					amount: 2,
-					price: 196000,
-				},
-				{
-					stock: '카카오',
-					imgUrl:
-						'https://static.toss.im/png-icons/securities/icn-sec-fill-035720.png',
-					type: '매도',
-					amount: 1,
-					price: 54500,
-				},
-			],
-		},
-	],
-};
 
 interface ProfitHistoryBreakdown {
 	date: string;
@@ -153,21 +51,27 @@ export default function ProfitHistory() {
 
 	useEffect(() => {
 		FetchMonthlyProfit(thisMonth).then((d) => setData(d));
+	}, [thisMonth]);
+
+	interface HasMore {
+		months: string[];
+		totalMonths: number;
+	}
+
+	const [hasMore, setHasMore] = useState<HasMore>({
+		months: [],
+		totalMonths: 0,
+	});
+
+	useEffect(() => {
+		FetchHasMoreTradeHistory().then((d) => {
+			setHasMore(d);
+		});
 	}, []);
 
-	const [isLoading, setIsLoading] = useState(false);
-	const [showLoadMore, setShowLoadMore] = useState(true);
+	const [isOpenBottomSheet, setIsOpenBottomSheet] = useState(false);
 
-	const loadMore = async () => {
-		setIsLoading(true);
-		await UseSleep(1000);
-		const prevData = dummyRes;
-		// setData((prev) => ({
-		// 	...prev,
-		// 	prevMonths: [...prev.prevMonths, prevData],
-		// }));
-		setShowLoadMore(false);
-	};
+	const [month, setMonth] = useState(thisMonth);
 
 	return (
 		<div>
@@ -188,7 +92,7 @@ export default function ProfitHistory() {
 				{/* 월 총계 */}
 				<div className="py-2">
 					<p className="font-medium text-lg pb-1">
-						{thisMonth.split('-')[1]}월 실현수익
+						{month.split('-')[1]}월 실현수익
 					</p>
 					<div className="flex items-end gap-2 pb-4">
 						<h1 className="text-3xl font-semibold">
@@ -236,7 +140,19 @@ export default function ProfitHistory() {
 				</div>
 
 				{/* 상세내역 */}
-				{/* 이번달 */}
+
+				<div className="flex gap-1 pt-4">
+					<p className="font-[DunbarLow] font-semibold text-sm text-[#333951]">
+						{data.month}{' '}
+					</p>
+					<ChevronDown
+						width={15}
+						onClick={() => {
+							setIsOpenBottomSheet(true);
+						}}
+					/>
+				</div>
+
 				{data.breakdown.length > 0 ? (
 					<MonthSection data={data} />
 				) : (
@@ -250,27 +166,31 @@ export default function ProfitHistory() {
 						<p className="text-gray-500 text-lg">아직 매매 내역이 없어요.</p>
 					</div>
 				)}
-
-				{/* 지난달(전체) */}
-				{/* {data.prevMonths?.map((monthData, i) => (
-					<MonthSection key={i} data={monthData} />
-				))} */}
-				{/* 더보기 */}
-				{showLoadMore && (
-					<div className="flex justify-center gap-1 pt-2">
-						<p>{isLoading ? '불러오는 중...' : '이전 1개월 거래내역 더보기'}</p>
-						<Image
-							src="/arrow-down.svg"
-							alt="더보기"
-							width={17}
-							height={17}
-							onClick={() => {
-								loadMore();
-							}}
-						/>
-					</div>
-				)}
 			</div>
+			<BottomSheet
+				title="월 선택하기"
+				withButton={false}
+				content={
+					<ul className="flex flex-col gap-3">
+						{hasMore?.months.map((m) => (
+							<li
+								key={m}
+								className="text-lg text-gray-700 flex justify-between"
+								onClick={() => {
+									FetchMonthlyProfit(m).then((d) => setData(d));
+									setIsOpenBottomSheet(false);
+									setMonth(m);
+								}}
+							>
+								<p>{`${m.split('-')[0]}년 ${m.split('-')[1]}월`}</p>
+								{month === m && <Check />}
+							</li>
+						))}
+					</ul>
+				}
+				isOpen={isOpenBottomSheet}
+				onClose={() => setIsOpenBottomSheet(false)}
+			/>
 		</div>
 	);
 }
@@ -278,10 +198,7 @@ export default function ProfitHistory() {
 // 월별내역 렌더링함수
 function MonthSection({ data }: { data: MonthlyHistory }) {
 	return (
-		<div className="pt-4">
-			<p className="font-[DunbarLow] font-semibold text-sm text-[#333951]">
-				{data.month}
-			</p>
+		<div>
 			{data.breakdown.map((daily: DailyTrading, idx: number) => (
 				<div key={idx}>
 					<p className="text-sm mt-2 font-semibold font-[DunbarLow] text-[#999EA3] pb-2 tracking-wide">
@@ -330,6 +247,3 @@ function MonthSection({ data }: { data: MonthlyHistory }) {
 		</div>
 	);
 }
-
-const UseSleep = (delay: number) =>
-	new Promise((resolve) => setTimeout(resolve, delay));

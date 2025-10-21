@@ -107,6 +107,15 @@ function transformTradeData(apiData: ApiResponse) {
 	};
 }
 
+// 이전내역 더있는지
+export async function FetchHasMoreTradeHistory() {
+	const res = await apiClient.request(`${baseUrl}/trade-profit/hasmonth`);
+	if (!res.ok) {
+		throw new Error(`이전 거래내역 여부를 불러오는 데 실패했습니다.`);
+	}
+	return res.json();
+}
+
 export async function FetchMonthlyProfit(month: string) {
 	const res = await apiClient.request(`${baseUrl}/trade-profit/${month}`);
 	if (!res.ok) {

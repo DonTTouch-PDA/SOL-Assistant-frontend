@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Providers from './providers';
 import localFont from 'next/font/local';
+import RecentMenuListener from './recent-menu-listener';
 
 export const metadata: Metadata = {
 	title: 'SOL어시',
@@ -31,7 +32,10 @@ export default function RootLayout({
 			<body className={`flex justify-center ${pretendard.variable}`}>
 				<div className="w-full bg-gray-100 flex justify-center min-h-screen">
 					<div className="w-full bg-white max-w-[430px] min-w-[375px] min-h-screen px-[22px] pt-[22px] overflow-hidden">
-						<Providers>{children}</Providers>
+						<Providers>
+							<RecentMenuListener />
+							{children}
+						</Providers>
 					</div>
 				</div>
 			</body>
