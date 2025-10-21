@@ -8,6 +8,11 @@ import CustomLine from '@/components/common/CustomLine';
 import { MyStock } from '@/types/myStock';
 import { BuySellBadge, EmotionBadge } from '@/components/common/CustomBadge';
 import { useRouter } from 'next/navigation';
+import {
+	fetchGuruChangeData,
+	fetchHomeNewsData,
+	fetchSignData,
+} from '@/services/newHomeServices';
 
 interface StockSummaryCardProps {
 	data: MyStock;
@@ -28,6 +33,21 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 	const isRising = data.diff >= 0;
 
 	const router = useRouter();
+
+	const [guruChange, setGuruChange] = useState();
+	useEffect(() => {
+		fetchGuruChangeData(data.symbol).then((d) => setGuruChange(d));
+	}, [data]);
+
+	const [sign, setSign] = useState();
+	useEffect(() => {
+		fetchSignData(data.symbol).then((d) => setSign(d));
+	}, [data]);
+
+	const [homeNews, setHomeNews] = useState();
+	useEffect(() => {
+		fetchHomeNewsData(data.symbol).then((d) => setHomeNews(d));
+	}, [data]);
 
 	return (
 		<div
@@ -84,17 +104,23 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					<h2 className="font-semibold">고수의 Pick</h2>
 					<ChevronRight color="gray" />
 				</div>
-				<div className="flex items-center gap-1 pb-2">
-					<p className="text-[#FA2D42] bg-[#FFF2F2] rounded-xl font-semibold px-3  text-sm">
-						HOT
-					</p>
-					<p className="text-sm font-medium">
-						고수들이 어제보다 주목한 종목이에요
-					</p>
-				</div>
+				{guruChange?.dailyGuru && (
+					<div className="flex items-center gap-1 pb-2">
+						<p className="text-[#FA2D42] bg-[#FFF2F2] rounded-xl font-semibold px-3  text-sm">
+							HOT
+						</p>
+						<p className="text-sm font-medium">
+							고수들이 어제보다 주목한 종목이에요
+						</p>
+					</div>
+				)}
+
 				<div className="flex justify-between gap-2">
-					<GuruCard type="매수" diff={20} />
-					<GuruCard type="매도" diff={-10} />
+					<GuruCard
+						type="매수"
+						diff={Math.round(guruChange?.guruSellPercent)}
+					/>
+					<GuruCard type="매도" diff={Math.round(guruChange?.guruBuyPercent)} />
 				</div>
 			</section>
 			<CustomLine />
@@ -105,7 +131,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					}}
 				>
 					섹터 뉴스{` `}
-					<EmotionBadge emotion="POSITIVE" />
+					<EmotionBadge emotion={homeNews?.emotion} />
 				</p>
 				<div className=" border-l border-[0.5px] border-[#EEEEEE]" />
 
@@ -115,7 +141,8 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					}}
 				>
 					매매신호{` `}
-					<BuySellBadge type="BUY" />
+					{sign?.buySignal && <BuySellBadge type="BUY" />}
+					{sign?.sellSignal && <BuySellBadge type="SELL" />}
 				</p>
 			</section>
 		</div>
