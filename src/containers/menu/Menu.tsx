@@ -11,11 +11,12 @@ export default function Menu() {
 	];
 	const menus: Record<string, Array<{ id: string; label: string }>> = {
 		dashboard: [
-			{ id: '', label: '내 종목' },
+			{ id: '', label: '내 종목 요약' },
 			{ id: 'guru', label: '고수의 Pick' },
 			{ id: 'sector-news', label: '섹터 뉴스' },
 			{ id: 'similar-chart', label: '차트 분석' },
 			{ id: 'reports', label: '리포트' },
+			{ id: 'my-stock', label: '보유종목' },
 		],
 		chart: [
 			{ id: '', label: '실시간 차트' },
