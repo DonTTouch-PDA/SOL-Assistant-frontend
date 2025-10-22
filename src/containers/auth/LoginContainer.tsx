@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { X } from 'lucide-react';
 import LoginFormComponent from '@/components/auth/LoginFormComponent';
 import { useAuth } from '@/hooks/useAuth';
 

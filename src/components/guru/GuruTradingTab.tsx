@@ -30,9 +30,17 @@ export default function GuruTradingTab({
 					activeFilter={activeFilter}
 					onFilterChange={onFilterChange}
 				/>
-				<CustomDropdown
+				<CustomDropdown<string>
 					options={['단기 고수', '중기 고수', '장기 고수']}
-					setSortedBy={guruType}
+					setSortedBy={
+						guruType === 'DAY'
+							? '단기 고수'
+							: guruType === 'SWING'
+								? '중기 고수'
+								: guruType === 'HOLD'
+									? '장기 고수'
+									: '단기 고수'
+					}
 					isOpen={isOpen}
 					onToggle={onToggle}
 					fetchSortedBy={(label) => {
