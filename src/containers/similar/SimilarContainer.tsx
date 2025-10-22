@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState, useCallback } from 'react';
+import { AnimatePresence } from 'framer-motion';
 
 import { SignalType, SimilarStock } from '@/types/similar';
 import FilterButtons from '@/components/common/FilterButtons';
@@ -18,7 +19,6 @@ interface SelectedStockType {
 }
 
 export default function SimilarChartContainer() {
-
 	const [hasStockFilter, setHasStockFilter] = useState('보유');
 	const [signalType, setSignalType] = useState<SignalType>('sell');
 	const signalOptions: FilterOption<SignalType>[] = [
@@ -88,14 +88,16 @@ export default function SimilarChartContainer() {
 					detail="volume"
 				/>
 			))}
-			{selectedStock && (
-				<SimilarDetailContainer
-					stockCode={selectedStock.stockCode}
-					stockName={selectedStock.stockName}
-					signalType={signalType}
-					onclose={() => setSelectedStock(null)}
-				/>
-			)}
+			<AnimatePresence>
+				{selectedStock && (
+					<SimilarDetailContainer
+						stockCode={selectedStock.stockCode}
+						stockName={selectedStock.stockName}
+						signalType={signalType}
+						onclose={() => setSelectedStock(null)}
+					/>
+				)}
+			</AnimatePresence>
 		</div>
 	);
 }

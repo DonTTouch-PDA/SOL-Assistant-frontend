@@ -12,9 +12,21 @@ import {
 	CarouselPrevious,
 } from '@/components/ui/carousel';
 import CustomCard from '@/components/common/CustomCard';
+import { HomeNewsData } from '@/types/newHome';
 
-export default function NewHomeContainer() {
+interface NewHomeContainerProps {
+	onSectorNewsClick?: (
+		stockName: string,
+		stockCode: string,
+		sectorId: string
+	) => void;
+}
+
+export default function NewHomeContainer({
+	onSectorNewsClick,
+}: NewHomeContainerProps) {
 	const [myStockData, setMyStockData] = useState<MyStock[]>([]);
+
 	useEffect(() => {
 		fetchGetMyStocks().then((d) => setMyStockData(d));
 	}, []);
@@ -26,7 +38,10 @@ export default function NewHomeContainer() {
 					{myStockData.length != 0 ? (
 						myStockData?.map((stock, idx) => (
 							<CarouselItem key={idx} className="pr-1">
-								<StockSummaryCard data={stock} />
+								<StockSummaryCard
+									data={stock}
+									onSectorNewsClick={onSectorNewsClick}
+								/>
 							</CarouselItem>
 						))
 					) : (

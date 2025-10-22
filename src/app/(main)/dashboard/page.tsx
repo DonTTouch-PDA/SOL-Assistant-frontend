@@ -1,1 +1,1 @@
-export { default } from '@/containers/newHome/NewHomeContainer';
+export { default } from '@/containers/newHome/NewHomeWithModal';
