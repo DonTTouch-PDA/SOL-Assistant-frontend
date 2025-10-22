@@ -78,7 +78,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					router.push(`/${data.symbol}`);
 				}}
 			>
-				<div className="flex items-center gap-2">
+				<div className="flex items-center gap-2 cursor-pointer">
 					<Image
 						src={`https://static.toss.im/png-icons/securities/icn-sec-fill-${data.symbol}.png`}
 						alt={data.stockName}
@@ -104,7 +104,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 						className={`text-sm font-medium ${isRising ? 'text-[#FA2D42]' : 'text-[#2D77FA]'}`}
 					>
 						<b className="text-xs">{isRising ? '▲' : '▼'}</b>
-						{Math.floor(data.diff * data.quantity).toLocaleString()}원
+						{Math.floor(Math.abs(data.diff * data.quantity)).toLocaleString()}원
 					</p>
 				</div>
 			</section>
@@ -118,7 +118,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					router.push('dashboard/guru');
 				}}
 			>
-				<div className="flex gap-2 pb-1">
+				<div className="flex gap-2 pb-1 cursor-pointer">
 					<h2 className="font-semibold">
 						{userData?.investmentType === 'DAY'
 							? '단기 고수의 Pick'
@@ -158,6 +158,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 			<CustomLine />
 			<section className="flex justify-around font-medium">
 				<p
+					className="cursor-pointer"
 					onClick={() => {
 						router.push('/dashboard/sector-news');
 					}}
@@ -170,6 +171,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 				<div className=" border-l border-[0.5px] border-[#EEEEEE]" />
 
 				<p
+					className="cursor-pointer"
 					onClick={() => {
 						router.push('/dashboard/similar-chart');
 					}}

@@ -35,6 +35,7 @@ export default function NewHomeContainer() {
 						나를 위한 맞춤 정보
 					</p>
 					<Image
+						className="cursor-pointer"
 						src="/question.png"
 						alt="info"
 						width={21}

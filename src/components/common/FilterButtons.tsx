@@ -26,7 +26,7 @@ export default function FilterButtons<T = string>({
 					onClick={() => {
 						onFilterChange(option.value);
 					}}
-					className={`rounded-[10px] px-4 py-[6px] text-sm font-medium ${
+					className={`rounded-[10px] px-4 py-[6px] text-sm font-medium cursor-pointer ${
 						activeFilter === option.value
 							? 'bg-blue-700 text-white'
 							: 'bg-transparent text-gray-500'

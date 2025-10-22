@@ -31,7 +31,7 @@ export default async function ChartPage({ params }: PageProps) {
 	const isValidStock = await validateStockCode(blob);
 
 	if (!isValidStock) {
-		notFound();
+		return notFound();
 	}
 
 	return <ChartContainer stockCode={blob} />;

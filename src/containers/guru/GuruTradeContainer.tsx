@@ -5,11 +5,19 @@ import GuruTradingTab from '@/components/guru/GuruTradingTab';
 import { fetchGetGuruByTrading } from '@/services/guruServices';
 
 //
-export default function GuruTradeContainer() {
+interface GuruTradeContainerProps {
+	guruFilter?: GuruType;
+	tradeFilter?: FilterType;
+}
+
+export default function GuruTradeContainer({
+	guruFilter = 'DAY',
+	tradeFilter = 'BUY',
+}: GuruTradeContainerProps) {
 	const [isOpenTrading, setIsOpenTrading] = useState(false);
-	const [activeFilter, setActiveFilter] = useState<FilterType>('BUY');
+	const [activeFilter, setActiveFilter] = useState<FilterType>(tradeFilter);
 	const [stocks, setStocks] = useState<GuruTrade[]>([]);
-	const [guruType, setGuruType] = useState<GuruType>('DAY');
+	const [guruType, setGuruType] = useState<GuruType>(guruFilter);
 	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
