@@ -52,24 +52,28 @@ export default function StockInfoHeader() {
 		const sendLog = async () => {
 			if (actionScore.current === 5) return;
 
-			await fetch('/api/chart/log-buffer', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
+			navigator.sendBeacon(
+				'/api/chart/log-buffer',
+				JSON.stringify({
 					userId: userData?.id,
 					stockId: stockCode,
 					deltaScore: actionScore.current > 3 ? 3 : actionScore.current,
 					eventTime: new Date().toISOString(),
-				}),
-			});
+				})
+			);
 			actionScore.current = 0;
 		};
 
-		window.addEventListener('beforeunload', sendLog);
+		window.addEventListener('사용자 로그 추가', sendLog);
+		window.addEventListener('사용자 페이지 변경', () => {
+			if (document.visibilityState === 'hidden') {
+				sendLog();
+			}
+		});
 		return () => {
 			clearInterval(interval);
 			sendLog();
-			window.removeEventListener('beforeunload', sendLog);
+			window.removeEventListener('사용자 로그 추가', sendLog);
 		};
 	}, [stockCode, userData]);
 
