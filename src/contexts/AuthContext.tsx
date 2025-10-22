@@ -21,7 +21,11 @@ import {
 
 interface AuthContextType {
 	isLoading: boolean;
-	login: (id: string, password: string) => Promise<boolean>;
+	login: (
+		id: string,
+		password: string,
+		rememberId?: boolean
+	) => Promise<boolean>;
 	isAuthenticated: boolean;
 	isInitialized: boolean;
 	logout: () => void;
@@ -67,12 +71,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		initializeAuth();
 	}, [logout]);
 
-	const login = async (id: string, password: string): Promise<boolean> => {
+	const login = async (
+		id: string,
+		password: string,
+		rememberId: boolean = false
+	): Promise<boolean> => {
 		try {
 			const response = await postLoginToken(id, password);
 			setAccessToken(response.tokenResponse.accessToken);
 			setRefreshToken(response.tokenResponse.refreshToken);
-			setUserId(id); // 사용자 ID를 로컬 스토리지에 저장
+
+			// 체크박스가 체크된 경우에만 사용자 ID를 로컬 스토리지에 저장
+			if (rememberId) {
+				setUserId(id);
+			}
 
 			setIsAuthenticated(true);
 		} catch (error) {

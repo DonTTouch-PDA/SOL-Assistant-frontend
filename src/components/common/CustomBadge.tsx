@@ -21,19 +21,20 @@ export function EmotionBadge({ emotion }: EmotionBadgeProps) {
 }
 
 interface BuySellBadgeProps {
-	type: 'BUY' | 'SELL';
+	type: 'BUY' | 'SELL' | 'NONE';
 }
 
 export function BuySellBadge({ type }: BuySellBadgeProps) {
 	const buySellColors: Record<string, string> = {
 		SELL: 'bg-[#E6EDFF] text-[#2D77FA] ',
 		BUY: 'bg-[#FCF4F4] text-[#FA2D42]',
+		NONE: 'bg-[#F4F6F9] text-[#999DA5]',
 	};
 	return (
 		<span
 			className={`rounded-lg px-2 py-0.5 text-sm font-semibold ${buySellColors[type]}`}
 		>
-			{type === 'BUY' ? '매수' : '매도'}
+			{type === 'BUY' ? '매수' : type === 'SELL' ? '매도' : '없음'}
 		</span>
 	);
 }

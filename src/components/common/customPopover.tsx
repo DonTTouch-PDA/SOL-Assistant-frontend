@@ -28,7 +28,7 @@ export default function CustomPopOver({
 						/>
 					) : (
 						<div
-							className="absolute left-1/2 top-full -translate-x-1/2 w-0 h-0
+							className="absolute left-1/4 top-full -translate-x-1/2 w-0 h-0
 							border-x-8 border-x-transparent border-t-8 border-t-[#005EF9]"
 						/>
 					)}

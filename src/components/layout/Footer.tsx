@@ -18,17 +18,41 @@ export default function Footer() {
 		// 현재 URL에서 종목 코드 가져오기
 		const currentStockCode = pathname.split('/')[1];
 
-		if (
-			currentStockCode &&
-			currentStockCode !== 'dashboard' &&
-			currentStockCode !== 'menu'
-		) {
-			setRecentStockCode(currentStockCode);
-			setStockCodeToLocalStorage(currentStockCode);
-		} else {
-			const stockCode = getStockCodeFromLocalStorage();
-			if (stockCode) setRecentStockCode(stockCode);
-		}
+		// 유효한 종목 코드인지 확인하는 함수
+		const isValidStockCode = async (stockCode: string): Promise<boolean> => {
+			try {
+				const response = await fetch('/stocks.json');
+				const stocks = await response.json();
+				return stocks.some(
+					(stock: { symbol: string }) => stock.symbol === stockCode
+				);
+			} catch (error) {
+				console.error('종목 코드 검증 실패:', error);
+				return false;
+			}
+		};
+
+		const handleStockCode = async () => {
+			if (
+				currentStockCode &&
+				currentStockCode !== 'dashboard' &&
+				currentStockCode !== 'menu'
+			) {
+				const isValid = await isValidStockCode(currentStockCode);
+				if (isValid) {
+					setRecentStockCode(currentStockCode);
+					setStockCodeToLocalStorage(currentStockCode);
+				} else {
+					const stockCode = getStockCodeFromLocalStorage();
+					if (stockCode) setRecentStockCode(stockCode);
+				}
+			} else {
+				const stockCode = getStockCodeFromLocalStorage();
+				if (stockCode) setRecentStockCode(stockCode);
+			}
+		};
+
+		handleStockCode();
 
 		// pathname 기준으로 currentTab 설정
 		if (pathname.startsWith('/dashboard')) {
@@ -72,8 +96,14 @@ export default function Footer() {
 
 	const tabs = [
 		{ href: '/dashboard', label: '홈' },
-		{ href: `/${recentStockCode}`, label: '현재가' },
-		{ href: `/${recentStockCode}/order`, label: '주문' },
+		{
+			href: `/${recentStockCode ? recentStockCode : '005930'}`,
+			label: '현재가',
+		},
+		{
+			href: `/${recentStockCode ? recentStockCode : '005930'}/order`,
+			label: '주문',
+		},
 	];
 
 	const [currentTab, setCurrentTab] = useState('홈');
@@ -108,5 +138,6 @@ export default function Footer() {
 				</div>
 			</nav>
 		</>
+
 	);
 }

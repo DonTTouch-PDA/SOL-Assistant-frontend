@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import LoginFormComponent from '@/components/auth/LoginFormComponent';
 import { useAuth } from '@/hooks/useAuth';
+import { setStockCodeToLocalStorage } from '@/utils/stockCodeStorage';
+import { getUserId } from '@/utils/tokenStorage';
 
 export default function LoginContainer() {
 	const router = useRouter();
@@ -24,6 +26,18 @@ export default function LoginContainer() {
 		rememberId: false,
 	});
 
+	// 컴포넌트 마운트 시 저장된 아이디 불러오기
+	useEffect(() => {
+		const savedId = getUserId();
+		if (savedId) {
+			setFormData((prev) => ({
+				...prev,
+				authId: savedId,
+				rememberId: true,
+			}));
+		}
+	}, []);
+
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value, type, checked } = e.target;
 		setFormData((prev) => ({
@@ -43,10 +57,18 @@ export default function LoginContainer() {
 		setError('');
 
 		try {
-			const success = await login(formData.authId, formData.password);
+			const success = await login(
+				formData.authId,
+				formData.password,
+				formData.rememberId
+			);
 
 			if (success) {
+				// 로그인 성공 시 아이디 저장 처리 (AuthContext에서 이미 처리됨)
+				// 추가적인 로컬 스토리지 처리는 필요 없음
+
 				// 로그인 성공 시 대시보드 페이지로 이동
+				setStockCodeToLocalStorage('005930');
 				router.replace('/dashboard');
 			} else {
 				setError('ID 또는 비밀번호가 올바르지 않습니다.');

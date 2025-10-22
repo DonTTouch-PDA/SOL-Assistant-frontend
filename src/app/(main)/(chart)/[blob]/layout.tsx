@@ -1,4 +1,3 @@
-import StockTab from '@/components/layout/StockTab';
 import StockInfoHeader from '@/containers/chart/StockInfoHeader';
 import { StockProvider } from '@/contexts/StockContext';
 
