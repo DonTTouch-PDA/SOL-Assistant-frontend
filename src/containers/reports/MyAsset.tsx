@@ -5,7 +5,12 @@ import { useEffect, useState } from 'react';
 // const data = { asset: 1234320, diff: -123500 };
 
 export default function MyAsset() {
-	const [assetData, setAssetData] = useState({ totalBalance: 0, principal: 0 });
+	const [assetData, setAssetData] = useState({
+		totalBalance: 0,
+		principal: 0,
+		difference: 0,
+		differenceRate: 0,
+	});
 
 	useEffect(() => {
 		FetchMyAsset().then((d) => setAssetData(d));

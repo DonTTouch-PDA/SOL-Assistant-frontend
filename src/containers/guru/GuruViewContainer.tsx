@@ -8,8 +8,14 @@ import {
 import { GuruType, GuruTrade, UserFilterType } from '@/types/guru';
 
 //
-export default function GuruViewContainer() {
-	const [guruType, setGuruType] = useState<GuruType>('DAY');
+interface GuruViewContainerProps {
+	guruFilter?: GuruType;
+}
+
+export default function GuruViewContainer({
+	guruFilter = 'DAY',
+}: GuruViewContainerProps) {
+	const [guruType, setGuruType] = useState<GuruType>(guruFilter);
 	const [isOpenViewing, setIsOpenViewing] = useState(false);
 	const [userFilter, setUserFilter] = useState<UserFilterType>('고수');
 	const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
