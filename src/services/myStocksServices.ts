@@ -1,15 +1,17 @@
-import { getAccessToken } from '@/utils/tokenStorage';
+import { apiClient } from './apiClient';
 import { MyStock } from '@/types/myStock';
 
 export const fetchGetMyStocks = async () => {
 	try {
-		const res = await fetch(`/api/v1/internal/member/report/my-stock`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${getAccessToken()}`,
-			},
-		});
+		const res = await apiClient.request(
+			`/api/v1/internal/member/report/my-stock`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
 		if (!res.ok) {
 			throw new Error(`HTTP error! status: ${res.status}`);
 		}

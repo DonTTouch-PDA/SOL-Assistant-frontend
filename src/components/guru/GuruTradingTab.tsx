@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import CustomDropdown from '@/components/common/CustomDropdown';
 import FilterButtons from '@/components/guru/FilterButtons';
 import { FilterType, GuruTrade, GuruType } from '@/types/guru';
@@ -23,6 +24,7 @@ export default function GuruTradingTab({
 	onFilterChange,
 	stocks,
 }: GuruTradingTabProps) {
+	const router = useRouter();
 	return (
 		<div className="animate-fadeIn">
 			<div className="flex items-center pb-[16px] justify-between">
@@ -30,9 +32,17 @@ export default function GuruTradingTab({
 					activeFilter={activeFilter}
 					onFilterChange={onFilterChange}
 				/>
-				<CustomDropdown
+				<CustomDropdown<string>
 					options={['단기 고수', '중기 고수', '장기 고수']}
-					setSortedBy={guruType}
+					setSortedBy={
+						guruType === 'DAY'
+							? '단기 고수'
+							: guruType === 'SWING'
+								? '중기 고수'
+								: guruType === 'HOLD'
+									? '장기 고수'
+									: '단기 고수'
+					}
 					isOpen={isOpen}
 					onToggle={onToggle}
 					fetchSortedBy={(label) => {
@@ -45,20 +55,22 @@ export default function GuruTradingTab({
 					}}
 				/>
 			</div>
-			{stocks.map((stock, index) => (
-				<StockListItemCard
-					key={stock.stockSymbol}
-					rank={index}
-					name={stock.stockName}
-					img={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stock.stockSymbol}.png`}
-					code={stock.stockSymbol}
-					currentPrice={stock.todayClosePrice}
-					changeRate={stock.priceChangePercent}
-					volumeRate={stock.volumeChangePercent}
-					detail={activeFilter}
-					onClick={() => {}}
-				/>
-			))}
+			{stocks
+				.sort((a, b) => b.guruVolumePercent - a.guruVolumePercent)
+				.map((stock, index) => (
+					<StockListItemCard
+						key={stock.stockSymbol}
+						rank={index}
+						name={stock.stockName}
+						img={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stock.stockSymbol}.png`}
+						code={stock.stockSymbol}
+						currentPrice={stock.todayClosePrice}
+						changeRate={stock.priceChangePercent}
+						volumeRate={stock.guruVolumePercent}
+						detail={activeFilter}
+						onClick={() => router.push(`/${stock.stockSymbol}`)}
+					/>
+				))}
 		</div>
 	);
 }

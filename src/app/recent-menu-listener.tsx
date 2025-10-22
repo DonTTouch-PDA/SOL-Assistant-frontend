@@ -11,7 +11,7 @@ const MENU_MAP = [
 	{ id: 'dashboard/similar-chart', label: '유사 차트', icon: '🧐' },
 	{ id: 'dashboard/reports', label: '리포트', icon: '📋' },
 	{ id: 'dashboard/my-stock', label: '보유 종목', icon: '📥' },
-	{ label: '실시간 차트', id: ':stockCode', icon: '⏰' },
+	// { label: '실시간 차트', id: ':stockCode', icon: '⏰' },
 	{ label: '호가', id: ':stockCode/orderbook', icon: '📊' },
 	{ label: '주문', id: ':stockCode/order', icon: '🧾' },
 	{ label: '고수의 거래량', id: ':stockCode/guru', icon: '📈' },

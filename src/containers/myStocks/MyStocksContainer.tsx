@@ -12,7 +12,7 @@ export default function MyStocksContainer() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [stocks, setStocks] = useState<MyStock[]>([]);
 
-	const fetchData = async (sortBy: string) => {
+	const fetchData = async () => {
 		setIsLoading(true);
 		try {
 			const data = await fetchGetMyStocks();
@@ -27,7 +27,7 @@ export default function MyStocksContainer() {
 	const handleSortedBy = (value: string) => {
 		setSortedBy(value);
 		setIsOpen(false);
-		fetchData(value);
+		fetchData();
 	};
 
 	const handleToggle = () => {
@@ -35,12 +35,12 @@ export default function MyStocksContainer() {
 	};
 
 	useEffect(() => {
-		fetchData(sortedBy);
+		fetchData();
 	}, []);
 
 	return (
 		<div className="pt-6 w-full ">
-			<CustomDropdown
+			<CustomDropdown<string>
 				options={['등록 순', '현재가 순']}
 				setSortedBy={sortedBy}
 				isOpen={isOpen}
@@ -56,9 +56,20 @@ export default function MyStocksContainer() {
 				</div>
 			) : stocks ? (
 				<div>
-					{stocks.map((stock, idx) => (
-						<StockItem key={idx} stock={stock} />
-					))}
+					{stocks
+						.sort((a, b) => {
+							if (sortedBy === '등록 순') {
+								return (
+									new Date(b.currentTradeTs).getTime() -
+									new Date(a.currentTradeTs).getTime()
+								);
+							} else {
+								return b.currentPrice - a.currentPrice;
+							}
+						})
+						.map((stock, idx) => (
+							<StockItem key={idx} stock={stock} />
+						))}
 				</div>
 			) : (
 				<div>종목이 없습니다.</div>

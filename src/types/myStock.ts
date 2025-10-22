@@ -8,4 +8,5 @@ export interface MyStock {
 	costBasis: number;
 	diff: number;
 	profit: number;
+	currentTradeTs: string;
 }

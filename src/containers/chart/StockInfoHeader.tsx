@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
 	getStockCodeFromLocalStorage,
 	setStockCodeToLocalStorage,
@@ -8,11 +8,14 @@ import { fetchStockInfo, fetchStockRiskCheck } from '@/services/chartServices';
 import { StockInfo, StockRisk } from '@/types/chart';
 import StockTab from '@/components/layout/StockTab';
 import RiskItemBadge from '@/components/common/RiskItemBadge';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function StockInfoHeader() {
 	const [stockCode, setStockCode] = useState<string | null>(null);
 	const [stockInfo, setStockInfo] = useState<StockInfo | null>(null);
 	const [stockRisk, setStockRisk] = useState<StockRisk | null>(null);
+	const actionScore = useRef<number>(5);
+	const { userData } = useAuth();
 
 	useEffect(() => {
 		const loadStockData = async () => {
@@ -38,6 +41,37 @@ export default function StockInfoHeader() {
 
 		loadStockData();
 	}, [stockCode]);
+
+	// 점수 쌓기
+	useEffect(() => {
+		const interval = setInterval(() => {
+			actionScore.current += 0.1;
+		}, 5000);
+
+		// 로그 전송
+		const sendLog = async () => {
+			if (actionScore.current === 5) return;
+
+			await fetch('/api/chart/log-buffer', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					userId: userData?.id,
+					stockId: stockCode,
+					deltaScore: actionScore.current > 3 ? 3 : actionScore.current,
+					eventTime: new Date().toISOString(),
+				}),
+			});
+			actionScore.current = 0;
+		};
+
+		window.addEventListener('beforeunload', sendLog);
+		return () => {
+			clearInterval(interval);
+			sendLog();
+			window.removeEventListener('beforeunload', sendLog);
+		};
+	}, [stockCode, userData]);
 
 	const { prePreviousClose = 0, previousClose = 0 } = stockInfo || {};
 	const diff = previousClose - prePreviousClose;
