@@ -14,7 +14,7 @@ export default function StockInfoHeader() {
 	const [stockCode, setStockCode] = useState<string | null>(null);
 	const [stockInfo, setStockInfo] = useState<StockInfo | null>(null);
 	const [stockRisk, setStockRisk] = useState<StockRisk | null>(null);
-	const actionScore = useRef<number>(0);
+	const actionScore = useRef<number>(5);
 	const { userData } = useAuth();
 
 	useEffect(() => {
@@ -45,13 +45,12 @@ export default function StockInfoHeader() {
 	// 점수 쌓기
 	useEffect(() => {
 		const interval = setInterval(() => {
-			actionScore.current += 0.5;
-			console.log(actionScore.current);
-		}, 20000);
+			actionScore.current += 0.1;
+		}, 5000);
 
 		// 로그 전송
 		const sendLog = async () => {
-			if (actionScore.current === 0) return;
+			if (actionScore.current === 5) return;
 
 			await fetch('/api/chart/log-buffer', {
 				method: 'POST',
@@ -59,7 +58,7 @@ export default function StockInfoHeader() {
 				body: JSON.stringify({
 					userId: userData?.id,
 					stockId: stockCode,
-					deltaScore: actionScore.current,
+					deltaScore: actionScore.current > 3 ? 3 : actionScore.current,
 					eventTime: new Date().toISOString(),
 				}),
 			});

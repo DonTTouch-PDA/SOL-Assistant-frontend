@@ -65,13 +65,29 @@ export default function StockListItemCard({
 					<div className="text-left">
 						<h2 className="text-black text-base font-medium">{name}</h2>
 						{detail === 'BUY' && (
-							<div className="inline-block text-red-500 rounded-[4px] bg-red-100 px-[4px] text-sm font-medium">
-								매수 +{volumeRate ? volumeRate.toFixed(2) : '0.00'}%
+							<div
+								className={`inline-block  ${volumeRate ? (volumeRate > 0 ? 'text-red-500' : 'text-blue-500') : 'text-gray-500'} rounded-[4px] bg-${volumeRate ? (volumeRate > 0 ? 'red-100' : 'blue-100') : 'gray-100'} px-[4px] text-sm font-medium`}
+							>
+								매수량{' '}
+								{volumeRate
+									? volumeRate > 0
+										? '+' + volumeRate.toFixed(2)
+										: '' + volumeRate.toFixed(2)
+									: '0.00'}
+								%
 							</div>
 						)}
 						{detail === 'SELL' && (
-							<div className="inline-block text-blue-500 rounded-[4px] bg-blue-100 px-[4px] text-sm font-medium">
-								매도 +{volumeRate ? volumeRate.toFixed(2) : '0.00'}%
+							<div
+								className={`inline-block  ${volumeRate ? (volumeRate > 0 ? 'text-red-500' : 'text-blue-500') : 'text-gray-500'} rounded-[4px] bg-${volumeRate ? (volumeRate > 0 ? 'red-100' : 'blue-100') : 'gray-100'} px-[4px] text-sm font-medium`}
+							>
+								매도량{' '}
+								{volumeRate
+									? volumeRate > 0
+										? '+' + volumeRate.toFixed(2)
+										: '' + volumeRate.toFixed(2)
+									: '0.00'}
+								%
 							</div>
 						)}
 						{detail === 'VOLUME' && (

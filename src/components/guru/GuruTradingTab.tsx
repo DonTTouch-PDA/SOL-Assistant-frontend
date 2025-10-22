@@ -53,20 +53,22 @@ export default function GuruTradingTab({
 					}}
 				/>
 			</div>
-			{stocks.map((stock, index) => (
-				<StockListItemCard
-					key={stock.stockSymbol}
-					rank={index}
-					name={stock.stockName}
-					img={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stock.stockSymbol}.png`}
-					code={stock.stockSymbol}
-					currentPrice={stock.todayClosePrice}
-					changeRate={stock.priceChangePercent}
-					volumeRate={stock.volumeChangePercent}
-					detail={activeFilter}
-					onClick={() => {}}
-				/>
-			))}
+			{stocks
+				.sort((a, b) => b.guruVolumePercent - a.guruVolumePercent)
+				.map((stock, index) => (
+					<StockListItemCard
+						key={stock.stockSymbol}
+						rank={index}
+						name={stock.stockName}
+						img={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stock.stockSymbol}.png`}
+						code={stock.stockSymbol}
+						currentPrice={stock.todayClosePrice}
+						changeRate={stock.priceChangePercent}
+						volumeRate={stock.guruVolumePercent}
+						detail={activeFilter}
+						onClick={() => {}}
+					/>
+				))}
 		</div>
 	);
 }

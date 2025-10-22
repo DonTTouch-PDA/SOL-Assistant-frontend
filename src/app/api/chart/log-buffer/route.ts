@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 	}
 	logEntry.stockId = stock.stockId;
 
-	// JSONL 형태로 저장 (줄 단위)
+	// JSONL 형태로 저장
 	fs.appendFileSync(LOG_FILE, JSON.stringify(logEntry) + '\n', 'utf-8');
 	return Response.json({ status: 'ok' });
 }
