@@ -96,7 +96,10 @@ export default function Menu() {
 				<div
 					className="flex gap-6 underline font-semibold"
 					onClick={() => {
-						console.log('logout');
+						// 로그아웃 로직
+						sessionStorage.removeItem('accessToken');
+						sessionStorage.removeItem('refreshToken');
+						router.push('/login');
 					}}
 				>
 					로그아웃
@@ -129,7 +132,7 @@ export default function Menu() {
 
 				<div className="flex -mx-6">
 					{/* 왼쪽탭 */}
-					<section className="relative bg-[#F2F4F8] w-1/3 h-screen font-medium flex flex-col">
+					<section className="relative bg-[#ebecee] w-1/3 h-screen font-medium flex flex-col">
 						{mounted && (
 							<div>
 								{assistMode ? (
@@ -161,10 +164,10 @@ export default function Menu() {
 
 								{/* 어시스트모드 토글 */}
 								<div
-									className="fixed left-[calc((100%-430px)/2)] bottom-3 px-6 bg-[#F2F4F8] pt-2"
+									className="fixed left-[calc((100%-400px)/2)] bottom-3 px-6 bg-[#ebecee] pt-2"
 									ref={buttonRef}
 								>
-									<div className="absolute bottom-full mb-2 left-[60%] -translate-x-1/2">
+									<div className="absolute bottom-full mb-2 left-[85%] -translate-x-1/2">
 										<CustomPopOver
 											text="어시스트 모드를 켜 보세요!"
 											isShowPopover={showPopover}

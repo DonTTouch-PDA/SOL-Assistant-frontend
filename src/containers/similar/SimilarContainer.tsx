@@ -18,7 +18,6 @@ interface SelectedStockType {
 }
 
 export default function SimilarChartContainer() {
-
 	const [hasStockFilter, setHasStockFilter] = useState('보유');
 	const [signalType, setSignalType] = useState<SignalType>('sell');
 	const signalOptions: FilterOption<SignalType>[] = [
@@ -81,6 +80,8 @@ export default function SimilarChartContainer() {
 							stockCode: stock.stock_code,
 							stockName: stock.name,
 						});
+						// 스크롤을 맨 위로 이동
+						window.scrollTo({ top: 0, behavior: 'smooth' });
 					}}
 					currentPrice={stock.currentPrice}
 					changeRate={stock.change_rate}
