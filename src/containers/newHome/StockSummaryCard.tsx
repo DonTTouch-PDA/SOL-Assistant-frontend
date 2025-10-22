@@ -29,7 +29,6 @@ export default function StockSummaryCard({
 	data,
 	onSectorNewsClick,
 }: StockSummaryCardProps) {
-
 	const { userData } = useAuth();
 	const [color, setColor] = useState('#ffffff');
 
@@ -141,7 +140,7 @@ export default function StockSummaryCard({
 					<ChevronRight color="gray" />
 				</div>
 				{guruChange?.dailyGuru ? (
-					<div className="flex items-center gap-1 pb-2">
+					<div className="flex items-center gap-1 pb-2 cursor-pointer">
 						<p className="text-[#FA2D42] bg-[#FFF2F2] rounded-xl font-semibold px-3  text-sm">
 							HOT
 						</p>
