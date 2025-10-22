@@ -14,12 +14,14 @@ import {
 	fetchSignData,
 } from '@/services/newHomeServices';
 import { GuruChangeData, SignData, HomeNewsData } from '@/types/newHome';
+import { useAuth } from '@/hooks/useAuth';
 
 interface StockSummaryCardProps {
 	data: MyStock;
 }
 
 export default function StockSummaryCard({ data }: StockSummaryCardProps) {
+	const { userData } = useAuth();
 	const [color, setColor] = useState('#ffffff');
 	//이미지색상추출
 	useEffect(() => {
@@ -117,7 +119,15 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 				}}
 			>
 				<div className="flex gap-2 pb-1">
-					<h2 className="font-semibold">고수의 Pick</h2>
+					<h2 className="font-semibold">
+						{userData?.investmentType === 'DAY'
+							? '단기 고수의 Pick'
+							: userData?.investmentType === 'SWING'
+								? '중기 고수의 Pick'
+								: userData?.investmentType === 'HOLD'
+									? '장기 고수의 Pick'
+									: '고수의 Pick'}
+					</h2>
 					<ChevronRight color="gray" />
 				</div>
 				{guruChange?.dailyGuru ? (
@@ -167,6 +177,9 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					매매신호{` `}
 					{sign?.buySignal && <BuySellBadge type="BUY" />}
 					{sign?.sellSignal && <BuySellBadge type="SELL" />}
+					{!sign?.buySignal && !sign?.sellSignal && (
+						<BuySellBadge type="NONE" />
+					)}
 				</p>
 			</section>
 		</div>

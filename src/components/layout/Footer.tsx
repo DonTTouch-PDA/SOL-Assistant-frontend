@@ -68,7 +68,14 @@ export default function Footer() {
 					))}
 				</ul>
 				<Link href="/menu">
-					<Image src="/menu.jpg" alt="메뉴" height={58} width={58} />
+					<Image
+						src="/menu.jpg"
+						alt="메뉴"
+						height={58}
+						width={58}
+						priority
+						style={{ width: 'auto', height: 'auto' }}
+					/>
 				</Link>
 			</div>
 		</nav>

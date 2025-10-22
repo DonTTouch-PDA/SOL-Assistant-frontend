@@ -22,6 +22,12 @@ export const GURU_MORE_INFO_DESCRIPTION = (
 	</>
 );
 
+export const GURU_MORE_INFO_TOP = (
+	<>
+		고수가 주목하는 종목 중 <br />
+		내가 주의깊게 보지 않은 종목이에요.
+	</>
+);
 export const SIMILAR_DETAIL_BOLLINGER_BANDS = (
 	<>
 		주가가 볼린저밴드 하단선을 터치하거나 밴드 하한선을 돌파한 후 다시 밴드
@@ -34,5 +40,12 @@ export const AINEWS = (
 	<>
 		• 보유주식 상위 3개 섹터 관련 뉴스의 ai 요약입니다. <br />• 단순 참고
 		자료이며, 이 자료를 활용한 투자의 책임은 투자자 본인에게 귀속됩니다.
+	</>
+);
+
+export const NEW_HOME_MORE_INFO = (
+	<>
+		내 종목과 관련된 다양한 정보를 <br />
+		성향에 맞게 확인할 수 있어요.
 	</>
 );

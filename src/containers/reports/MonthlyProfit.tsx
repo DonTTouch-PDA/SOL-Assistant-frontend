@@ -1,6 +1,7 @@
 'use client';
 import CustomCard from '@/components/common/CustomCard';
 import { FetchThisMonthProfit } from '@/services/reportServices';
+import { ChevronRightIcon } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -57,19 +58,13 @@ export default function MonthlyProfit() {
 		<CustomCard>
 			{/*이번달 매매수익*/}
 			<div
-				className="flex gap-1"
+				className="flex gap-1 items-center"
 				onClick={() => {
 					router.push('/dashboard/reports/profit-history');
 				}}
 			>
 				<h1 className="text-lg font-medium">이번달 매매수익</h1>
-				<Image
-					src="/arrow-right.svg"
-					alt="arrow"
-					width={20}
-					height={20}
-					className=" hover:bg-gray-50 rounded-2xl"
-				/>
+				<ChevronRightIcon className="w-5 h-5" />
 			</div>
 			<div className="flex items-end gap-3">
 				<p className="text-xl">

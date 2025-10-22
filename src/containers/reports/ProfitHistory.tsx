@@ -7,7 +7,7 @@ import {
 } from '@/services/reportServices';
 import { Trading, DailyTrading, MonthlyHistory } from '@/types/ProfitHistory';
 import { formatToYearMonth } from '@/utils/date';
-import { Check, ChevronDown } from 'lucide-react';
+import { AlertCircleIcon, Check, ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -139,30 +139,27 @@ export default function ProfitHistory() {
 					</div>
 				</div>
 
-				{/* 상세내역 */}
-
-				<div className="flex gap-1 pt-4">
-					<p className="font-[DunbarLow] font-semibold text-sm text-[#333951]">
-						{data.month}{' '}
-					</p>
-					<ChevronDown
-						width={15}
-						onClick={() => {
-							setIsOpenBottomSheet(true);
-						}}
-					/>
-				</div>
+				{data.breakdown.length > 0 && (
+					<>
+						<div className="flex gap-1 pt-4">
+							<p className="font-[DunbarLow] font-semibold text-sm text-[#333951]">
+								{data.month}{' '}
+							</p>
+							<ChevronDown
+								width={15}
+								onClick={() => {
+									setIsOpenBottomSheet(true);
+								}}
+							/>
+						</div>
+					</>
+				)}
 
 				{data.breakdown.length > 0 ? (
 					<MonthSection data={data} />
 				) : (
 					<div className="flex flex-col items-center gap-4 p-10">
-						<Image
-							src="/notification.svg"
-							alt="notification"
-							width={40}
-							height={40}
-						/>
+						<AlertCircleIcon width={40} height={40} />
 						<p className="text-gray-500 text-lg">아직 매매 내역이 없어요.</p>
 					</div>
 				)}

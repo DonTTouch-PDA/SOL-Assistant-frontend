@@ -16,7 +16,10 @@ export default function GuruViewContainer() {
 	const [myStocks, setMyStocks] = useState<GuruTrade[]>([]);
 	const [gosuStocks, setGosuStocks] = useState<GuruTrade[]>([]);
 	const [recommendStocks, setRecommendStocks] = useState<GuruTrade[]>([]);
-	const popoverRef = useRef<HTMLDivElement>(null);
+	const popoverRefTop = useRef<HTMLDivElement>(null);
+	const popoverRefBottom = useRef<HTMLDivElement>(null);
+	const [isOpenMoreInfoTop, setIsOpenMoreInfoTop] = useState(false);
+	const [isOpenMoreInfoBottom, setIsOpenMoreInfoBottom] = useState(false);
 
 	const getGuruViewingList = useCallback(async () => {
 		// 한 번에 fetch하기
@@ -49,10 +52,10 @@ export default function GuruViewContainer() {
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
 			if (
-				popoverRef.current &&
-				!popoverRef.current.contains(event.target as Node)
+				popoverRefTop.current &&
+				!popoverRefTop.current.contains(event.target as Node)
 			) {
-				if (isOpenMoreInfo) {
+				if (isOpenMoreInfoTop) {
 					setIsOpenMoreInfo(false);
 				}
 			}
@@ -79,8 +82,12 @@ export default function GuruViewContainer() {
 		setUserFilter(filter);
 	};
 
-	const handleMoreInfo = () => {
-		setIsOpenMoreInfo(!isOpenMoreInfo);
+	const handleMoreInfoBottom = () => {
+		setIsOpenMoreInfoBottom(!isOpenMoreInfoBottom);
+	};
+
+	const handleMoreInfoTop = () => {
+		setIsOpenMoreInfoTop(!isOpenMoreInfoTop);
 	};
 
 	return (
@@ -91,11 +98,16 @@ export default function GuruViewContainer() {
 			onToggle={handleToggleViewing}
 			userFilter={userFilter}
 			onUserFilterChange={handleUserFilterChange}
-			viewingStocks={userFilter === '고수' ? gosuStocks : myStocks}
+			viewingStocks={
+				userFilter === '고수' ? gosuStocks.slice(0, 8) : myStocks.slice(0, 8)
+			}
 			viewingStocks2={userFilter === '고수' ? gosuStocks : recommendStocks}
-			isOpenMoreInfo={isOpenMoreInfo}
-			onMoreInfo={handleMoreInfo}
-			popoverRef={popoverRef}
+			isOpenMoreInfoTop={isOpenMoreInfoTop}
+			isOpenMoreInfoBottom={isOpenMoreInfoBottom}
+			onMoreInfoBottom={handleMoreInfoBottom}
+			onMoreInfoTop={handleMoreInfoTop}
+			popoverRefTop={popoverRefTop}
+			popoverRefBottom={popoverRefBottom}
 		/>
 	);
 }

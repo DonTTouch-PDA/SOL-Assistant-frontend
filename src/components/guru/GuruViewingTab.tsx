@@ -9,6 +9,10 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { GuruType } from '@/types/guru';
 import TreeMapContainer from '@/containers/guru/TreeMapContainer';
 import Image from 'next/image';
+import {
+	GURU_MORE_INFO_DESCRIPTION,
+	GURU_MORE_INFO_TOP,
+} from '@/constants/descriptions';
 
 interface GuruViewingTabProps {
 	guruType: GuruType;
@@ -19,9 +23,12 @@ interface GuruViewingTabProps {
 	onUserFilterChange: (filter: UserFilterType) => void;
 	viewingStocks: GuruTrade[];
 	viewingStocks2: GuruTrade[];
-	isOpenMoreInfo: boolean;
-	onMoreInfo: () => void;
-	popoverRef: React.RefObject<HTMLDivElement | null>;
+	isOpenMoreInfoTop: boolean;
+	isOpenMoreInfoBottom: boolean;
+	onMoreInfoBottom: () => void;
+	onMoreInfoTop: () => void;
+	popoverRefTop: React.RefObject<HTMLDivElement | null>;
+	popoverRefBottom: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function GuruViewingTab({
@@ -33,9 +40,12 @@ export default function GuruViewingTab({
 	onUserFilterChange,
 	viewingStocks,
 	viewingStocks2,
-	isOpenMoreInfo,
-	onMoreInfo,
-	popoverRef,
+	isOpenMoreInfoTop,
+	isOpenMoreInfoBottom,
+	onMoreInfoBottom,
+	onMoreInfoTop,
+	popoverRefTop,
+	popoverRefBottom,
 }: GuruViewingTabProps) {
 	const router = useRouter();
 	return (
@@ -68,16 +78,45 @@ export default function GuruViewingTab({
 					}}
 				/>
 			</div>
+			<div className="flex gap-2 mb-2">
+				<p className="text-lg font-semibold text-black ">상위 관심 종목</p>
+				<Image
+					src="/question.png"
+					alt="help"
+					width={24}
+					height={24}
+					className="cursor-pointer"
+					onClick={onMoreInfoTop}
+				/>
+				{/* 팝오버 */}
+				<AnimatePresence>
+					{isOpenMoreInfoTop && (
+						<motion.div
+							ref={popoverRefTop}
+							className="absolute top-60 left-0 z-10"
+							initial={{ opacity: 0, y: -10, scale: 0.95 }}
+							animate={{ opacity: 1, y: 0, scale: 1 }}
+							exit={{ opacity: 0, y: -10, scale: 0.95 }}
+							transition={{ duration: 0.2 }}
+						>
+							<GuruMoreInfoCard
+								comment={GURU_MORE_INFO_TOP}
+								onClose={onMoreInfoTop}
+							/>
+						</motion.div>
+					)}
+				</AnimatePresence>
+			</div>
 			{/* 트리맵 */}
 			<TreeMapContainer data={viewingStocks} />
 
 			{/* 제목 */}
-			<div className="flex items-center gap-1 mt-6 relative">
-				<h3 className="text-lg font-semibold text-black">
+			<div className="flex items-center gap-1 mt-8 relative">
+				<p className="text-lg font-semibold text-black">
 					{userFilter === '고수'
 						? '고수들이 주목하고 있어요'
 						: '고수들은 이 종목을 더 보고 있어요'}
-				</h3>
+				</p>
 				{userFilter !== '고수' && (
 					<Image
 						src="/question.png"
@@ -85,22 +124,25 @@ export default function GuruViewingTab({
 						width={24}
 						height={24}
 						className="cursor-pointer"
-						onClick={onMoreInfo}
+						onClick={onMoreInfoBottom}
 					/>
 				)}
 
 				{/* 팝오버 */}
 				<AnimatePresence>
-					{isOpenMoreInfo && (
+					{isOpenMoreInfoBottom && (
 						<motion.div
-							ref={popoverRef}
+							ref={popoverRefBottom}
 							className="absolute top-8 right-0 z-10"
 							initial={{ opacity: 0, y: -10, scale: 0.95 }}
 							animate={{ opacity: 1, y: 0, scale: 1 }}
 							exit={{ opacity: 0, y: -10, scale: 0.95 }}
 							transition={{ duration: 0.2 }}
 						>
-							<GuruMoreInfoCard onClose={onMoreInfo} />
+							<GuruMoreInfoCard
+								comment={GURU_MORE_INFO_DESCRIPTION}
+								onClose={onMoreInfoBottom}
+							/>
 						</motion.div>
 					)}
 				</AnimatePresence>
