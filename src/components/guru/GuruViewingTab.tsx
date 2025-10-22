@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import CustomDropdown from '@/components/common/CustomDropdown';
 import UserFilterButtons from '@/components/guru/UserFilterButtons';
 import { UserFilterType, GuruTrade } from '@/types/guru';
@@ -36,6 +37,7 @@ export default function GuruViewingTab({
 	onMoreInfo,
 	popoverRef,
 }: GuruViewingTabProps) {
+	const router = useRouter();
 	return (
 		<div className="animate-fadeIn flex flex-col ">
 			<div className="flex items-center pb-[16px] justify-between">
@@ -116,7 +118,7 @@ export default function GuruViewingTab({
 					volumeRate={stock.volumeChangePercent}
 					volume={stock.todayVolume}
 					detail="VOLUME"
-					onClick={() => {}}
+					onClick={() => router.push(`/${stock.stockSymbol}`)}
 				/>
 			))}
 		</div>
