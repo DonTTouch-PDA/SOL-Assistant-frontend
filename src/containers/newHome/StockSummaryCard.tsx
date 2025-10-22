@@ -29,8 +29,10 @@ export default function StockSummaryCard({
 	data,
 	onSectorNewsClick,
 }: StockSummaryCardProps) {
+
+	const { userData } = useAuth();
 	const [color, setColor] = useState('#ffffff');
-	//이미지색상추출
+
 	useEffect(() => {
 		const fetchColor = async () => {
 			const hex = await getDominantColorFromStockCode(data.symbol);
