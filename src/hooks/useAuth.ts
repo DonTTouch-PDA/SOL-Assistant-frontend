@@ -3,9 +3,8 @@ import { AuthContext } from '@/contexts/AuthContext';
 
 export function useAuth() {
 	const context = useContext(AuthContext);
-	1;
 	if (context === undefined) {
-		throw new Error('useAuth must be used within an AuthProvider');
+		throw new Error('AuthContext가 존재하지 않음');
 	}
 	return context;
 }

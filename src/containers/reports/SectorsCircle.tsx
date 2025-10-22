@@ -106,7 +106,7 @@ export default function SectorsCircle() {
 							<span className="text-black font-medium">
 								{label}{' '}
 								<span className="text-[#9A9FA4] font-medium">
-									({data.datasets[0].data[i]}%)
+									({data.datasets[0].data[i].toFixed(1)}%)
 								</span>
 							</span>
 						</div>

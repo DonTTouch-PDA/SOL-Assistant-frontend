@@ -14,7 +14,7 @@ export default function StockInfoHeader() {
 	const [stockCode, setStockCode] = useState<string | null>(null);
 	const [stockInfo, setStockInfo] = useState<StockInfo | null>(null);
 	const [stockRisk, setStockRisk] = useState<StockRisk | null>(null);
-	const actionScore = useRef<number>(5);
+	const actionScore = useRef<number>(1);
 	const { userData } = useAuth();
 
 	useEffect(() => {
@@ -45,27 +45,31 @@ export default function StockInfoHeader() {
 	// 점수 쌓기
 	useEffect(() => {
 		const interval = setInterval(() => {
-			actionScore.current += 0.1;
+			actionScore.current += 0.5;
 		}, 5000);
 
 		// 로그 전송
 		const sendLog = async () => {
-			if (actionScore.current === 5) return;
+			if (actionScore.current <= 2) return;
 
-			await fetch('/api/chart/log-buffer', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
+			navigator.sendBeacon(
+				'/api/chart/log-buffer',
+				JSON.stringify({
 					userId: userData?.id,
 					stockId: stockCode,
-					deltaScore: actionScore.current > 3 ? 3 : actionScore.current,
+					deltaScore: actionScore.current > 13 ? 13 : actionScore.current,
 					eventTime: new Date().toISOString(),
-				}),
-			});
+				})
+			);
 			actionScore.current = 0;
 		};
 
 		window.addEventListener('beforeunload', sendLog);
+		window.addEventListener('visibilitychange', () => {
+			if (document.visibilityState === 'hidden') {
+				sendLog();
+			}
+		});
 		return () => {
 			clearInterval(interval);
 			sendLog();

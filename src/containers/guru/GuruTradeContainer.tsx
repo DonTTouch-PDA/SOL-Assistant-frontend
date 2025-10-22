@@ -5,11 +5,20 @@ import GuruTradingTab from '@/components/guru/GuruTradingTab';
 import { fetchGetGuruByTrading } from '@/services/guruServices';
 
 //
-export default function GuruTradeContainer() {
+interface GuruTradeContainerProps {
+	guruFilter?: GuruType;
+	tradeFilter?: FilterType;
+}
+
+export default function GuruTradeContainer({
+	guruFilter = 'DAY',
+	tradeFilter = 'BUY',
+}: GuruTradeContainerProps) {
 	const [isOpenTrading, setIsOpenTrading] = useState(false);
-	const [activeFilter, setActiveFilter] = useState<FilterType>('BUY');
+	const [activeFilter, setActiveFilter] = useState<FilterType>(tradeFilter);
 	const [stocks, setStocks] = useState<GuruTrade[]>([]);
-	const [guruType, setGuruType] = useState<GuruType>('DAY');
+	const [guruType, setGuruType] = useState<GuruType>(guruFilter);
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
 		getGuruItemList();
@@ -22,6 +31,7 @@ export default function GuruTradeContainer() {
 
 	const getGuruItemList = async () => {
 		console.log('데이터 재조회', { activeFilter, guruType });
+		setIsLoading(true);
 		const data = await fetchGetGuruByTrading(
 			activeFilter,
 			guruType as GuruType
@@ -32,6 +42,7 @@ export default function GuruTradeContainer() {
 			)
 		);
 		console.log(data.stockVolumeList);
+		setIsLoading(false);
 	};
 
 	const handleToggleTrading = () => {
@@ -52,6 +63,7 @@ export default function GuruTradeContainer() {
 				activeFilter={activeFilter}
 				onFilterChange={handleFilterChange}
 				stocks={stocks}
+				isLoading={isLoading}
 			/>
 		</div>
 	);

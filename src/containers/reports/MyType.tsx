@@ -51,6 +51,7 @@ export default function MyType() {
 							height={20}
 							onClick={() => setOpen(true)}
 							alt="info"
+							style={{ width: 'auto', height: 'auto' }}
 						/>
 					</span>
 				</div>

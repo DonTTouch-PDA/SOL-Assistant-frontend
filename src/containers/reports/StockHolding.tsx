@@ -36,6 +36,7 @@ export default function StockHolding() {
 							width={200}
 							height={100}
 							alt="graph"
+							style={{ width: 'auto', height: 'auto' }}
 						/>
 					</div>
 

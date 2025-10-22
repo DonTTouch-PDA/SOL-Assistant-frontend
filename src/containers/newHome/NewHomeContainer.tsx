@@ -1,9 +1,13 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import RecentMenu from './RecentMenu';
 import StockSummaryCard from './StockSummaryCard';
 import { fetchGetMyStocks } from '@/services/myStocksServices';
 import { MyStock } from '@/types/myStock';
+import { AnimatePresence, motion } from 'framer-motion';
+import GuruMoreInfoCard from '@/components/guru/GuruMoreInfoCard';
+import { NEW_HOME_MORE_INFO } from '@/constants/descriptions';
+
 import {
 	Carousel,
 	CarouselContent,
@@ -12,9 +16,13 @@ import {
 	CarouselPrevious,
 } from '@/components/ui/carousel';
 import CustomCard from '@/components/common/CustomCard';
+import Image from 'next/image';
 
 export default function NewHomeContainer() {
 	const [myStockData, setMyStockData] = useState<MyStock[]>([]);
+	const [openInfo, setOpenInfo] = useState(false);
+	const popoverRef = useRef<HTMLDivElement>(null);
+	const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
 	useEffect(() => {
 		fetchGetMyStocks().then((d) => setMyStockData(d));
 	}, []);
@@ -22,6 +30,37 @@ export default function NewHomeContainer() {
 	return (
 		<div>
 			<Carousel className="overflow-visible py-4">
+				<div className="flex items-center gap-2 pl-3 mb-2">
+					<p className="text-lg font-semibold text-black ">
+						나를 위한 맞춤 정보
+					</p>
+					<Image
+						className="cursor-pointer"
+						src="/question.png"
+						alt="info"
+						width={21}
+						height={21}
+						onClick={() => setOpenInfo(true)}
+					/>
+				</div>
+				<AnimatePresence>
+					{openInfo && (
+						<motion.div
+							ref={popoverRef}
+							className="absolute top-10 left-0 z-10"
+							initial={{ opacity: 0, y: -10, scale: 0.95 }}
+							animate={{ opacity: 1, y: 0, scale: 1 }}
+							exit={{ opacity: 0, y: -10, scale: 0.95 }}
+							transition={{ duration: 0.2 }}
+						>
+							<GuruMoreInfoCard
+								comment={NEW_HOME_MORE_INFO}
+								onClose={() => setOpenInfo(false)}
+							/>
+						</motion.div>
+					)}
+				</AnimatePresence>
+
 				<CarouselContent className="px-5 py-1">
 					{myStockData.length != 0 ? (
 						myStockData?.map((stock, idx) => (

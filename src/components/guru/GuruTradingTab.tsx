@@ -4,6 +4,7 @@ import CustomDropdown from '@/components/common/CustomDropdown';
 import FilterButtons from '@/components/guru/FilterButtons';
 import { FilterType, GuruTrade, GuruType } from '@/types/guru';
 import StockListItemCard from '@/components/common/StockListItemCard';
+import StockItemSkeleton from '@/components/myStocks/StockItemSkeleton';
 
 interface GuruTradingTabProps {
 	guruType: GuruType;
@@ -13,6 +14,7 @@ interface GuruTradingTabProps {
 	activeFilter: FilterType;
 	onFilterChange: (filter: FilterType) => void;
 	stocks: GuruTrade[];
+	isLoading: boolean;
 }
 
 export default function GuruTradingTab({
@@ -23,6 +25,7 @@ export default function GuruTradingTab({
 	activeFilter,
 	onFilterChange,
 	stocks,
+	isLoading,
 }: GuruTradingTabProps) {
 	const router = useRouter();
 	return (
@@ -55,22 +58,33 @@ export default function GuruTradingTab({
 					}}
 				/>
 			</div>
-			{stocks
-				.sort((a, b) => b.guruVolumePercent - a.guruVolumePercent)
-				.map((stock, index) => (
-					<StockListItemCard
-						key={stock.stockSymbol}
-						rank={index}
-						name={stock.stockName}
-						img={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stock.stockSymbol}.png`}
-						code={stock.stockSymbol}
-						currentPrice={stock.todayClosePrice}
-						changeRate={stock.priceChangePercent}
-						volumeRate={stock.guruVolumePercent}
-						detail={activeFilter}
-						onClick={() => router.push(`/${stock.stockSymbol}`)}
-					/>
-				))}
+
+			{isLoading ? (
+				<div className="animate-fadeIn">
+					{Array.from({ length: 5 }).map((_, index) => (
+						<StockItemSkeleton key={index} />
+					))}
+				</div>
+			) : (
+				<>
+					{stocks
+						.sort((a, b) => b.guruVolumePercent - a.guruVolumePercent)
+						.map((stock, index) => (
+							<StockListItemCard
+								key={stock.stockSymbol}
+								rank={index}
+								name={stock.stockName}
+								img={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stock.stockSymbol}.png`}
+								code={stock.stockSymbol}
+								currentPrice={stock.todayClosePrice}
+								changeRate={stock.priceChangePercent}
+								volumeRate={stock.guruVolumePercent}
+								detail={activeFilter}
+								onClick={() => router.push(`/${stock.stockSymbol}`)}
+							/>
+						))}
+				</>
+			)}
 		</div>
 	);
 }
