@@ -120,7 +120,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					<h2 className="font-semibold">고수의 Pick</h2>
 					<ChevronRight color="gray" />
 				</div>
-				{guruChange?.dailyGuru && (
+				{guruChange?.dailyGuru ? (
 					<div className="flex items-center gap-1 pb-2">
 						<p className="text-[#FA2D42] bg-[#FFF2F2] rounded-xl font-semibold px-3  text-sm">
 							HOT
@@ -129,6 +129,8 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 							고수들이 어제보다 주목한 종목이에요
 						</p>
 					</div>
+				) : (
+					<></>
 				)}
 
 				<div className="flex justify-between gap-2">
@@ -141,6 +143,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 						diff={Math.round(guruChange?.guruBuyPercent || 0)}
 					/>
 				</div>
+				{!guruChange?.dailyGuru && <div className="h-[32px]"></div>}
 			</section>
 			<CustomLine />
 			<section className="flex justify-around font-medium">

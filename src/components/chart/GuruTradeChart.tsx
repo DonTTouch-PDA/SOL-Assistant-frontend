@@ -24,7 +24,10 @@ export default function GuruTradeChart({ data }: DualHistogramChartProps) {
 				textColor: '#333',
 			},
 			rightPriceScale: { scaleMargins: { top: 0.1, bottom: 0.1 } },
-			timeScale: { borderVisible: false },
+			timeScale: {
+				borderVisible: false,
+				rightOffset: 30, // 오른쪽에 여백을 두어 데이터를 왼쪽으로 밀어냄
+			},
 			grid: {
 				vertLines: { visible: false },
 				horzLines: { color: '#eee' },
