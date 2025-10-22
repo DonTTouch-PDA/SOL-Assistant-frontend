@@ -15,7 +15,7 @@ export default function MyAsset() {
 	useEffect(() => {
 		FetchMyAsset().then((d) => setAssetData(d));
 	}, []);
-	const diff = assetData.totalBalance - assetData.principal;
+	const diff = assetData.difference;
 	return (
 		<CustomCard>
 			<h1 className="text-xl font-medium pb-1">MY 자산</h1>

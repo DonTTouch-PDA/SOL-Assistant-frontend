@@ -29,7 +29,7 @@ import {
 	Truck,
 	Zap,
 } from 'lucide-react';
-import {useAuth} from "@/hooks/useAuth";
+import { useAuth } from '@/hooks/useAuth';
 
 const dummyUser = {
 	name: '프디아',
@@ -37,23 +37,22 @@ const dummyUser = {
 };
 
 const icons = {
-	'금속': Anvil,
-	'제약': Tablets,
+	금속: Anvil,
+	제약: Tablets,
 	'운송장비·부품': Ship,
-	'화학': FlaskConical,
-	'통신': SmartphoneNfc,
-	'기타금융': Landmark,
+	화학: FlaskConical,
+	통신: SmartphoneNfc,
+	기타금융: Landmark,
 	'전기·전자': Zap,
 	'IT 서비스': Laptop,
-	'유통': Truck,
+	유통: Truck,
 	'기계·장비': Settings,
 	'음식료·담배': Cigarette,
 	'전기·가스': Fuel,
-	'건설': Factory,
+	건설: Factory,
 };
 
 export default function SectorNewsContainer() {
-
 	const { userData } = useAuth();
 
 	const opinionColors: Record<string, string> = {

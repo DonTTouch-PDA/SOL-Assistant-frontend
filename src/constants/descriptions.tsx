@@ -24,8 +24,7 @@ export const GURU_MORE_INFO_DESCRIPTION = (
 
 export const GURU_MORE_INFO_TOP = (
 	<>
-		고수가 주목하는 종목 중 <br />
-		내가 주의깊게 보지 않은 종목이에요.
+		주의 깊게 보고 있는 종목들을 <br />한 눈에 확인할 수 있어요.
 	</>
 );
 export const SIMILAR_DETAIL_BOLLINGER_BANDS = (
