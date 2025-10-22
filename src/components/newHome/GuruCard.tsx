@@ -11,7 +11,9 @@ export default function GuruCard({ type, diff }: GuruCardProps) {
 			<p className="text-sm pb-1">고수의 {type}량</p>
 			<p className="font-medium leading-5">
 				어제보다{' '}
-				<b className={`${hasFallen ? 'text-[#2D77FA]' : 'text-[#FA2D42]'}`}>
+				<b
+					className={`${hasFallen ? 'text-[#2D77FA] text-sm' : 'text-[#FA2D42] text-sm'}`}
+				>
 					{hasFallen ? -diff : diff}%
 				</b>
 				<br />

@@ -18,12 +18,21 @@ import { useAuth } from '@/hooks/useAuth';
 
 interface StockSummaryCardProps {
 	data: MyStock;
+	onSectorNewsClick?: (
+		stockName: string,
+		stockCode: string,
+		sectorId: string
+	) => void;
 }
 
-export default function StockSummaryCard({ data }: StockSummaryCardProps) {
+export default function StockSummaryCard({
+	data,
+	onSectorNewsClick,
+}: StockSummaryCardProps) {
+
 	const { userData } = useAuth();
 	const [color, setColor] = useState('#ffffff');
-	//이미지색상추출
+
 	useEffect(() => {
 		const fetchColor = async () => {
 			const hex = await getDominantColorFromStockCode(data.symbol);
@@ -58,6 +67,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 	}, [data]);
 
 	const [homeNews, setHomeNews] = useState<HomeNewsData | null>(null);
+
 	useEffect(() => {
 		fetchHomeNewsData(data.symbol)
 			.then((d) => setHomeNews(d))
@@ -153,14 +163,18 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 						diff={Math.round(guruChange?.guruBuyPercent || 0)}
 					/>
 				</div>
-				{!guruChange?.dailyGuru && <div className="h-[32px]"></div>}
+				{!guruChange?.dailyGuru && <div className="h-[28px]"></div>}
 			</section>
 			<CustomLine />
 			<section className="flex justify-around font-medium">
 				<p
 					className="cursor-pointer"
 					onClick={() => {
-						router.push('/dashboard/sector-news');
+						onSectorNewsClick?.(
+							data.stockName,
+							data.symbol,
+							homeNews?.sectorId || ''
+						);
 					}}
 				>
 					섹터 뉴스{` `}
