@@ -7,6 +7,7 @@ import GuruMoreInfoCard from './GuruMoreInfoCard';
 import { AnimatePresence, motion } from 'framer-motion';
 import { GuruType } from '@/types/guru';
 import TreeMapContainer from '@/containers/guru/TreeMapContainer';
+import Image from 'next/image';
 
 interface GuruViewingTabProps {
 	guruType: GuruType;
@@ -42,9 +43,17 @@ export default function GuruViewingTab({
 					activeFilter={userFilter}
 					onFilterChange={onUserFilterChange}
 				/>
-				<CustomDropdown
+				<CustomDropdown<string>
 					options={['단기 고수', '중기 고수', '장기 고수']}
-					setSortedBy={guruType as GuruType}
+					setSortedBy={
+						guruType === 'DAY'
+							? '단기 고수'
+							: guruType === 'SWING'
+								? '중기 고수'
+								: guruType === 'HOLD'
+									? '장기 고수'
+									: '단기 고수'
+					}
 					isOpen={isOpen}
 					onToggle={onToggle}
 					fetchSortedBy={(label) => {
@@ -63,16 +72,20 @@ export default function GuruViewingTab({
 			{/* 제목 */}
 			<div className="flex items-center gap-1 mt-6 relative">
 				<h3 className="text-lg font-semibold text-black">
-					고수들은 이 종목을 더 보고 있어요
+					{userFilter === '고수'
+						? '고수들이 주목하고 있어요'
+						: '고수들은 이 종목을 더 보고 있어요'}
 				</h3>
-				<img
-					src="/question.png"
-					alt="help"
-					width={24}
-					height={24}
-					className="cursor-pointer"
-					onClick={onMoreInfo}
-				/>
+				{userFilter !== '고수' && (
+					<Image
+						src="/question.png"
+						alt="help"
+						width={24}
+						height={24}
+						className="cursor-pointer"
+						onClick={onMoreInfo}
+					/>
+				)}
 
 				{/* 팝오버 */}
 				<AnimatePresence>

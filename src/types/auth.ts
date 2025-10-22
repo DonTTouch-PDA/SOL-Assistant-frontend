@@ -6,3 +6,9 @@ export interface LoginToken {
 export interface LoginTokenResponse {
 	tokenResponse: LoginToken;
 }
+
+export interface UserData {
+	id: string;
+	investmentType: string;
+	name: string;
+}

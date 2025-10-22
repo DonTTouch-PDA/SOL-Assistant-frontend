@@ -57,9 +57,9 @@ interface GuruTradeResponse {
 }
 
 const guruTypeMap: Record<string, string> = {
-	'단기 고수': 'day',
-	'중기 고수': 'swing',
-	'장기 고수': 'hold',
+	'단기 고수': 'DAY',
+	'중기 고수': 'SWING',
+	'장기 고수': 'HOLD',
 };
 
 import { GuruStockData } from '@/types/chart';
@@ -70,7 +70,7 @@ export async function fetchGuruTradeData(
 ): Promise<GuruStockData[]> {
 	const apiGuruType = guruTypeMap[guruType];
 	const res = await apiClient.request(
-		`${baseUrl}/internal/expertt/${stockCode}/${apiGuruType}`
+		`${baseUrl}/internal/expert/${stockCode}/${apiGuruType}`
 	);
 	if (!res.ok) {
 		throw new Error('고수의 거래량 데이터를 불러오는 데 실패했습니다.');

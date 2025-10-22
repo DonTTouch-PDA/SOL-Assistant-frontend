@@ -12,31 +12,33 @@ export default function GuruViewContainer() {
 	const [guruType, setGuruType] = useState<GuruType>('DAY');
 	const [isOpenViewing, setIsOpenViewing] = useState(false);
 	const [userFilter, setUserFilter] = useState<UserFilterType>('고수');
-	const [viewingStocks, setViewingStocks] = useState<GuruTrade[]>([]);
 	const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
-	const [viewingStocks2, setViewingStocks2] = useState<GuruTrade[]>([]);
+	const [myStocks, setMyStocks] = useState<GuruTrade[]>([]);
+	const [gosuStocks, setGosuStocks] = useState<GuruTrade[]>([]);
+	const [recommendStocks, setRecommendStocks] = useState<GuruTrade[]>([]);
 	const popoverRef = useRef<HTMLDivElement>(null);
 
 	const getGuruViewingList = useCallback(async () => {
-		if (userFilter === '고수') {
-			const data = await fetchGetGuruByViewing(guruType);
-			setViewingStocks(data.stockVolumeList.slice(0, 10));
-			setViewingStocks2(data.stockVolumeList.slice(10, 15));
-		} else {
-			const data = await fetchGetMyByViewing();
-			setViewingStocks(data.stockVolumeList);
-			const data2 = await fetchGetGuruByViewing(guruType);
+		// 한 번에 fetch하기
+		const [myData, gosuData] = await Promise.all([
+			fetchGetMyByViewing(),
+			fetchGetGuruByViewing(guruType),
+		]);
 
-			// data에 있는 종목들을 data2에서 제거
-			const dataStockCodes = data.stockVolumeList.map(
-				(stock) => stock.stockSymbol
-			);
-			const filteredData2 = data2.stockVolumeList.filter(
-				(stock) => !dataStockCodes.includes(stock.stockSymbol)
-			);
+		const myStocksData = myData.stockVolumeList;
+		const gosuStocksData = gosuData.stockVolumeList;
 
-			setViewingStocks2(filteredData2.slice(0, 5));
-		}
+		setMyStocks(myStocksData);
+		setGosuStocks(gosuStocksData);
+
+		// myStocks에 없는 종목만 recommendStocks에 추가
+		const filteredStocks = gosuStocksData.filter(
+			(stock) =>
+				!myStocksData.some(
+					(myStock) => myStock.stockSymbol === stock.stockSymbol
+				)
+		);
+		setRecommendStocks(filteredStocks.slice(0, 5));
 	}, [guruType, userFilter]);
 
 	useEffect(() => {
@@ -89,8 +91,8 @@ export default function GuruViewContainer() {
 			onToggle={handleToggleViewing}
 			userFilter={userFilter}
 			onUserFilterChange={handleUserFilterChange}
-			viewingStocks={viewingStocks}
-			viewingStocks2={viewingStocks2}
+			viewingStocks={userFilter === '고수' ? gosuStocks : myStocks}
+			viewingStocks2={userFilter === '고수' ? gosuStocks : recommendStocks}
 			isOpenMoreInfo={isOpenMoreInfo}
 			onMoreInfo={handleMoreInfo}
 			popoverRef={popoverRef}
