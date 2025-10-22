@@ -3,6 +3,12 @@ import './globals.css';
 import Providers from './providers';
 import localFont from 'next/font/local';
 import RecentMenuListener from './recent-menu-listener';
+import { startLogScheduler } from '@/utils/logScheduler';
+
+// Global 타입 확장
+declare global {
+	var __logSchedulerStarted: boolean | undefined;
+}
 
 export const metadata: Metadata = {
 	title: 'SOL어시',
@@ -15,6 +21,12 @@ const pretendard = localFont({
 	weight: '45 920',
 	variable: '--font-pretendard',
 });
+
+// 서버 실행 시 스케줄러 코드 실행
+if (typeof global !== 'undefined' && !global.__logSchedulerStarted) {
+	global.__logSchedulerStarted = true;
+	startLogScheduler();
+}
 
 export default function RootLayout({
 	children,
