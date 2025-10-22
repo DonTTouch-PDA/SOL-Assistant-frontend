@@ -26,8 +26,8 @@ export default function GuruTradeItem({ trade, index }: GuruTradeItemProps) {
 					{/* 종목 로고 */}
 					<div>
 						<Image
-							src={trade.img}
-							alt={trade.name}
+							src={`https://static.toss.im/png-icons/securities/icn-sec-fill-${trade.stockSymbol}.png`}
+							alt={trade.stockName}
 							width={36}
 							height={36}
 							className="rounded-full"
@@ -36,9 +36,9 @@ export default function GuruTradeItem({ trade, index }: GuruTradeItemProps) {
 
 					{/* 종목 정보 */}
 					<div className="text-left">
-						<h2 className="text-black text-base">{trade.name}</h2>
+						<h2 className="text-black text-base">{trade.stockName}</h2>
 						<div className="inline-block text-red-500 rounded-[4px] bg-red-100 px-[4px] text-sm font-medium">
-							매수 +{trade.buyRate}%
+							매수 +{trade.guruBuyVolume}%
 						</div>
 					</div>
 				</div>
@@ -46,14 +46,14 @@ export default function GuruTradeItem({ trade, index }: GuruTradeItemProps) {
 				{/* 가격 정보 */}
 				<div className="flex flex-col items-end text-right">
 					<div
-						className={`${trade.changeRate >= 0 ? 'text-red-500' : 'text-blue-500'} font-semibold text-base`}
+						className={`${trade.priceChangePercent >= 0 ? 'text-red-500' : 'text-blue-500'} font-semibold text-base`}
 					>
-						{formatPrice(trade.currentPrice)}
+						{formatPrice(trade.todayClosePrice)}
 					</div>
 					<div
-						className={`flex text-sm ${trade.changeRate >= 0 ? 'text-red-500' : 'text-blue-500'}`}
+						className={`flex text-sm ${trade.priceChangePercent >= 0 ? 'text-red-500' : 'text-blue-500'}`}
 					>
-						<ProfitRate profitRate={trade.changeRate} />
+						<ProfitRate profitRate={trade.priceChangePercent} />
 					</div>
 				</div>
 			</div>
