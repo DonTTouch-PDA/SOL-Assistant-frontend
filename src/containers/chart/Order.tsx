@@ -121,6 +121,7 @@ export default function Order({
 		}
 	};
 
+	// 매수 가능 수량 구하기
 	const getUserCanBuyCount = async () => {
 		try {
 			const response = await FetchMyAsset();
@@ -151,32 +152,42 @@ export default function Order({
 		return `${Math.min(percentage, 100)}%`;
 	};
 
-	//토스트 관리
+	//주문 처리 및 토스트 관리
 	const onSubmitOrder = async () => {
 		if (!stockInfo) return;
 
 		try {
+			let response;
 			if (tradeType === 'buy') {
-				const response = await orderBuyStock(
+				response = await orderBuyStock(
 					stockInfo.symbol,
 					orderPrice,
 					orderQuantity
 				);
-				setToastMessage(response.message);
-				setToastType(response.status === 'SUCCESS' ? 'success' : 'fail');
-				setOpenToast(true);
 			} else {
-				const response = await orderSellStock(
+				response = await orderSellStock(
 					stockInfo.symbol,
 					orderPrice,
 					orderQuantity
 				);
-				setToastMessage(response.message);
-				setToastType(response.status === 'SUCCESS' ? 'success' : 'fail');
-				setOpenToast(true);
+			}
+
+			setToastMessage(response.message);
+			setToastType(response.status === 'SUCCESS' ? 'success' : 'fail');
+			setOpenToast(true);
+
+			// 매매 성공 시 자산과 보유 주식 수 다시 불러오기
+			if (response.status === 'SUCCESS') {
+				if (tradeType === 'buy') {
+					// 매수 성공 시 매수 가능 수량 다시 계산
+					getUserCanBuyCount();
+				} else {
+					// 매도 성공 시 매도 가능 수량 다시 계산
+					getUserHasCount(stockInfo.symbol);
+				}
 			}
 		} catch (error) {
-			console.error('주문 처리 중 오류:', error);
+			console.error('주문 처리 오류:', error);
 			setToastMessage('주문 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
 			setToastType('fail');
 			setOpenToast(true);

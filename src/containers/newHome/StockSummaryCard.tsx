@@ -14,14 +14,25 @@ import {
 	fetchSignData,
 } from '@/services/newHomeServices';
 import { GuruChangeData, SignData, HomeNewsData } from '@/types/newHome';
+import { useAuth } from '@/hooks/useAuth';
 
 interface StockSummaryCardProps {
 	data: MyStock;
+	onSectorNewsClick?: (
+		stockName: string,
+		stockCode: string,
+		sectorId: string
+	) => void;
 }
 
-export default function StockSummaryCard({ data }: StockSummaryCardProps) {
+export default function StockSummaryCard({
+	data,
+	onSectorNewsClick,
+}: StockSummaryCardProps) {
+
+	const { userData } = useAuth();
 	const [color, setColor] = useState('#ffffff');
-	//이미지색상추출
+
 	useEffect(() => {
 		const fetchColor = async () => {
 			const hex = await getDominantColorFromStockCode(data.symbol);
@@ -56,6 +67,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 	}, [data]);
 
 	const [homeNews, setHomeNews] = useState<HomeNewsData | null>(null);
+
 	useEffect(() => {
 		fetchHomeNewsData(data.symbol)
 			.then((d) => setHomeNews(d))
@@ -76,7 +88,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					router.push(`/${data.symbol}`);
 				}}
 			>
-				<div className="flex items-center gap-2">
+				<div className="flex items-center gap-2 cursor-pointer">
 					<Image
 						src={`https://static.toss.im/png-icons/securities/icn-sec-fill-${data.symbol}.png`}
 						alt={data.stockName}
@@ -102,7 +114,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 						className={`text-sm font-medium ${isRising ? 'text-[#FA2D42]' : 'text-[#2D77FA]'}`}
 					>
 						<b className="text-xs">{isRising ? '▲' : '▼'}</b>
-						{Math.floor(data.diff * data.quantity).toLocaleString()}원
+						{Math.floor(Math.abs(data.diff * data.quantity)).toLocaleString()}원
 					</p>
 				</div>
 			</section>
@@ -116,8 +128,16 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					router.push('dashboard/guru');
 				}}
 			>
-				<div className="flex gap-2 pb-1">
-					<h2 className="font-semibold">고수의 Pick</h2>
+				<div className="flex gap-2 pb-1 cursor-pointer">
+					<h2 className="font-semibold">
+						{userData?.investmentType === 'DAY'
+							? '단기 고수의 Pick'
+							: userData?.investmentType === 'SWING'
+								? '중기 고수의 Pick'
+								: userData?.investmentType === 'HOLD'
+									? '장기 고수의 Pick'
+									: '고수의 Pick'}
+					</h2>
 					<ChevronRight color="gray" />
 				</div>
 				{guruChange?.dailyGuru ? (
@@ -143,13 +163,18 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 						diff={Math.round(guruChange?.guruBuyPercent || 0)}
 					/>
 				</div>
-				{!guruChange?.dailyGuru && <div className="h-[32px]"></div>}
+				{!guruChange?.dailyGuru && <div className="h-[28px]"></div>}
 			</section>
 			<CustomLine />
 			<section className="flex justify-around font-medium">
 				<p
+					className="cursor-pointer"
 					onClick={() => {
-						router.push('/dashboard/sector-news');
+						onSectorNewsClick?.(
+							data.stockName,
+							data.symbol,
+							homeNews?.sectorId || ''
+						);
 					}}
 				>
 					섹터 뉴스{` `}
@@ -160,6 +185,7 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 				<div className=" border-l border-[0.5px] border-[#EEEEEE]" />
 
 				<p
+					className="cursor-pointer"
 					onClick={() => {
 						router.push('/dashboard/similar-chart');
 					}}
@@ -167,6 +193,9 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					매매신호{` `}
 					{sign?.buySignal && <BuySellBadge type="BUY" />}
 					{sign?.sellSignal && <BuySellBadge type="SELL" />}
+					{!sign?.buySignal && !sign?.sellSignal && (
+						<BuySellBadge type="NONE" />
+					)}
 				</p>
 			</section>
 		</div>
