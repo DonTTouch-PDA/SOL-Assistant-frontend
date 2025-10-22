@@ -6,29 +6,45 @@ import {
 	INVESTMENT_TYPES_ADD,
 } from '@/constants/descriptions';
 import Image from 'next/image';
-
-const user = { type: 3, name: '프디아' };
-const typeCharacters = ['플리', '도레미', '몰리'];
-const types = ['Day Trading', 'Swing Trading', 'Buy and Hold'];
+import { useAuth } from '@/hooks/useAuth';
 
 export default function MyType() {
-	const type = user.type;
+	const { userData } = useAuth();
+	const investmentType = userData?.investmentType;
 	const [open, setOpen] = useState(false);
+
+	const typeCharacters = ['플리', '도레미', '몰리'];
+	const investmentTypes = ['DAY', 'SWING', 'HOLD'];
+	const typeDescriptions = ['DAY Trading', 'Swing Trading', 'Buy and Hold'];
+
+	// investmentType을 인덱스로 변환
+	const getTypeIndex = (type: string | undefined): number => {
+		if (!type) return 0;
+		const index = investmentTypes.indexOf(type);
+		return index >= 0 ? index : 0;
+	};
+
+	const typeIndex = getTypeIndex(investmentType);
 
 	return (
 		<div>
 			<div className="p-10 flex flex-row items-center gap-5">
-				<Image src={`/type${type}.png`} width={83} height={83} alt="type" />
+				<Image
+					src={`/type${typeIndex + 1}.png`}
+					width={83}
+					height={83}
+					alt="type"
+				/>
 				<div>
 					<h2 className="text-xl font-semibold">
-						{user.name}님은 <br />
+						{userData?.name}님은 <br />
 						<b className="font-bold text-[#2a3fec]">
-							{typeCharacters[type - 1]}
+							{typeCharacters[typeIndex]}
 						</b>{' '}
 						형이에요
 					</h2>
 					<span className="text-sm inline-flex gap-2">
-						{types[type - 1]}
+						{typeDescriptions[typeIndex]}
 						<Image
 							src="/question.png"
 							width={20}

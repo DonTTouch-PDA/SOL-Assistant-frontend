@@ -1,5 +1,5 @@
 import { GuruTradeData, FilterType, GuruType } from '@/types/guru';
-import { getAccessToken } from '@/utils/tokenStorage';
+import { apiClient } from './apiClient';
 
 export const fetchGetGuruByTrading = async (
 	side: FilterType = 'BUY',
@@ -7,13 +7,12 @@ export const fetchGetGuruByTrading = async (
 ): Promise<GuruTradeData> => {
 	try {
 		console.log('고수의 픽 거래종목 조회 :', { side, investmentType });
-		const res = await fetch(
+		const res = await apiClient.request(
 			`/api/v1/internal/expert/volume/${side}/${investmentType}`,
 			{
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `Bearer ${getAccessToken()}`,
 				},
 			}
 		);
@@ -33,13 +32,15 @@ export const fetchGetGuruByViewing = async (
 ): Promise<GuruTradeData> => {
 	console.log('고수의 픽 조회종목 조회 :', { guruType });
 	try {
-		const res = await fetch(`/api/v1/internal/expert/view/${guruType}`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${getAccessToken()}`,
-			},
-		});
+		const res = await apiClient.request(
+			`/api/v1/internal/expert/view/${guruType}`,
+			{
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			}
+		);
 		if (!res.ok) {
 			throw new Error(`HTTP error! status: ${res.status}`);
 		}
@@ -54,11 +55,10 @@ export const fetchGetGuruByViewing = async (
 export const fetchGetMyByViewing = async (): Promise<GuruTradeData> => {
 	console.log('내 관심 종목 조회');
 	try {
-		const res = await fetch(`/api/v1/internal/expert/my-view`, {
+		const res = await apiClient.request(`/api/v1/internal/expert/my-view`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				Authorization: `Bearer ${getAccessToken()}`,
 			},
 		});
 		if (!res.ok) {

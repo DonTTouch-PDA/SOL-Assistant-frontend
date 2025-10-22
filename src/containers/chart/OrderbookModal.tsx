@@ -59,7 +59,7 @@ export default function OrderbookModal({
 				}}
 			>
 				<div className="mb-[28px] text-center text-[20px] text-white">
-					{!needWarning && (
+					{needWarning && (
 						<p>
 							거래에 주의가 필요한 종목이에요.
 							<br />

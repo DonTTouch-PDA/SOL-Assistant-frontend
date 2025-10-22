@@ -29,7 +29,7 @@ export default function GuruTrade() {
 	return (
 		<div>
 			<div className="pt-2">
-				<CustomDropdown
+				<CustomDropdown<string>
 					options={['단기 고수', '중기 고수', '장기 고수']}
 					setSortedBy={guruType}
 					isOpen={isOpenTrading}

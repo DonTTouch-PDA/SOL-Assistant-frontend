@@ -13,6 +13,7 @@ import {
 	fetchHomeNewsData,
 	fetchSignData,
 } from '@/services/newHomeServices';
+import { GuruChangeData, SignData, HomeNewsData } from '@/types/newHome';
 
 interface StockSummaryCardProps {
 	data: MyStock;
@@ -34,19 +35,34 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 
 	const router = useRouter();
 
-	const [guruChange, setGuruChange] = useState();
+	const [guruChange, setGuruChange] = useState<GuruChangeData | null>(null);
 	useEffect(() => {
-		fetchGuruChangeData(data.symbol).then((d) => setGuruChange(d));
+		fetchGuruChangeData(data.symbol)
+			.then((d) => setGuruChange(d))
+			.catch((error) => {
+				console.error('고수 변화량 데이터 로드 실패:', error);
+				setGuruChange(null);
+			});
 	}, [data]);
 
-	const [sign, setSign] = useState();
+	const [sign, setSign] = useState<SignData | null>(null);
 	useEffect(() => {
-		fetchSignData(data.symbol).then((d) => setSign(d));
+		fetchSignData(data.symbol)
+			.then((d) => setSign(d))
+			.catch((error) => {
+				console.error('매매신호 데이터 로드 실패:', error);
+				setSign(null);
+			});
 	}, [data]);
 
-	const [homeNews, setHomeNews] = useState();
+	const [homeNews, setHomeNews] = useState<HomeNewsData | null>(null);
 	useEffect(() => {
-		fetchHomeNewsData(data.symbol).then((d) => setHomeNews(d));
+		fetchHomeNewsData(data.symbol)
+			.then((d) => setHomeNews(d))
+			.catch((error) => {
+				console.error('뉴스 데이터 로드 실패:', error);
+				setHomeNews(null);
+			});
 	}, [data]);
 
 	return (
@@ -118,9 +134,12 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 				<div className="flex justify-between gap-2">
 					<GuruCard
 						type="매수"
-						diff={Math.round(guruChange?.guruSellPercent)}
+						diff={Math.round(guruChange?.guruSellPercent || 0)}
 					/>
-					<GuruCard type="매도" diff={Math.round(guruChange?.guruBuyPercent)} />
+					<GuruCard
+						type="매도"
+						diff={Math.round(guruChange?.guruBuyPercent || 0)}
+					/>
 				</div>
 			</section>
 			<CustomLine />
@@ -131,7 +150,9 @@ export default function StockSummaryCard({ data }: StockSummaryCardProps) {
 					}}
 				>
 					섹터 뉴스{` `}
-					<EmotionBadge emotion={homeNews?.emotion} />
+					<EmotionBadge
+						emotion={homeNews?.emotion as 'POSITIVE' | 'NEGATIVE' | 'NEUTRAL'}
+					/>
 				</p>
 				<div className=" border-l border-[0.5px] border-[#EEEEEE]" />
 

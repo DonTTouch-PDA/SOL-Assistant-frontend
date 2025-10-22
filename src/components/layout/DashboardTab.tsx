@@ -8,7 +8,7 @@ const tabs = [
 	{ id: 'sector-news', label: '섹터 뉴스' },
 	{ id: 'similar-chart', label: '유사 차트' },
 	{ id: 'reports', label: '리포트' },
-	{ id: 'my-stock', label: '보유종목' },
+	{ id: 'my-stock', label: '보유 종목' },
 ];
 
 export default function DashboardTab() {

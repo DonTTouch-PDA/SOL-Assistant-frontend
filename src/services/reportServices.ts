@@ -1,5 +1,5 @@
 import { apiClient } from './apiClient';
-const baseUrl = 'https://sol-assistant.site/api/v1/internal/member/report';
+const baseUrl = '/api/v1/internal/member/report';
 
 // 평균보유일수
 export async function FetchMyRetention() {

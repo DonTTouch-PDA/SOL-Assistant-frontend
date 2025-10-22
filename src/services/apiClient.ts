@@ -6,6 +6,7 @@ import {
 
 class ApiClient {
 	async request(url: string, options: RequestInit = {}) {
+		console.log('API 요청:', url, new Date().toISOString());
 		const accessToken = getAccessToken();
 
 		// 토큰이 있으면 헤더에 추가
@@ -24,12 +25,17 @@ class ApiClient {
 			const refreshToken = getRefreshToken();
 
 			if (refreshToken) {
-				const refreshResponse = await fetch('/api/v1/auth/reissue', {
-					method: 'GET',
-					headers: {
-						Authorization: `Bearer ${refreshToken}`,
-					},
-				});
+				const refreshResponse = await fetch(
+					'https://sol-assistant.site/api/v1/internal/member/reissue',
+					{
+						method: 'GET',
+						headers: {
+							'Content-Type': 'application/json',
+							accessToken: `${accessToken}`,
+							refreshToken: `${refreshToken}`,
+						},
+					}
+				);
 
 				if (refreshResponse.ok) {
 					const data = await refreshResponse.json();
@@ -37,13 +43,14 @@ class ApiClient {
 
 					// 새로운 토큰으로 원래 요청 재시도
 					const newAccessToken = getAccessToken();
-					response = await fetch(url, {
+					const retryOptions = {
 						...options,
 						headers: {
 							...options.headers,
 							Authorization: `Bearer ${newAccessToken}`,
 						},
-					});
+					};
+					response = await fetch(url, retryOptions);
 				} else {
 					// 토큰 갱신 실패 시 로그인 페이지로 이동
 					console.log('토큰 갱신 실패, 로그인 페이지로 이동');
