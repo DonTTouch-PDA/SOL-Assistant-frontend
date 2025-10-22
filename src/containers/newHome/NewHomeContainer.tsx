@@ -15,11 +15,24 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from '@/components/ui/carousel';
+
 import CustomCard from '@/components/common/CustomCard';
+import { HomeNewsData } from '@/types/newHome';
 import Image from 'next/image';
 
-export default function NewHomeContainer() {
+interface NewHomeContainerProps {
+	onSectorNewsClick?: (
+		stockName: string,
+		stockCode: string,
+		sectorId: string
+	) => void;
+}
+
+export default function NewHomeContainer({
+	onSectorNewsClick,
+}: NewHomeContainerProps) {
 	const [myStockData, setMyStockData] = useState<MyStock[]>([]);
+
 	const [openInfo, setOpenInfo] = useState(false);
 	const popoverRef = useRef<HTMLDivElement>(null);
 	const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
@@ -65,7 +78,10 @@ export default function NewHomeContainer() {
 					{myStockData.length != 0 ? (
 						myStockData?.map((stock, idx) => (
 							<CarouselItem key={idx} className="pr-1">
-								<StockSummaryCard data={stock} />
+								<StockSummaryCard
+									data={stock}
+									onSectorNewsClick={onSectorNewsClick}
+								/>
 							</CarouselItem>
 						))
 					) : (
