@@ -1,13 +1,14 @@
+// NewHomeContainer.tsx
 'use client';
 import { useEffect, useState, useRef } from 'react';
 import RecentMenu from './RecentMenu';
 import StockSummaryCard from './StockSummaryCard';
+import StockSummaryCardSkeleton from '@/components/newHome/StockSummaryCardSkeleton';
 import { fetchGetMyStocks } from '@/services/myStocksServices';
 import { MyStock } from '@/types/myStock';
 import { AnimatePresence, motion } from 'framer-motion';
 import GuruMoreInfoCard from '@/components/guru/GuruMoreInfoCard';
 import { NEW_HOME_MORE_INFO } from '@/constants/descriptions';
-
 import {
 	Carousel,
 	CarouselContent,
@@ -15,9 +16,7 @@ import {
 	CarouselNext,
 	CarouselPrevious,
 } from '@/components/ui/carousel';
-
 import CustomCard from '@/components/common/CustomCard';
-import { HomeNewsData } from '@/types/newHome';
 import Image from 'next/image';
 
 interface NewHomeContainerProps {
@@ -32,18 +31,30 @@ export default function NewHomeContainer({
 	onSectorNewsClick,
 }: NewHomeContainerProps) {
 	const [myStockData, setMyStockData] = useState<MyStock[]>([]);
-
+	const [isLoadingAll, setIsLoadingAll] = useState(true); // 전체 로딩 상태
+	const [loadedCount, setLoadedCount] = useState(0); // 개별 카드 완료 수 추적
 	const [openInfo, setOpenInfo] = useState(false);
 	const popoverRef = useRef<HTMLDivElement>(null);
-	const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
+
 	useEffect(() => {
-		fetchGetMyStocks().then((d) => setMyStockData(d));
+		fetchGetMyStocks()
+			.then((d) => setMyStockData(d))
+			.catch(console.error);
 	}, []);
+
+	// 모든 카드 데이터가 완료되면 전체 로딩 false
+	useEffect(() => {
+		if (myStockData.length > 0 && loadedCount === myStockData.length) {
+			setIsLoadingAll(false);
+		}
+	}, [loadedCount, myStockData.length]);
+
+	const handleCardLoaded = () => setLoadedCount((prev) => prev + 1);
 
 	return (
 		<div>
 			<Carousel className="overflow-visible py-4">
-				<div className="flex items-center gap-2 pl-3 mb-2">
+				<div className="flex items-center gap-1 pl-3 mb-2">
 					<p className="text-lg font-semibold text-black ">
 						나를 위한 맞춤 정보
 					</p>
@@ -56,6 +67,7 @@ export default function NewHomeContainer({
 						onClick={() => setOpenInfo(true)}
 					/>
 				</div>
+
 				<AnimatePresence>
 					{openInfo && (
 						<motion.div
@@ -75,25 +87,24 @@ export default function NewHomeContainer({
 				</AnimatePresence>
 
 				<CarouselContent className="px-5 py-1">
-					{myStockData.length != 0 ? (
-						myStockData?.map((stock, idx) => (
-							<CarouselItem key={idx} className="pr-1">
-								<StockSummaryCard
-									data={stock}
-									onSectorNewsClick={onSectorNewsClick}
-								/>
-							</CarouselItem>
-						))
-					) : (
-						<div className="w-full text-center">
-							<CustomCard>
-								<div className="h-[300px] pt-30 text-gray-600">
-									종목을 매매하고 <br />내 종목 요약을 받아보세요!
-								</div>
-							</CustomCard>
-						</div>
-					)}
+					{/* 전체 로딩 중 */}
+					{myStockData.length > 0
+						? myStockData.map((stock, idx) => (
+								<CarouselItem key={idx} className="pr-1">
+									<StockSummaryCard
+										data={stock}
+										onSectorNewsClick={onSectorNewsClick}
+										onLoaded={handleCardLoaded}
+									/>
+								</CarouselItem>
+							))
+						: Array.from({ length: 2 }).map((_, idx) => (
+								<CarouselItem key={idx} className="pr-1">
+									<StockSummaryCardSkeleton />
+								</CarouselItem>
+							))}
 				</CarouselContent>
+
 				<CarouselPrevious className="-left-4" />
 				<CarouselNext className="-right-4" />
 			</Carousel>
