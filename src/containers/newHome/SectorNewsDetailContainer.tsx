@@ -1,8 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { ChevronLeft } from 'lucide-react';
-import { HomeNewsData } from '@/types/newHome';
 import CustomCard from '@/components/common/CustomCard';
 import { fetchSectorNewsBySectorId } from '@/services/sectorNewsService';
 import { newsList } from '@/types/news';
@@ -123,14 +121,14 @@ export default function SectorNewsDetailContainer({
 					<Image
 						src={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stockCode}.png`}
 						alt={stockName}
-						width={50}
-						height={50}
+						width={45}
+						height={45}
 						className="rounded-full"
 					/>
 					<div>
-						<p className="text-[30px] pl-[10px] font-bold">{stockName}</p>
+						<p className="text-2xl pl-[10px] font-bold">{stockName}</p>
 						<p className="text-sm text-gray-500 pl-[10px]">
-							{stockName}의 섹터 뉴스 요약
+							{stockName} 섹터 뉴스 요약
 						</p>
 					</div>
 				</div>
@@ -189,7 +187,7 @@ export default function SectorNewsDetailContainer({
 						</CustomCard>
 
 						{/* 관련 뉴스 */}
-						<section>
+						<section className="pt-2">
 							<h1 className="text-xl font-semibold pb-4">관련 뉴스</h1>
 							<div>
 								{sectorNews.newsList.length > 0 &&

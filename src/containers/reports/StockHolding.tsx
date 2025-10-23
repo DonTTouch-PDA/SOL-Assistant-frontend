@@ -24,7 +24,7 @@ export default function StockHolding() {
 				<h2 className="text-xl font-medium">
 					평균{' '}
 					<b className="text-2xl font-semibold text-blue-700">
-						{data?.averageHoldingDays}
+						{Math.round(data?.averageHoldingDays)}
 					</b>
 					일간 주식을 보유했어요
 				</h2>
