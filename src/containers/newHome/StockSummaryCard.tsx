@@ -15,6 +15,7 @@ import {
 } from '@/services/newHomeServices';
 import { GuruChangeData, SignData, HomeNewsData } from '@/types/newHome';
 import { useAuth } from '@/hooks/useAuth';
+import StockSummaryCardSkeleton from '@/components/newHome/StockSummaryCardSkeleton';
 
 interface StockSummaryCardProps {
 	data: MyStock;
@@ -23,11 +24,13 @@ interface StockSummaryCardProps {
 		stockCode: string,
 		sectorId: string
 	) => void;
+	onLoaded?: () => void;
 }
 
 export default function StockSummaryCard({
 	data,
 	onSectorNewsClick,
+	onLoaded,
 }: StockSummaryCardProps) {
 	const { userData } = useAuth();
 	const [color, setColor] = useState('#ffffff');
@@ -46,35 +49,30 @@ export default function StockSummaryCard({
 	const router = useRouter();
 
 	const [guruChange, setGuruChange] = useState<GuruChangeData | null>(null);
-	useEffect(() => {
-		fetchGuruChangeData(data.symbol)
-			.then((d) => setGuruChange(d))
-			.catch((error) => {
-				console.error('고수 변화량 데이터 로드 실패:', error);
-				setGuruChange(null);
-			});
-	}, [data]);
-
 	const [sign, setSign] = useState<SignData | null>(null);
-	useEffect(() => {
-		fetchSignData(data.symbol)
-			.then((d) => setSign(d))
-			.catch((error) => {
-				console.error('매매신호 데이터 로드 실패:', error);
-				setSign(null);
-			});
-	}, [data]);
-
 	const [homeNews, setHomeNews] = useState<HomeNewsData | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		fetchHomeNewsData(data.symbol)
-			.then((d) => setHomeNews(d))
-			.catch((error) => {
-				console.error('뉴스 데이터 로드 실패:', error);
-				setHomeNews(null);
+		console.log('fetch실행', data.symbol);
+		Promise.all([
+			fetchGuruChangeData(data.symbol),
+			fetchSignData(data.symbol),
+			fetchHomeNewsData(data.symbol),
+		])
+			.then(([guru, signData, news]) => {
+				setGuruChange(guru);
+				setSign(signData);
+				setHomeNews(news);
+			})
+			.catch(console.error)
+			.finally(() => {
+				setIsLoading(false);
+				onLoaded?.(); // 부모에 알림
 			});
-	}, [data]);
+	}, []);
+
+	if (isLoading) return <StockSummaryCardSkeleton />;
 
 	return (
 		<div
