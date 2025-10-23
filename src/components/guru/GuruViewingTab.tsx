@@ -55,31 +55,36 @@ export default function GuruViewingTab({
 					activeFilter={userFilter}
 					onFilterChange={onUserFilterChange}
 				/>
-				<CustomDropdown<string>
-					options={['단기 고수', '중기 고수', '장기 고수']}
-					setSortedBy={
-						guruType === 'DAY'
-							? '단기 고수'
-							: guruType === 'SWING'
-								? '중기 고수'
-								: guruType === 'HOLD'
-									? '장기 고수'
-									: '단기 고수'
-					}
-					isOpen={isOpen}
-					onToggle={onToggle}
-					fetchSortedBy={(label) => {
-						const typeMap: Record<string, GuruType> = {
-							'단기 고수': 'DAY',
-							'중기 고수': 'SWING',
-							'장기 고수': 'HOLD',
-						};
-						onGuruTypeChange(typeMap[label] || 'DAY');
-					}}
-				/>
+
+				{userFilter === '고수' ? (
+					<CustomDropdown<string>
+						options={['단기 고수', '중기 고수', '장기 고수']}
+						setSortedBy={
+							guruType === 'DAY'
+								? '단기 고수'
+								: guruType === 'SWING'
+									? '중기 고수'
+									: guruType === 'HOLD'
+										? '장기 고수'
+										: '단기 고수'
+						}
+						isOpen={isOpen}
+						onToggle={onToggle}
+						fetchSortedBy={(label) => {
+							const typeMap: Record<string, GuruType> = {
+								'단기 고수': 'DAY',
+								'중기 고수': 'SWING',
+								'장기 고수': 'HOLD',
+							};
+							onGuruTypeChange(typeMap[label] || 'DAY');
+						}}
+					/>
+				) : (
+					<></>
+				)}
 			</div>
 			<div className="flex gap-2 mb-2">
-				<p className="text-lg font-semibold text-black ">상위 관심 종목</p>
+				<p className="text-md font-semibold text-black ">상위 관심 종목</p>
 				<Image
 					src="/question.png"
 					alt="help"
@@ -111,21 +116,49 @@ export default function GuruViewingTab({
 			<TreeMapContainer data={viewingStocks} />
 
 			{/* 제목 */}
-			<div className="flex items-center gap-1 mt-8 relative">
-				<p className="text-lg font-semibold text-black">
-					{userFilter === '고수'
-						? '고수들이 주목하고 있어요'
-						: '고수들은 이 종목을 더 보고 있어요'}
-				</p>
-				{userFilter !== '고수' && (
-					<Image
-						src="/question.png"
-						alt="help"
-						width={24}
-						height={24}
-						className="cursor-pointer"
-						onClick={onMoreInfoBottom}
+			<div className="flex items-center justify-between gap-1 mt-8 relative">
+				<div className="flex items-center gap-1">
+					<p className="text-md font-semibold text-black">
+						{userFilter === '고수'
+							? '고수들이 주목하고 있어요'
+							: '고수들은 이런 종목도 보고 있어요'}
+					</p>
+					{userFilter !== '고수' && (
+						<Image
+							src="/question.png"
+							alt="help"
+							width={24}
+							height={24}
+							className="cursor-pointer"
+							onClick={onMoreInfoBottom}
+						/>
+					)}
+				</div>
+				{userFilter !== '고수' ? (
+					<CustomDropdown<string>
+						options={['단기 고수', '중기 고수', '장기 고수']}
+						setSortedBy={
+							guruType === 'DAY'
+								? '단기 고수'
+								: guruType === 'SWING'
+									? '중기 고수'
+									: guruType === 'HOLD'
+										? '장기 고수'
+										: '단기 고수'
+						}
+						isOpen={isOpen}
+						onToggle={onToggle}
+						fetchSortedBy={(label) => {
+							const typeMap: Record<string, GuruType> = {
+								'단기 고수': 'DAY',
+								'중기 고수': 'SWING',
+								'장기 고수': 'HOLD',
+							};
+							onGuruTypeChange(typeMap[label] || 'DAY');
+						}}
 					/>
+				) : (
+					<></>
 				)}
 
 				{/* 팝오버 */}

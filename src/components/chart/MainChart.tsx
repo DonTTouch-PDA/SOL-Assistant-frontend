@@ -153,18 +153,28 @@ const MainChart: React.FC<CandleChartProps> = ({ data }) => {
 		});
 
 		// --- y축 폭 동기화 ---
-		setTimeout(() => {
-			const mainY = mainChart.priceScale('right').width();
-			const volY = volumeChart.priceScale('right').width();
-			const maxY = Math.max(mainY, volY);
+		requestAnimationFrame(() =>
+			requestAnimationFrame(() => {
+				const mainY = mainChart.priceScale('right').width();
+				const volY = volumeChart.priceScale('right').width();
+				const maxY = Math.max(mainY, volY);
 
-			mainChart.applyOptions({
-				rightPriceScale: { minimumWidth: maxY, borderColor: '#ccc' },
-			});
-			volumeChart.applyOptions({
-				rightPriceScale: { minimumWidth: maxY, borderColor: '#ccc' },
-			});
-		}, 0);
+				mainChart.applyOptions({
+					rightPriceScale: {
+						minimumWidth: maxY,
+						borderColor: '#ccc',
+						scaleMargins: { top: 0.05, bottom: 0.05 },
+					},
+				});
+				volumeChart.applyOptions({
+					rightPriceScale: {
+						minimumWidth: maxY,
+						borderColor: '#ccc',
+						scaleMargins: { top: 0.05, bottom: 0.05 },
+					},
+				});
+			})
+		);
 
 		// --- 리사이즈 ---
 		const handleResize = () => {

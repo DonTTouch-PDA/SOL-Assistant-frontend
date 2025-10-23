@@ -119,6 +119,17 @@ body {
 	display: none;
 }
 
+/* 전체페이지 스크롤바 숨기기 */
+body {
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+	display: none;
+}
+
 @font-face {
 	font-family: 'DunbarLow';
 	font-weight: 600;
@@ -172,4 +183,8 @@ body {
 	body {
 		@apply bg-background text-foreground;
 	}
+}
+
+button {
+	@apply cursor-pointer;
 }

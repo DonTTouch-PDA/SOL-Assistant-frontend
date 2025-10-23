@@ -1,8 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { ChevronLeft } from 'lucide-react';
-import { HomeNewsData } from '@/types/newHome';
 import CustomCard from '@/components/common/CustomCard';
 import { fetchSectorNewsBySectorId } from '@/services/sectorNewsService';
 import { newsList } from '@/types/news';
@@ -91,7 +89,7 @@ export default function SectorNewsDetailContainer({
 
 	return (
 		<motion.div
-			className="fixed top-11 left-1/2 transform -translate-x-1/2 z-50 bg-white flex flex-col w-full max-w-[430px] min-w-[375px] rounded-t-xl"
+			className="fixed top-11 left-1/2 transform -translate-x-1/2 z-50 bg-white flex flex-col w-full max-w-[430px] min-w-[375px] rounded-t-xl px-2"
 			style={{
 				height: 'calc(100vh - 11px - 78px)',
 				boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.15)',
@@ -123,21 +121,21 @@ export default function SectorNewsDetailContainer({
 					<Image
 						src={`https://static.toss.im/png-icons/securities/icn-sec-fill-${stockCode}.png`}
 						alt={stockName}
-						width={50}
-						height={50}
+						width={45}
+						height={45}
 						className="rounded-full"
 					/>
 					<div>
-						<p className="text-[30px] pl-[10px] font-bold">{stockName}</p>
+						<p className="text-2xl pl-[10px] font-bold">{stockName}</p>
 						<p className="text-sm text-gray-500 pl-[10px]">
-							{stockName}의 섹터 뉴스 요약
+							{stockName} 섹터 뉴스 요약
 						</p>
 					</div>
 				</div>
 			</div>
 
 			{/* 뉴스 내용 */}
-			<div className="flex-1 px-5 py-4 overflow-y-auto min-h-0 h-full">
+			<div className="flex-1 px-5 py-4 overflow-y-auto min-h-0 h-full scrollbar-hide">
 				{loading ? (
 					<CustomCard>
 						<div className="text-center py-8">
@@ -189,30 +187,30 @@ export default function SectorNewsDetailContainer({
 						</CustomCard>
 
 						{/* 관련 뉴스 */}
-						<div>
-							<h3 className="text-lg font-semibold mb-4">관련 뉴스</h3>
-							<div className="space-y-3">
-								{sectorNews.newsList.map((news, idx) => (
-									<CustomCard key={idx}>
-										<div className="flex justify-between">
-											<div className="flex-1 pr-3">
-												<p className="text-[#999EA4] text-sm mb-1">
-													{news.date} {news.journal}
-												</p>
-												<a
-													href={news.url}
-													target="_blank"
-													rel="noopener noreferrer"
-													className="text-[#333951] font-medium hover:underline"
-												>
-													{news.title}
-												</a>
+						<section className="pt-2">
+							<h1 className="text-xl font-semibold pb-4">관련 뉴스</h1>
+							<div>
+								{sectorNews.newsList.length > 0 &&
+									sectorNews.newsList.map((news, idx) => (
+										<div key={idx} className="pb-3">
+											<div className="flex justify-between pb-10">
+												<div>
+													<p className="text-[#999EA4] text-sm">
+														{news.date} {news.journal}
+													</p>
+													<a
+														href={news.url}
+														className="text-[#333951] font-medium"
+													>
+														{news.title}
+													</a>
+												</div>
 											</div>
+											<div className="w-[100%]  border-[0.5px] border-[#EEEEEE]" />
 										</div>
-									</CustomCard>
-								))}
+									))}
 							</div>
-						</div>
+						</section>
 					</div>
 				) : (
 					<CustomCard>
